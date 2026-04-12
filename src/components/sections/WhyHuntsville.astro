@@ -1,0 +1,132 @@
+---
+// WhyHuntsville.astro — City character block
+// Source: 12-city-character-injection.md §3.2
+// Establishes the city's logistics significance with verified facts
+
+import { city } from '@data/city';
+---
+
+<section class="why-section section" id="why-huntsville" aria-labelledby="why-heading">
+  <div class="container">
+    <p class="why-eyebrow text-caps">Why {city.name}?</p>
+    <h2 class="why-heading" id="why-heading">
+      Where rockets launch<br class="hide-mobile" /> and freight lands.
+    </h2>
+
+    <div class="why-body">
+      <p class="text-lead">
+        {city.name} sits at the convergence of I-65 and I-565 — the crossroads of
+        the Southeast and the Midwest. The Port of {city.name} is one of the few
+        fully integrated inland ports in the country, combining international air
+        cargo, rail intermodal, and highway freight under a single authority, backed
+        by more than $300 million in infrastructure investment.
+      </p>
+      <p>
+        Within a one-day drive: Nashville, Atlanta, Memphis, Birmingham, Chattanooga,
+        Louisville, and Knoxville. That's not a pitch. That's geography working in
+        your favor.
+      </p>
+    </div>
+
+    <!-- Key stats grid -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-number">21st</span>
+        <span class="stat-label">in the U.S. for international air cargo volume</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">$300M+</span>
+        <span class="stat-label">invested in air and rail infrastructure</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">33,745</span>
+        <span class="stat-label">rail lifts in 2024 — 22.3% YoY growth</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">249K+</span>
+        <span class="stat-label">residents — Alabama's largest and fastest-growing city</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .why-section {
+    background-color: var(--color-off-white);
+  }
+
+  .why-eyebrow {
+    color: var(--color-accent);
+    margin-bottom: var(--space-3);
+  }
+
+  .why-heading {
+    font-size: var(--fs-3xl);
+    margin-bottom: var(--space-6);
+    max-width: 18ch;
+  }
+
+  .hide-mobile {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .hide-mobile {
+      display: inline;
+    }
+  }
+
+  .why-body {
+    max-width: var(--content-narrow);
+    margin-bottom: var(--space-8);
+  }
+
+  .why-body p {
+    max-width: none;
+  }
+
+  /* ---- Stats grid ---- */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+
+  @media (min-width: 640px) {
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .stats-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .stat-card {
+    padding: var(--space-5);
+    background: white;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(35, 75, 94, 0.08);
+    border-top: 3px solid var(--color-accent);
+  }
+
+  .stat-number {
+    display: block;
+    font-family: var(--font-display);
+    font-size: var(--fs-2xl);
+    font-weight: 800;
+    color: var(--color-petrol-blue);
+    line-height: 1.1;
+    margin-bottom: var(--space-2);
+  }
+
+  .stat-label {
+    display: block;
+    font-size: var(--fs-sm);
+    color: var(--color-petrol-blue);
+    opacity: 0.75;
+    line-height: 1.45;
+  }
+</style>

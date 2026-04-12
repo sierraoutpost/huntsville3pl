@@ -1,0 +1,131 @@
+---
+// Differentiators.astro — The six differentiators (Non-Negotiable #23)
+// Source: 12-city-character-injection.md §3.2.1
+// Homepage treatment: brief, punchy — one sentence or stat per differentiator
+
+import { city } from '@data/city';
+import { brand } from '@data/brand';
+
+const differentiators = [
+  {
+    number: '01',
+    title: 'Strategic Location',
+    description: `At the convergence of I-65 and I-565 — one-day truck reach to Nashville, Atlanta, Memphis, Birmingham, Louisville, and beyond.`,
+  },
+  {
+    number: '02',
+    title: 'Port & Infrastructure',
+    description: `The Port of ${city.name} combines air cargo (#21 in the U.S.), rail intermodal (33,745 lifts in 2024), and highway freight — $300M+ invested.`,
+  },
+  {
+    number: '03',
+    title: 'FTZ Readiness',
+    description: `Positioned to facilitate Foreign Trade Zone benefits through the Port of ${city.name}'s International Intermodal Center — an inland port of entry for international cargo.`,
+  },
+  {
+    number: '04',
+    title: 'White Glove Standards',
+    description: `In a city where precision puts rockets in orbit, we hold our logistics to the same standard. Every shipment handled with accuracy and care.`,
+  },
+  {
+    number: '05',
+    title: 'National Network',
+    description: `${city.name} is one of ${brand.network.length} Sams 3PL Solutions locations nationwide. Your freight has options — and a team behind every one of them.`,
+  },
+  {
+    number: '06',
+    title: 'No Surprises',
+    description: `Real-time WMS visibility, dedicated account management, and proactive communication. You'll know where your inventory is before you ask.`,
+  },
+];
+---
+
+<section class="diff-section section" aria-labelledby="diff-heading">
+  <div class="container">
+    <p class="diff-eyebrow text-caps">Why Choose Us</p>
+    <h2 class="diff-heading" id="diff-heading">
+      Six reasons. Zero&nbsp;guesswork.
+    </h2>
+
+    <div class="diff-grid">
+      {differentiators.map((d) => (
+        <div class="diff-card">
+          <span class="diff-number">{d.number}</span>
+          <h3 class="diff-title">{d.title}</h3>
+          <p class="diff-desc">{d.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .diff-section {
+    background-color: var(--color-bg-dark);
+    color: var(--color-off-white);
+  }
+
+  .diff-eyebrow {
+    color: var(--color-accent);
+    margin-bottom: var(--space-3);
+  }
+
+  .diff-heading {
+    font-size: var(--fs-3xl);
+    color: var(--color-off-white);
+    margin-bottom: var(--space-7);
+  }
+
+  /* ---- Grid ---- */
+  .diff-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+
+  @media (min-width: 640px) {
+    .diff-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .diff-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* ---- Card ---- */
+  .diff-card {
+    padding: var(--space-5);
+    border: 1px solid rgba(247, 244, 239, 0.1);
+    border-radius: var(--radius-md);
+    transition: border-color var(--transition-base);
+  }
+
+  .diff-card:hover {
+    border-color: var(--color-accent);
+  }
+
+  .diff-number {
+    display: block;
+    font-family: var(--font-display);
+    font-size: var(--fs-sm);
+    font-weight: 800;
+    color: var(--color-accent);
+    margin-bottom: var(--space-3);
+  }
+
+  .diff-title {
+    font-size: var(--fs-lg);
+    color: var(--color-off-white);
+    margin-bottom: var(--space-3);
+  }
+
+  .diff-desc {
+    font-size: var(--fs-sm);
+    line-height: 1.55;
+    opacity: 0.8;
+    max-width: none;
+  }
+</style>
