@@ -14,9 +14,9 @@ export default defineConfig({
 
   integrations: [
     mdx(),
-    sitemap({
-      filter: (page) => !page.includes('/drafts/'),
-    }),
+    // Sitemap temporarily disabled until site has multiple pages.
+    // Re-enable before launch:
+    // sitemap({ filter: (page) => !page.includes('/drafts/') }),
   ],
 
   image: {
