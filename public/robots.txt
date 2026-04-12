@@ -1,0 +1,10 @@
+# Sams 3PL Solutions — robots.txt
+# See skills/05-seo-aeo-geo-llmo.md §2.2 for full documentation.
+#
+# REQUIRED: Update the Sitemap URL to this city's domain before deploying.
+
+User-agent: *
+Allow: /
+Disallow: /drafts/
+
+Sitemap: https://huntsville3pl.com/sitemap-index.xml

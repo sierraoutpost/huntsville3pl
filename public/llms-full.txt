@@ -1,0 +1,44 @@
+# Huntsville 3PL — A Sams 3PL Solutions Company (Full Details)
+# See skills/05-seo-aeo-geo-llmo.md §8 for full documentation.
+#
+# REQUIRED: Replace all CHANGEME values and expand each section with
+# city-specific details from the completed city research brief.
+
+## About
+Huntsville 3PL is a full-service third-party logistics provider in
+Huntsville, AL. We are part of the Sams 3PL Solutions national network,
+operating 12+ facilities across the United States.
+
+## Location and Logistics Significance
+[Expand with city research brief §2 — interstate corridors, port/airport
+access, drive-time reach, border crossings if applicable.]
+
+## Facility
+[Expand with city research brief §4 — square footage, dock doors, ceiling
+height, FTZ status, WMS, certifications.]
+
+## Services
+[Expand each service with a paragraph of city-specific detail.]
+
+### Warehousing
+### Order Fulfillment
+### Distribution and Cross-Docking
+### Inventory Management
+### Supply Chain Consulting
+### Value-Added Services
+
+## Industries Served
+[List industries served at this facility.]
+
+## Contact
+- Phone: +1 (419) 745-9492
+- Email: info@sams3plsolutions.com
+- Website: https://huntsville3pl.com
+- Hours: 24/7 Operations Support
+
+## Network
+Sams 3PL Solutions operates facilities in: Toledo, Huntsville,
+Miami-Dade, Houston, Seattle, Boston, New York, Savannah, Charleston,
+Detroit, Chattanooga, Baltimore, and more.
+
+Learn more: https://sams3plsolutions.com
