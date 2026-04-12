@@ -1,19 +1,27 @@
 ---
-// Huntsville 3PL — Home Page (placeholder)
-// This minimal page ensures the Astro build succeeds.
-// It will be replaced with the full homepage during the build phase.
+// Home Page — Huntsville 3PL
+// This placeholder uses PageLayout to verify the base layout + styles work.
+// Full homepage sections will be built in Chunk 4.
+
+import PageLayout from '@layouts/PageLayout.astro';
+import { city } from '@data/city';
+import { brand } from '@data/brand';
 ---
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Huntsville 3PL | Sams 3PL Solutions</title>
-    <meta name="description" content="The Rocket City runs on precision. So does your supply chain. Sams 3PL Solutions — Huntsville, Alabama." />
-  </head>
-  <body>
-    <h1>Huntsville 3PL</h1>
-    <p>The Rocket City runs on precision. So does your supply chain.</p>
-    <p>Site under construction. Coming soon.</p>
-  </body>
-</html>
+
+<PageLayout
+  title="Home"
+  description={`${city.tagline} ${brand.name} — ${city.name}, Alabama. Warehousing, fulfillment, cross-docking, transloading, transportation, kitting, and returns processing.`}
+>
+  <section class="section accent-border-top">
+    <div class="container">
+      <h1>{city.name} 3PL</h1>
+      <p class="text-lead">{city.tagline}</p>
+      <p>Full site under construction. Coming soon.</p>
+      <p>
+        Call us: <a href={brand.phone.href}>{brand.phone.display}</a> |
+        Email: <a href={brand.email.href}>{brand.email.display}</a>
+      </p>
+      <p class="text-caps">{brand.hours}</p>
+    </div>
+  </section>
+</PageLayout>

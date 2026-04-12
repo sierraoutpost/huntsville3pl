@@ -1,0 +1,27 @@
+---
+// PageLayout.astro — Standard page layout (header + main + footer)
+// Source: 07-astro-cloudflare-stack.md §2
+//
+// Wraps BaseLayout and adds the global header and footer.
+// Header and footer components will be built in Chunk 3.
+
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+}
+
+const { title, description, ogImage } = Astro.props;
+---
+
+<BaseLayout title={title} description={description} ogImage={ogImage}>
+  <!-- Header will be added in Chunk 3 -->
+
+  <main id="main-content">
+    <slot />
+  </main>
+
+  <!-- Footer will be added in Chunk 3 -->
+</BaseLayout>

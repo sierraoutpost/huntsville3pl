@@ -1,0 +1,334 @@
+/* ============================================================
+   Sams 3PL Solutions — Huntsville
+   Global Stylesheet
+
+   Sources:
+   - 01-brand-system.md (colors, typography, type scale)
+   - 02-visual-design.md (spacing scale, layout, whitespace)
+   - 04-accessibility-wcag22aa.md (contrast, focus states)
+   - 06-performance.md (font loading, render strategy)
+   ============================================================ */
+
+/* ---- CSS Reset (minimal, modern) ---- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100dvh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+/* ---- @font-face declarations ---- */
+/* Self-hosted fonts per 01-brand-system.md §4.5
+   Font files go in /public/fonts/ as .woff2
+   TODO: Download PP Neue Machina + PP Neue Montreal from Pangram Pangram
+   TODO: Download Fraunces from Google Fonts (self-hosted, not CDN) */
+
+@font-face {
+  font-family: 'PP Neue Machina';
+  src: url('/fonts/pp-neue-machina-regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PP Neue Machina';
+  src: url('/fonts/pp-neue-machina-ultrabold.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PP Neue Montreal';
+  src: url('/fonts/pp-neue-montreal-regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PP Neue Montreal';
+  src: url('/fonts/pp-neue-montreal-medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/fonts/fraunces-regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/fonts/fraunces-semibold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/fonts/fraunces-italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* ---- Design tokens (CSS Custom Properties) ---- */
+:root {
+  /* --- Colors (01-brand-system.md §3.1) --- */
+  --color-brick-red: #8B1F24;
+  --color-petrol-blue: #234B5E;
+  --color-off-white: #F7F4EF;
+  --color-accent: #708090;          /* Rocket Silver — Huntsville city accent */
+
+  /* Semantic color aliases */
+  --color-text-primary: var(--color-petrol-blue);
+  --color-text-heading: var(--color-petrol-blue);
+  --color-text-inverse: var(--color-off-white);
+  --color-bg-primary: var(--color-off-white);
+  --color-bg-dark: var(--color-petrol-blue);
+  --color-cta: var(--color-brick-red);
+  --color-cta-hover: #6E181E;       /* Brick Red darkened ~10% for hover */
+  --color-focus-ring: var(--color-petrol-blue);
+
+  /* --- Typography (01-brand-system.md §4) --- */
+  --font-display: 'PP Neue Machina', 'Arial Black', system-ui, sans-serif;
+  --font-body: 'PP Neue Montreal', 'Helvetica Neue', Arial, system-ui, sans-serif;
+  --font-editorial: 'Fraunces', Georgia, 'Times New Roman', serif;
+
+  /* --- Type scale (01-brand-system.md §4.3 — major-third 1.25 ratio) --- */
+  --fs-xs: 0.8125rem;   /* 13px — captions, metadata, form hints */
+  --fs-sm: 0.875rem;     /* 14px — small UI text, footer links */
+  --fs-base: 1rem;       /* 16px — body copy (default) */
+  --fs-md: 1.125rem;     /* 18px — lead paragraphs, large body */
+  --fs-lg: 1.375rem;     /* 22px — small headings, card titles */
+  --fs-xl: 1.75rem;      /* 28px — H3 */
+  --fs-2xl: 2.25rem;     /* 36px — H2 */
+  --fs-3xl: clamp(2.25rem, 5vw, 3rem);      /* 36–48px — H1 interior */
+  --fs-4xl: clamp(2.5rem, 6vw, 4rem);       /* 40–64px — Homepage hero H1 */
+  --fs-5xl: clamp(3rem, 8vw, 6rem);         /* 48–96px — Display moments */
+
+  /* --- Spacing scale (02-visual-design.md §4) --- */
+  --space-0: 0;
+  --space-1: 0.25rem;    /* 4px */
+  --space-2: 0.5rem;     /* 8px */
+  --space-3: 0.75rem;    /* 12px */
+  --space-4: 1rem;       /* 16px */
+  --space-5: 1.5rem;     /* 24px */
+  --space-6: 2rem;       /* 32px */
+  --space-7: 3rem;       /* 48px */
+  --space-8: 4rem;       /* 64px — section separation mobile */
+  --space-9: 6rem;       /* 96px — section separation tablet */
+  --space-10: 8rem;      /* 128px — section separation desktop */
+  --space-11: 12rem;     /* 192px — hero breathing room */
+
+  /* --- Layout --- */
+  --content-width: 1200px;
+  --content-narrow: 680px;  /* ~50-75 chars per line at 16px body */
+  --content-gutter: var(--space-5); /* 24px side padding */
+
+  /* --- Transitions --- */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+
+  /* --- Border radius --- */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+}
+
+/* ---- Base typography ---- */
+body {
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+  line-height: 1.6;
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-primary);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  color: var(--color-text-heading);
+  line-height: 1.2;
+  font-weight: 800;
+}
+
+h1 { font-size: var(--fs-3xl); line-height: 1.15; }
+h2 { font-size: var(--fs-2xl); line-height: 1.2; }
+h3 { font-size: var(--fs-xl); line-height: 1.3; }
+h4 { font-size: var(--fs-lg); line-height: 1.4; }
+
+p {
+  max-width: var(--content-narrow);
+  margin-bottom: 1em;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+/* Lead paragraph */
+.text-lead {
+  font-size: var(--fs-md);
+  line-height: 1.55;
+}
+
+/* Editorial / long-form body */
+.text-editorial {
+  font-family: var(--font-editorial);
+}
+
+/* All-caps labels (01-brand-system.md §4.4) */
+.text-caps {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+}
+
+/* ---- Links ---- */
+a:not([class]) {
+  color: var(--color-cta);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  transition: color var(--transition-fast);
+}
+
+a:not([class]):hover {
+  color: var(--color-cta-hover);
+}
+
+/* ---- Focus states (04-accessibility-wcag22aa.md) ---- */
+:focus-visible {
+  outline: 3px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* ---- Skip link (accessibility) ---- */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: var(--space-4);
+  z-index: 9999;
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-petrol-blue);
+  color: var(--color-off-white);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+  transition: top var(--transition-fast);
+}
+
+.skip-link:focus {
+  top: var(--space-2);
+}
+
+/* ---- Layout utilities ---- */
+.container {
+  width: 100%;
+  max-width: var(--content-width);
+  margin-inline: auto;
+  padding-inline: var(--content-gutter);
+}
+
+.container--narrow {
+  max-width: var(--content-narrow);
+}
+
+.section {
+  padding-block: var(--space-8);
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding-block: var(--space-9);
+  }
+}
+
+@media (min-width: 1024px) {
+  .section {
+    padding-block: var(--space-10);
+  }
+}
+
+/* ---- Visually hidden (screen reader only) ---- */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ---- Accent border (city character injection §4.1) ---- */
+.accent-border-top {
+  border-top: 3px solid var(--color-accent);
+}
+
+/* ---- Selection color ---- */
+::selection {
+  background-color: var(--color-petrol-blue);
+  color: var(--color-off-white);
+}
