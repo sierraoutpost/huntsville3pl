@@ -1,7 +1,7 @@
 ---
-// Header.astro — Sticky site header with nav
-// Source: 03-ui-ux-principles.md §4.1, §4.2
+// Header.astro — NEOBRUTALIST sticky header
 // Nav order (Non-Negotiable #22): Logo → Industries → Services → City → About → Blog → Connect CTA
+// No blur. No soft shadows. Thick borders. Industrial.
 
 import { brand } from '@data/brand';
 import { city } from '@data/city';
@@ -14,7 +14,7 @@ const currentPath = Astro.url.pathname;
   <div class="header-inner container">
     <!-- Logo lockup -->
     <a href="/" class="logo-lockup" aria-label={`${city.name} 3PL — ${brand.name} — Home`}>
-      <span class="logo-city">{city.name} 3PL</span>
+      <span class="logo-city">{city.name}<span class="logo-3pl">3PL</span></span>
       <span class="logo-tagline">{brand.tagline}</span>
     </a>
 
@@ -40,12 +40,12 @@ const currentPath = Astro.url.pathname;
       <a href={brand.phone.href} class="header-phone">
         {brand.phone.display}
       </a>
-      <a href={ctaNav.href} class="btn btn-primary">
+      <a href={ctaNav.href} class="header-cta">
         {ctaNav.label}
       </a>
     </div>
 
-    <!-- Mobile menu toggle -->
+    <!-- Mobile menu toggle — brutalist block -->
     <button
       class="mobile-toggle"
       aria-label="Open menu"
@@ -58,17 +58,17 @@ const currentPath = Astro.url.pathname;
     </button>
   </div>
 
-  <!-- Mobile menu overlay -->
+  <!-- Mobile menu overlay — full black takeover -->
   <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
     <div class="mobile-menu-inner">
-      <!-- Phone first (03-ui-ux-principles.md §4.2) -->
-      <a href={brand.phone.href} class="mobile-phone">
-        {brand.phone.display}
+      <!-- CTA first -->
+      <a href={ctaNav.href} class="mobile-cta">
+        {ctaNav.label}
       </a>
 
-      <!-- CTA second -->
-      <a href={ctaNav.href} class="btn btn-primary mobile-cta">
-        {ctaNav.label}
+      <!-- Phone -->
+      <a href={brand.phone.href} class="mobile-phone">
+        {brand.phone.display}
       </a>
 
       <!-- Full nav -->
@@ -100,32 +100,24 @@ const currentPath = Astro.url.pathname;
 </header>
 
 <style>
-  /* ---- Header shell ---- */
+  /* ---- Header shell — solid, no blur, thick bottom border ---- */
   .site-header {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(247, 244, 239, 0.9);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border-bottom: 1px solid transparent;
-    transition: border-color var(--transition-base), box-shadow var(--transition-base);
-  }
-
-  .site-header.scrolled {
-    border-bottom-color: rgba(35, 75, 94, 0.1);
-    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
+    background: var(--color-off-white);
+    border-bottom: 3px solid var(--color-black);
   }
 
   .header-inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 72px;
+    height: 76px;
     gap: var(--space-5);
   }
 
-  /* ---- Logo lockup ---- */
+  /* ---- Logo lockup — bold, industrial ---- */
   .logo-lockup {
     display: flex;
     flex-direction: column;
@@ -135,20 +127,30 @@ const currentPath = Astro.url.pathname;
 
   .logo-city {
     font-family: var(--font-display);
-    font-size: var(--fs-lg);
+    font-size: clamp(1.4rem, 2.5vw, 1.75rem);
     font-weight: 800;
-    color: var(--color-petrol-blue);
-    line-height: 1.1;
+    color: var(--color-black);
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+  }
+
+  .logo-3pl {
+    color: var(--color-brick-red);
+    margin-left: 0.15em;
   }
 
   .logo-tagline {
+    font-family: var(--font-display);
     font-size: var(--fs-xs);
-    color: var(--color-accent);
-    letter-spacing: 0.02em;
+    color: var(--color-rocket-silver);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     line-height: 1.2;
+    margin-top: 2px;
   }
 
-  /* ---- Desktop nav ---- */
+  /* ---- Desktop nav — uppercase, bold, underline on hover ---- */
   .desktop-nav {
     display: none;
   }
@@ -162,33 +164,35 @@ const currentPath = Astro.url.pathname;
   .nav-list {
     display: flex;
     align-items: center;
-    gap: var(--space-5);
+    gap: var(--space-6);
   }
 
   .nav-link {
-    font-family: var(--font-body);
+    font-family: var(--font-display);
     font-size: var(--fs-sm);
-    font-weight: 500;
-    color: var(--color-petrol-blue);
+    font-weight: 800;
+    color: var(--color-black);
     text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
     padding: var(--space-2) 0;
-    border-bottom: 2px solid transparent;
-    transition: border-color var(--transition-fast), color var(--transition-fast);
+    border-bottom: 3px solid transparent;
+    transition: border-color var(--transition-fast);
   }
 
   .nav-link:hover {
-    border-bottom-color: var(--color-accent);
+    border-bottom-color: var(--color-electric-yellow);
   }
 
   .nav-link--active {
-    border-bottom-color: var(--color-petrol-blue);
+    border-bottom-color: var(--color-brick-red);
   }
 
   /* ---- Header actions (desktop) ---- */
   .header-actions {
     display: none;
     align-items: center;
-    gap: var(--space-4);
+    gap: var(--space-5);
     flex-shrink: 0;
   }
 
@@ -199,63 +203,69 @@ const currentPath = Astro.url.pathname;
   }
 
   .header-phone {
+    font-family: var(--font-mono, var(--font-display));
     font-size: var(--fs-sm);
     font-weight: 500;
-    color: var(--color-petrol-blue);
+    color: var(--color-black);
     text-decoration: none;
     white-space: nowrap;
     transition: color var(--transition-fast);
   }
 
   .header-phone:hover {
-    color: var(--color-cta);
+    color: var(--color-brick-red);
   }
 
-  /* ---- CTA Button ---- */
-  .btn {
+  /* ---- Header CTA — Brick Red, hard shadow, NO radius ---- */
+  .header-cta {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-family: var(--font-body);
+    padding: var(--space-2) var(--space-5);
+    background-color: var(--color-brick-red);
+    color: var(--color-off-white);
+    font-family: var(--font-display);
     font-size: var(--fs-sm);
-    font-weight: 500;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
     text-decoration: none;
-    border: none;
-    border-radius: var(--radius-md);
-    cursor: pointer;
+    border: 3px solid var(--color-black);
+    box-shadow: 3px 3px 0 var(--color-black);
     transition:
-      background-color var(--transition-fast),
-      transform 80ms ease;
+      transform var(--transition-brutal, 80ms ease),
+      box-shadow var(--transition-brutal, 80ms ease);
     white-space: nowrap;
   }
 
-  .btn:active {
-    transform: scale(0.95);
+  .header-cta:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 var(--color-black);
   }
 
-  .btn-primary {
-    padding: var(--space-2) var(--space-5);
-    background-color: var(--color-cta);
-    color: var(--color-off-white);
+  .header-cta:active {
+    transform: translate(3px, 3px);
+    box-shadow: none;
   }
 
-  .btn-primary:hover {
-    background-color: var(--color-cta-hover);
-  }
-
-  /* ---- Mobile toggle ---- */
+  /* ---- Mobile toggle — thick lines, brutalist ---- */
   .mobile-toggle {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 5px;
-    width: 44px;
-    height: 44px;
+    gap: 6px;
+    width: 48px;
+    height: 48px;
     background: none;
-    border: none;
+    border: 3px solid var(--color-black);
     cursor: pointer;
     padding: var(--space-2);
+    transition: background-color var(--transition-fast);
+  }
+
+  .mobile-toggle:hover {
+    background: var(--color-electric-yellow);
   }
 
   @media (min-width: 1024px) {
@@ -266,15 +276,14 @@ const currentPath = Astro.url.pathname;
 
   .hamburger-line {
     display: block;
-    width: 22px;
-    height: 2px;
-    background-color: var(--color-petrol-blue);
-    border-radius: 1px;
+    width: 24px;
+    height: 3px;
+    background-color: var(--color-black);
     transition: transform var(--transition-fast), opacity var(--transition-fast);
   }
 
   .mobile-toggle[aria-expanded='true'] .hamburger-line:nth-child(1) {
-    transform: translateY(7px) rotate(45deg);
+    transform: translateY(9px) rotate(45deg);
   }
 
   .mobile-toggle[aria-expanded='true'] .hamburger-line:nth-child(2) {
@@ -282,22 +291,22 @@ const currentPath = Astro.url.pathname;
   }
 
   .mobile-toggle[aria-expanded='true'] .hamburger-line:nth-child(3) {
-    transform: translateY(-7px) rotate(-45deg);
+    transform: translateY(-9px) rotate(-45deg);
   }
 
-  /* ---- Mobile menu overlay ---- */
+  /* ---- Mobile menu overlay — BLACK TAKEOVER ---- */
   .mobile-menu {
     position: fixed;
     inset: 0;
     z-index: 99;
-    background: var(--color-off-white);
+    background: var(--color-black);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     opacity: 0;
     visibility: hidden;
-    transition: opacity var(--transition-base), visibility var(--transition-base);
+    transition: opacity 200ms ease, visibility 200ms ease;
   }
 
   .mobile-menu.open {
@@ -315,21 +324,34 @@ const currentPath = Astro.url.pathname;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--space-6);
+    gap: var(--space-7);
     text-align: center;
+  }
+
+  .mobile-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-3) var(--space-7);
+    background-color: var(--color-brick-red);
+    color: var(--color-off-white);
+    font-family: var(--font-display);
+    font-size: var(--fs-lg);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    border: 3px solid var(--color-off-white);
+    box-shadow: 5px 5px 0 var(--color-electric-yellow);
   }
 
   .mobile-phone {
     font-family: var(--font-display);
     font-size: var(--fs-xl);
     font-weight: 800;
-    color: var(--color-petrol-blue);
+    color: var(--color-electric-yellow);
     text-decoration: none;
-  }
-
-  .mobile-cta {
-    padding: var(--space-3) var(--space-7);
-    font-size: var(--fs-base);
+    letter-spacing: -0.01em;
   }
 
   .mobile-nav-list {
@@ -339,30 +361,37 @@ const currentPath = Astro.url.pathname;
   }
 
   .mobile-nav-link {
+    font-family: var(--font-display);
     font-size: var(--fs-lg);
-    font-weight: 500;
-    color: var(--color-petrol-blue);
+    font-weight: 800;
+    color: var(--color-off-white);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
     text-decoration: none;
     padding: var(--space-3) var(--space-5);
     min-height: 56px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: color var(--transition-fast);
+    border-bottom: 3px solid transparent;
+    transition: border-color var(--transition-fast), color var(--transition-fast);
   }
 
   .mobile-nav-link:hover {
-    color: var(--color-cta);
+    color: var(--color-electric-yellow);
+    border-bottom-color: var(--color-electric-yellow);
   }
 
   .mobile-nav-link--active {
-    color: var(--color-cta);
+    color: var(--color-electric-yellow);
+    border-bottom-color: var(--color-brick-red);
   }
 
   .mobile-hours {
+    font-family: var(--font-display);
     font-size: var(--fs-sm);
-    color: var(--color-accent);
-    letter-spacing: 0.05em;
+    color: var(--color-rocket-silver);
+    letter-spacing: 0.1em;
     text-transform: uppercase;
   }
 
@@ -376,22 +405,21 @@ const currentPath = Astro.url.pathname;
     align-items: center;
     justify-content: center;
     background: none;
-    border: none;
-    font-size: 2rem;
-    color: var(--color-petrol-blue);
+    border: 3px solid var(--color-off-white);
+    font-size: 1.75rem;
+    color: var(--color-off-white);
     cursor: pointer;
+    transition: background-color var(--transition-fast), color var(--transition-fast);
+  }
+
+  .mobile-close:hover {
+    background: var(--color-electric-yellow);
+    color: var(--color-black);
+    border-color: var(--color-electric-yellow);
   }
 </style>
 
 <script>
-  // Sticky header scroll effect
-  const header = document.getElementById('site-header');
-  if (header) {
-    window.addEventListener('scroll', () => {
-      header.classList.toggle('scrolled', window.scrollY > 8);
-    }, { passive: true });
-  }
-
   // Mobile menu toggle
   const toggle = document.querySelector('.mobile-toggle') as HTMLButtonElement;
   const menu = document.getElementById('mobile-menu');

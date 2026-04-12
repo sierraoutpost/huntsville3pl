@@ -1,20 +1,24 @@
 ---
-// ServicesOverview.astro — Homepage services grid
-// Source: 07-astro-cloudflare-stack.md, 12-city-character-injection.md §3.4
+// ServicesOverview.astro — NEOBRUTALIST services grid
+// Thick borders, hard shadows, bold type. No soft cards.
 
 import { services } from '@data/services';
 ---
 
 <section class="services-section section" aria-labelledby="services-heading">
+  <!-- Black background with off-white text -->
   <div class="container">
-    <p class="services-eyebrow text-caps">What We Do</p>
-    <h2 class="services-heading" id="services-heading">
-      Full-service 3PL.<br class="hide-mobile" /> One call to connect.
-    </h2>
+    <div class="services-header">
+      <p class="services-eyebrow">What We Do</p>
+      <h2 class="services-heading" id="services-heading">
+        Full-service 3PL. One call to connect.
+      </h2>
+    </div>
 
     <div class="services-grid">
-      {services.map((service) => (
+      {services.map((service, i) => (
         <a href={`/services/${service.slug}/`} class="service-card">
+          <span class="service-index">{String(i + 1).padStart(2, '0')}</span>
           <h3 class="service-title">{service.title}</h3>
           <p class="service-desc">{service.shortDescription}</p>
           <span class="service-link" aria-hidden="true">Learn more &rarr;</span>
@@ -26,35 +30,39 @@ import { services } from '@data/services';
 
 <style>
   .services-section {
-    background-color: white;
+    background-color: var(--color-black);
+    color: var(--color-off-white);
+    border-top: 6px solid var(--color-electric-yellow);
+  }
+
+  .services-header {
+    margin-bottom: var(--space-8);
   }
 
   .services-eyebrow {
-    color: var(--color-accent);
+    font-family: var(--font-display);
+    font-size: var(--fs-sm);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-electric-yellow);
     margin-bottom: var(--space-3);
   }
 
   .services-heading {
     font-size: var(--fs-3xl);
-    margin-bottom: var(--space-7);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    color: var(--color-off-white);
     max-width: 20ch;
-  }
-
-  .hide-mobile {
-    display: none;
-  }
-
-  @media (min-width: 768px) {
-    .hide-mobile {
-      display: inline;
-    }
   }
 
   /* ---- Grid ---- */
   .services-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--space-5);
+    gap: var(--space-4);
   }
 
   @media (min-width: 640px) {
@@ -69,50 +77,69 @@ import { services } from '@data/services';
     }
   }
 
-  /* ---- Service card ---- */
+  /* ---- Service card — BRUTALIST ---- */
   .service-card {
     display: flex;
     flex-direction: column;
-    padding: var(--space-6);
-    background: var(--color-off-white);
-    border-radius: var(--radius-md);
+    padding: var(--space-5);
+    background: transparent;
+    border: 3px solid rgba(247, 244, 239, 0.2);
     text-decoration: none;
-    border: 1px solid rgba(35, 75, 94, 0.06);
+    color: var(--color-off-white);
     transition:
-      border-color var(--transition-base),
-      box-shadow var(--transition-base),
-      transform var(--transition-fast);
+      transform 80ms ease,
+      border-color 120ms ease,
+      box-shadow 80ms ease;
   }
 
   .service-card:hover {
-    border-color: var(--color-accent);
-    box-shadow: 0 4px 24px rgba(35, 75, 94, 0.08);
-    transform: translateY(-2px);
+    border-color: var(--color-electric-yellow);
+    box-shadow: 5px 5px 0 var(--color-electric-yellow);
+    transform: translate(-3px, -3px);
+  }
+
+  .service-index {
+    display: block;
+    font-family: var(--font-display);
+    font-size: var(--fs-xs);
+    font-weight: 800;
+    color: var(--color-electric-yellow);
+    letter-spacing: 0.1em;
+    margin-bottom: var(--space-4);
   }
 
   .service-title {
+    font-family: var(--font-display);
     font-size: var(--fs-lg);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    color: var(--color-off-white);
     margin-bottom: var(--space-3);
+    line-height: 1.1;
   }
 
   .service-desc {
     font-size: var(--fs-sm);
-    color: var(--color-petrol-blue);
-    opacity: 0.8;
-    line-height: 1.55;
+    color: var(--color-off-white);
+    opacity: 0.7;
+    line-height: 1.5;
     flex-grow: 1;
     max-width: none;
     margin-bottom: var(--space-4);
   }
 
   .service-link {
+    font-family: var(--font-display);
     font-size: var(--fs-sm);
-    font-weight: 500;
-    color: var(--color-cta);
-    transition: color var(--transition-fast);
+    font-weight: 800;
+    color: var(--color-electric-yellow);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: color 120ms ease;
   }
 
   .service-card:hover .service-link {
-    color: var(--color-cta-hover);
+    color: var(--color-off-white);
   }
 </style>

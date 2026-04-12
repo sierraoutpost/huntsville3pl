@@ -1,6 +1,6 @@
 ---
-// Hero.astro — Homepage hero section
-// Source: 12-city-character-injection.md §3.1
+// Hero.astro — NEOBRUTALIST Homepage Hero
+// Massive type. Asymmetric. Industrial Signal palette.
 // Non-Negotiable #28: Every page has a real photograph in the hero banner
 
 import { city } from '@data/city';
@@ -8,160 +8,184 @@ import { ctaNav } from '@data/navigation';
 import { brand } from '@data/brand';
 ---
 
-<section class="hero accent-border-top" aria-label="Homepage hero">
-  <div class="hero-bg">
-    <img
-      src="/images/hero-huntsville.webp"
-      alt="Saturn V rocket at the U.S. Space & Rocket Center in Huntsville, Alabama at sunset with highway light trails — the Rocket City's aerospace heritage meets modern logistics infrastructure"
-      class="hero-img"
-      width="596"
-      height="400"
-      loading="eager"
-      decoding="async"
-      fetchpriority="high"
-    />
-    <div class="hero-overlay"></div>
-  </div>
+<section class="hero" aria-label="Homepage hero">
+  <!-- Electric yellow accent strip at top -->
+  <div class="hero-strip"></div>
 
-  <div class="hero-content container">
-    <p class="hero-eyebrow text-caps">{brand.name} — {city.name}, {city.state}</p>
-    <h1 class="hero-title">{city.tagline}</h1>
-    <p class="hero-sub">
-      Warehousing, fulfillment, cross-docking, transloading, transportation, kitting,
-      and returns processing — powered by {city.name}'s world-class logistics infrastructure.
-    </p>
-    <div class="hero-actions">
-      <a href={ctaNav.href} class="btn btn-hero">Connect With Us</a>
-      <a href={brand.phone.href} class="btn btn-hero-secondary">{brand.phone.display}</a>
+  <div class="hero-inner container">
+    <!-- Eyebrow -->
+    <p class="hero-eyebrow">{brand.name} // {city.name}, {city.state}</p>
+
+    <!-- MASSIVE headline -->
+    <h1 class="hero-title">
+      <span class="hero-title-line">The Rocket City</span>
+      <span class="hero-title-line hero-title-accent">runs on</span>
+      <span class="hero-title-line">precision.</span>
+    </h1>
+
+    <!-- Split: description + photo -->
+    <div class="hero-split">
+      <div class="hero-text">
+        <p class="hero-sub">
+          Warehousing. Fulfillment. Cross-docking. Transloading.
+          Transportation. Kitting. Returns processing.
+          Powered by {city.name}'s world-class logistics infrastructure.
+        </p>
+        <div class="hero-actions">
+          <a href={ctaNav.href} class="btn btn-primary">Connect With Us</a>
+          <a href={brand.phone.href} class="btn btn-secondary">{brand.phone.display}</a>
+        </div>
+      </div>
+
+      <div class="hero-image-wrap">
+        <img
+          src="/images/hero-huntsville.webp"
+          alt="U.S. Space and Rocket Center in Huntsville, Alabama — the Rocket City's aerospace heritage meets modern logistics infrastructure"
+          class="hero-img"
+          width="1080"
+          height="607"
+          loading="eager"
+          decoding="async"
+          fetchpriority="high"
+        />
+      </div>
     </div>
   </div>
 </section>
 
 <style>
+  /* ---- Hero shell ---- */
   .hero {
+    background-color: var(--color-off-white);
     position: relative;
-    min-height: 520px;
-    display: flex;
-    align-items: center;
     overflow: hidden;
   }
 
-  @media (min-width: 768px) {
-    .hero {
-      min-height: 600px;
-    }
+  /* Electric yellow top strip — industrial signal tape */
+  .hero-strip {
+    height: 6px;
+    background-color: var(--color-electric-yellow);
   }
 
-  /* ---- Background image ---- */
-  .hero-bg {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-  }
-
-  .hero-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center 40%;
-  }
-
-  .hero-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      135deg,
-      rgba(35, 75, 94, 0.88) 0%,
-      rgba(35, 75, 94, 0.7) 50%,
-      rgba(35, 75, 94, 0.5) 100%
-    );
-  }
-
-  /* ---- Content ---- */
-  .hero-content {
-    position: relative;
-    z-index: 1;
-    padding-block: var(--space-9);
+  .hero-inner {
+    padding-top: var(--space-7);
+    padding-bottom: var(--space-8);
   }
 
   @media (min-width: 768px) {
-    .hero-content {
-      padding-block: var(--space-10);
+    .hero-inner {
+      padding-top: var(--space-8);
+      padding-bottom: var(--space-9);
     }
   }
 
+  @media (min-width: 1024px) {
+    .hero-inner {
+      padding-top: var(--space-9);
+      padding-bottom: var(--space-10);
+    }
+  }
+
+  /* ---- Eyebrow — mono style, uppercase ---- */
   .hero-eyebrow {
-    color: var(--color-accent);
-    margin-bottom: var(--space-4);
+    font-family: var(--font-display);
+    font-size: var(--fs-sm);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-rocket-silver);
+    margin-bottom: var(--space-5);
     max-width: none;
   }
 
+  /* ---- MASSIVE headline ---- */
   .hero-title {
-    font-size: var(--fs-4xl);
-    color: var(--color-off-white);
-    max-width: 14ch;
-    margin-bottom: var(--space-5);
+    font-size: var(--fs-hero);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    color: var(--color-black);
+    margin-bottom: var(--space-7);
+    max-width: none;
   }
 
+  .hero-title-line {
+    display: block;
+  }
+
+  .hero-title-accent {
+    color: var(--color-brick-red);
+  }
+
+  /* ---- Split layout ---- */
+  .hero-split {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-7);
+    align-items: start;
+  }
+
+  @media (min-width: 768px) {
+    .hero-split {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-8);
+      align-items: center;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero-split {
+      grid-template-columns: 5fr 7fr;
+    }
+  }
+
+  /* ---- Text column ---- */
   .hero-sub {
     font-size: var(--fs-md);
-    color: var(--color-off-white);
-    opacity: 0.9;
-    max-width: 52ch;
-    margin-bottom: var(--space-6);
     line-height: 1.6;
+    color: var(--color-black);
+    max-width: 48ch;
+    margin-bottom: var(--space-6);
+    font-weight: 500;
   }
 
-  /* ---- Hero actions ---- */
   .hero-actions {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-4);
   }
 
-  .btn-hero {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--space-3) var(--space-6);
-    background-color: var(--color-cta);
-    color: var(--color-off-white);
-    font-family: var(--font-body);
-    font-size: var(--fs-base);
-    font-weight: 500;
-    text-decoration: none;
-    border-radius: var(--radius-md);
-    transition: background-color var(--transition-fast), transform 80ms ease;
-    white-space: nowrap;
+  /* ---- Photo — bordered, hard shadow, NOT full-bleed ---- */
+  .hero-image-wrap {
+    border: 3px solid var(--color-black);
+    box-shadow: 8px 8px 0 var(--color-black);
+    overflow: hidden;
+    position: relative;
   }
 
-  .btn-hero:hover {
-    background-color: var(--color-cta-hover);
+  /* Yellow corner accent — like a signal tab */
+  .hero-image-wrap::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 48px;
+    height: 48px;
+    background-color: var(--color-electric-yellow);
+    clip-path: polygon(0 0, 100% 0, 100% 100%);
   }
 
-  .btn-hero:active {
-    transform: scale(0.95);
+  .hero-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    aspect-ratio: 16 / 9;
   }
 
-  .btn-hero-secondary {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--space-3) var(--space-6);
-    background: transparent;
-    color: var(--color-off-white);
-    font-family: var(--font-body);
-    font-size: var(--fs-base);
-    font-weight: 500;
-    text-decoration: none;
-    border: 1.5px solid rgba(247, 244, 239, 0.5);
-    border-radius: var(--radius-md);
-    transition: border-color var(--transition-fast), background-color var(--transition-fast);
-    white-space: nowrap;
-  }
-
-  .btn-hero-secondary:hover {
-    border-color: var(--color-off-white);
-    background: rgba(247, 244, 239, 0.08);
+  @media (min-width: 768px) {
+    .hero-image-wrap {
+      box-shadow: 12px 12px 0 var(--color-black);
+    }
   }
 </style>

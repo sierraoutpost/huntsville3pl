@@ -1,12 +1,14 @@
 /* ============================================================
    Sams 3PL Solutions — Huntsville
-   Global Stylesheet
+   NEOBRUTALIST Global Stylesheet
+
+   Design direction: Industrial Signal palette, massive type,
+   thick borders, hard shadows, asymmetric energy.
+   No rounded cards. No soft shadows. No template energy.
 
    Sources:
-   - 01-brand-system.md (colors, typography, type scale)
-   - 02-visual-design.md (spacing scale, layout, whitespace)
-   - 04-accessibility-wcag22aa.md (contrast, focus states)
-   - 06-performance.md (font loading, render strategy)
+   - 01-brand-system.md (base brand identity)
+   - Neobrutalist pivot (2026-04-12) — Tyler approved
    ============================================================ */
 
 /* ---- CSS Reset (minimal, modern) ---- */
@@ -130,42 +132,56 @@ ol {
   font-display: swap;
 }
 
-/* ---- Design tokens (CSS Custom Properties) ---- */
+/* ============================================================
+   DESIGN TOKENS — NEOBRUTALIST
+   ============================================================ */
 :root {
-  /* --- Colors (01-brand-system.md §3.1) --- */
-  --color-brick-red: #8B1F24;
-  --color-petrol-blue: #234B5E;
+  /* --- Industrial Signal Palette --- */
+  --color-black: #0A0A0A;
   --color-off-white: #F7F4EF;
-  --color-accent: #708090;          /* Rocket Silver — Huntsville city accent */
+  --color-white: #FAFAFA;
+  --color-brick-red: #8B1F24;
+  --color-brick-red-hover: #6E181E;
+  --color-electric-yellow: #FFD600;
+  --color-rocket-silver: #708090;
+  --color-petrol-blue: #234B5E;
 
-  /* Semantic color aliases */
-  --color-text-primary: var(--color-petrol-blue);
-  --color-text-heading: var(--color-petrol-blue);
+  /* Semantic aliases */
+  --color-text-primary: var(--color-black);
+  --color-text-heading: var(--color-black);
   --color-text-inverse: var(--color-off-white);
+  --color-text-muted: var(--color-rocket-silver);
   --color-bg-primary: var(--color-off-white);
-  --color-bg-dark: var(--color-petrol-blue);
+  --color-bg-dark: var(--color-black);
+  --color-bg-accent: var(--color-electric-yellow);
   --color-cta: var(--color-brick-red);
-  --color-cta-hover: #6E181E;       /* Brick Red darkened ~10% for hover */
-  --color-focus-ring: var(--color-petrol-blue);
+  --color-cta-hover: var(--color-brick-red-hover);
+  --color-highlight: var(--color-electric-yellow);
+  --color-focus-ring: var(--color-electric-yellow);
+  --color-border: var(--color-black);
+  --color-border-light: rgba(10, 10, 10, 0.15);
 
-  /* --- Typography (01-brand-system.md §4) --- */
+  /* --- Typography --- */
   --font-display: 'PP Neue Machina', 'Arial Black', system-ui, sans-serif;
   --font-body: 'PP Neue Montreal', 'Helvetica Neue', Arial, system-ui, sans-serif;
   --font-editorial: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', Menlo, monospace;
 
-  /* --- Type scale (01-brand-system.md §4.3 — major-third 1.25 ratio) --- */
-  --fs-xs: 0.8125rem;   /* 13px — captions, metadata, form hints */
-  --fs-sm: 0.875rem;     /* 14px — small UI text, footer links */
-  --fs-base: 1rem;       /* 16px — body copy (default) */
-  --fs-md: 1.125rem;     /* 18px — lead paragraphs, large body */
-  --fs-lg: 1.375rem;     /* 22px — small headings, card titles */
-  --fs-xl: 1.75rem;      /* 28px — H3 */
-  --fs-2xl: 2.25rem;     /* 36px — H2 */
-  --fs-3xl: clamp(2.25rem, 5vw, 3rem);      /* 36–48px — H1 interior */
-  --fs-4xl: clamp(2.5rem, 6vw, 4rem);       /* 40–64px — Homepage hero H1 */
-  --fs-5xl: clamp(3rem, 8vw, 6rem);         /* 48–96px — Display moments */
+  /* --- MASSIVE Type Scale (Neobrutalist) ---
+     Hero: 80–120px | Section heads: 48–64px | Everything else proportional */
+  --fs-xs: 0.8125rem;                                   /* 13px — metadata */
+  --fs-sm: 0.9375rem;                                    /* 15px — small text */
+  --fs-base: 1.0625rem;                                  /* 17px — body (slightly bumped) */
+  --fs-md: 1.25rem;                                      /* 20px — lead text */
+  --fs-lg: 1.5rem;                                       /* 24px — card titles */
+  --fs-xl: clamp(1.75rem, 2.5vw, 2.25rem);              /* 28–36px — H3 */
+  --fs-2xl: clamp(2rem, 3.5vw, 3rem);                   /* 32–48px — H2 subheads */
+  --fs-3xl: clamp(2.5rem, 5vw, 4rem);                   /* 40–64px — section headings */
+  --fs-4xl: clamp(3rem, 7vw, 5.5rem);                   /* 48–88px — page titles */
+  --fs-hero: clamp(3.5rem, 9vw, 7.5rem);                /* 56–120px — HERO DISPLAY */
+  --fs-mega: clamp(4rem, 12vw, 10rem);                   /* 64–160px — statement moments */
 
-  /* --- Spacing scale (02-visual-design.md §4) --- */
+  /* --- Spacing scale --- */
   --space-0: 0;
   --space-1: 0.25rem;    /* 4px */
   --space-2: 0.5rem;     /* 8px */
@@ -174,27 +190,42 @@ ol {
   --space-5: 1.5rem;     /* 24px */
   --space-6: 2rem;       /* 32px */
   --space-7: 3rem;       /* 48px */
-  --space-8: 4rem;       /* 64px — section separation mobile */
-  --space-9: 6rem;       /* 96px — section separation tablet */
-  --space-10: 8rem;      /* 128px — section separation desktop */
-  --space-11: 12rem;     /* 192px — hero breathing room */
+  --space-8: 4rem;       /* 64px */
+  --space-9: 6rem;       /* 96px */
+  --space-10: 8rem;      /* 128px */
+  --space-11: 12rem;     /* 192px */
 
   /* --- Layout --- */
-  --content-width: 1200px;
-  --content-narrow: 680px;  /* ~50-75 chars per line at 16px body */
-  --content-gutter: var(--space-5); /* 24px side padding */
+  --content-width: 1280px;
+  --content-narrow: 720px;
+  --content-gutter: var(--space-5);
+
+  /* --- BRUTALIST Borders --- */
+  --border-thin: 2px solid var(--color-border);
+  --border-thick: 3px solid var(--color-border);
+  --border-heavy: 4px solid var(--color-border);
+  --border-accent: 4px solid var(--color-brick-red);
+  --border-yellow: 4px solid var(--color-electric-yellow);
+
+  /* --- Hard Shadows (no blur, offset only) --- */
+  --shadow-sm: 3px 3px 0 var(--color-black);
+  --shadow-md: 5px 5px 0 var(--color-black);
+  --shadow-lg: 8px 8px 0 var(--color-black);
+  --shadow-yellow: 5px 5px 0 var(--color-electric-yellow);
+  --shadow-red: 5px 5px 0 var(--color-brick-red);
 
   /* --- Transitions --- */
-  --transition-fast: 150ms ease;
-  --transition-base: 250ms ease;
+  --transition-fast: 120ms ease;
+  --transition-base: 200ms ease;
+  --transition-brutal: 80ms ease;
 
-  /* --- Border radius --- */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
+  /* --- NO border-radius in Neobrutalism --- */
+  --radius-none: 0;
 }
 
-/* ---- Base typography ---- */
+/* ============================================================
+   BASE TYPOGRAPHY
+   ============================================================ */
 body {
   font-family: var(--font-body);
   font-size: var(--fs-base);
@@ -206,14 +237,16 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
   color: var(--color-text-heading);
-  line-height: 1.2;
+  line-height: 1.05;
   font-weight: 800;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
 }
 
-h1 { font-size: var(--fs-3xl); line-height: 1.15; }
-h2 { font-size: var(--fs-2xl); line-height: 1.2; }
-h3 { font-size: var(--fs-xl); line-height: 1.3; }
-h4 { font-size: var(--fs-lg); line-height: 1.4; }
+h1 { font-size: var(--fs-4xl); }
+h2 { font-size: var(--fs-3xl); }
+h3 { font-size: var(--fs-xl); }
+h4 { font-size: var(--fs-lg); }
 
 p {
   max-width: var(--content-narrow);
@@ -224,10 +257,11 @@ p:last-child {
   margin-bottom: 0;
 }
 
-/* Lead paragraph */
+/* Lead paragraph — bigger, bolder */
 .text-lead {
   font-size: var(--fs-md);
-  line-height: 1.55;
+  line-height: 1.5;
+  font-weight: 500;
 }
 
 /* Editorial / long-form body */
@@ -235,45 +269,72 @@ p:last-child {
   font-family: var(--font-editorial);
 }
 
-/* All-caps labels (01-brand-system.md §4.4) */
-.text-caps {
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+/* Mono accent text (data, labels, codes) */
+.text-mono {
+  font-family: var(--font-mono);
   font-size: var(--fs-sm);
-  font-weight: 500;
+  letter-spacing: 0.03em;
 }
 
-/* ---- Links ---- */
+/* All-caps labels — HEAVIER for brutalism */
+.text-caps {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: var(--fs-sm);
+  font-weight: 800;
+  font-family: var(--font-display);
+}
+
+/* Highlighted text — electric yellow marker effect */
+.text-highlight {
+  background-color: var(--color-electric-yellow);
+  color: var(--color-black);
+  padding: 0.05em 0.2em;
+  display: inline;
+}
+
+/* ============================================================
+   LINKS
+   ============================================================ */
 a:not([class]) {
   color: var(--color-cta);
   text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 2px;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
   transition: color var(--transition-fast);
 }
 
 a:not([class]):hover {
   color: var(--color-cta-hover);
+  text-decoration-thickness: 3px;
 }
 
-/* ---- Focus states (04-accessibility-wcag22aa.md) ---- */
+/* ============================================================
+   FOCUS STATES — Yellow ring for max visibility
+   ============================================================ */
 :focus-visible {
   outline: 3px solid var(--color-focus-ring);
   outline-offset: 2px;
 }
 
-/* ---- Skip link (accessibility) ---- */
+/* ============================================================
+   SKIP LINK (Accessibility)
+   ============================================================ */
 .skip-link {
   position: absolute;
   top: -100%;
   left: var(--space-4);
   z-index: 9999;
   padding: var(--space-2) var(--space-4);
-  background: var(--color-petrol-blue);
-  color: var(--color-off-white);
+  background: var(--color-black);
+  color: var(--color-electric-yellow);
+  font-family: var(--font-display);
   font-size: var(--fs-sm);
-  font-weight: 500;
-  border-radius: var(--radius-sm);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: var(--border-thick);
+  border-color: var(--color-electric-yellow);
   transition: top var(--transition-fast);
 }
 
@@ -281,7 +342,9 @@ a:not([class]):hover {
   top: var(--space-2);
 }
 
-/* ---- Layout utilities ---- */
+/* ============================================================
+   LAYOUT UTILITIES
+   ============================================================ */
 .container {
   width: 100%;
   max-width: var(--content-width);
@@ -291,6 +354,11 @@ a:not([class]):hover {
 
 .container--narrow {
   max-width: var(--content-narrow);
+}
+
+.container--full {
+  max-width: none;
+  padding-inline: var(--content-gutter);
 }
 
 .section {
@@ -309,7 +377,130 @@ a:not([class]):hover {
   }
 }
 
-/* ---- Visually hidden (screen reader only) ---- */
+/* ============================================================
+   NEOBRUTALIST BUTTON SYSTEM
+   ============================================================ */
+
+/* Primary CTA — Brick Red, hard shadow, no radius */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3) var(--space-6);
+  font-family: var(--font-display);
+  font-size: var(--fs-base);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  border: var(--border-thick);
+  cursor: pointer;
+  transition:
+    transform var(--transition-brutal),
+    box-shadow var(--transition-brutal);
+  white-space: nowrap;
+}
+
+.btn:active {
+  transform: translate(3px, 3px);
+  box-shadow: none !important;
+}
+
+/* Primary: Brick Red fill, black border, hard shadow */
+.btn-primary {
+  background-color: var(--color-brick-red);
+  color: var(--color-off-white);
+  border-color: var(--color-black);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-brick-red-hover);
+  box-shadow: var(--shadow-lg);
+  transform: translate(-2px, -2px);
+}
+
+/* Secondary: Transparent, black border */
+.btn-secondary {
+  background: transparent;
+  color: var(--color-black);
+  border-color: var(--color-black);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary:hover {
+  background: var(--color-black);
+  color: var(--color-off-white);
+  box-shadow: var(--shadow-md);
+  transform: translate(-2px, -2px);
+}
+
+/* Yellow highlight button */
+.btn-highlight {
+  background-color: var(--color-electric-yellow);
+  color: var(--color-black);
+  border-color: var(--color-black);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-highlight:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translate(-2px, -2px);
+}
+
+/* Inverse: for dark backgrounds */
+.btn-inverse {
+  background: transparent;
+  color: var(--color-off-white);
+  border-color: var(--color-off-white);
+  box-shadow: 5px 5px 0 rgba(247, 244, 239, 0.3);
+}
+
+.btn-inverse:hover {
+  background: var(--color-off-white);
+  color: var(--color-black);
+  box-shadow: 8px 8px 0 rgba(247, 244, 239, 0.3);
+  transform: translate(-2px, -2px);
+}
+
+/* ============================================================
+   BRUTALIST CARD BASE
+   ============================================================ */
+.brutal-card {
+  border: var(--border-thick);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-5);
+  background: var(--color-off-white);
+  transition:
+    transform var(--transition-brutal),
+    box-shadow var(--transition-brutal);
+}
+
+.brutal-card:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ============================================================
+   DIVIDER / SECTION BREAKS
+   ============================================================ */
+.divider {
+  border: none;
+  border-top: var(--border-heavy);
+  margin-block: var(--space-7);
+}
+
+.divider--yellow {
+  border-color: var(--color-electric-yellow);
+}
+
+.divider--red {
+  border-color: var(--color-brick-red);
+}
+
+/* ============================================================
+   VISUALLY HIDDEN (Screen reader only)
+   ============================================================ */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -322,13 +513,26 @@ a:not([class]):hover {
   border-width: 0;
 }
 
-/* ---- Accent border (city character injection §4.1) ---- */
-.accent-border-top {
-  border-top: 3px solid var(--color-accent);
+/* ============================================================
+   SELECTION COLOR — Electric Yellow
+   ============================================================ */
+::selection {
+  background-color: var(--color-electric-yellow);
+  color: var(--color-black);
 }
 
-/* ---- Selection color ---- */
-::selection {
-  background-color: var(--color-petrol-blue);
-  color: var(--color-off-white);
-}
+/* ============================================================
+   NEOBRUTALIST UTILITY CLASSES
+   ============================================================ */
+
+/* Background variants */
+.bg-black { background-color: var(--color-black); color: var(--color-off-white); }
+.bg-off-white { background-color: var(--color-off-white); }
+.bg-yellow { background-color: var(--color-electric-yellow); color: var(--color-black); }
+.bg-red { background-color: var(--color-brick-red); color: var(--color-off-white); }
+
+/* Border accent strips */
+.border-top-yellow { border-top: var(--border-yellow); }
+.border-top-red { border-top: var(--border-accent); }
+.border-left-yellow { border-left: var(--border-yellow); }
+.border-left-red { border-left: var(--border-accent); }

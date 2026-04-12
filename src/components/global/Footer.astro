@@ -1,7 +1,7 @@
 ---
-// Footer.astro — Full site footer
-// Source: 03-ui-ux-principles.md §4.3, 01-brand-system.md (Non-Negotiable #24)
-// Contains: network lockup, address, hours, phone, email, sitemap, network links, legal
+// Footer.astro — NEOBRUTALIST site footer
+// Black background, thick borders, industrial grid, yellow accents
+// Non-Negotiable #24: Network lockup in footer
 
 import { brand } from '@data/brand';
 import { city } from '@data/city';
@@ -13,9 +13,6 @@ const currentCity = city.name.toLowerCase();
 ---
 
 <footer class="site-footer">
-  <!-- Accent top border (city character injection §4.1) -->
-  <div class="footer-accent"></div>
-
   <div class="footer-inner container">
     <!-- Row 1: Main footer content -->
     <div class="footer-grid">
@@ -23,7 +20,7 @@ const currentCity = city.name.toLowerCase();
       <!-- Col 1: Contact info -->
       <div class="footer-col">
         <div class="footer-lockup">
-          <span class="footer-city">{city.name} 3PL</span>
+          <span class="footer-city">{city.name}<span class="footer-3pl">3PL</span></span>
           <span class="footer-brand">{brand.tagline}</span>
         </div>
         <address class="footer-address">
@@ -32,7 +29,7 @@ const currentCity = city.name.toLowerCase();
         </address>
         <div class="footer-contact">
           <p>
-            <a href={brand.phone.href} class="footer-link">{brand.phone.display}</a>
+            <a href={brand.phone.href} class="footer-link footer-link--highlight">{brand.phone.display}</a>
           </p>
           <p>
             <a href={brand.email.href} class="footer-link">{brand.email.display}</a>
@@ -102,18 +99,20 @@ const currentCity = city.name.toLowerCase();
 
 <style>
   .site-footer {
-    background-color: var(--color-bg-dark);
+    background-color: var(--color-black);
     color: var(--color-off-white);
     margin-top: auto;
-  }
-
-  .footer-accent {
-    height: 3px;
-    background-color: var(--color-accent);
+    border-top: 4px solid var(--color-electric-yellow);
   }
 
   .footer-inner {
     padding-block: var(--space-8);
+  }
+
+  @media (min-width: 1024px) {
+    .footer-inner {
+      padding-block: var(--space-9);
+    }
   }
 
   /* ---- Footer grid ---- */
@@ -131,30 +130,40 @@ const currentCity = city.name.toLowerCase();
 
   @media (min-width: 1024px) {
     .footer-grid {
-      grid-template-columns: 1.4fr 0.8fr 1fr 1fr;
+      grid-template-columns: 1.5fr 0.8fr 1fr 1fr;
       gap: var(--space-8);
     }
   }
 
-  /* ---- Logo lockup in footer ---- */
+  /* ---- Logo lockup ---- */
   .footer-lockup {
     display: flex;
     flex-direction: column;
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-5);
   }
 
   .footer-city {
     font-family: var(--font-display);
-    font-size: var(--fs-lg);
+    font-size: var(--fs-xl);
     font-weight: 800;
     color: var(--color-off-white);
-    line-height: 1.1;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+  }
+
+  .footer-3pl {
+    color: var(--color-brick-red);
+    margin-left: 0.15em;
   }
 
   .footer-brand {
+    font-family: var(--font-display);
     font-size: var(--fs-xs);
-    color: var(--color-accent);
-    letter-spacing: 0.02em;
+    color: var(--color-rocket-silver);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 2px;
   }
 
   /* ---- Address ---- */
@@ -163,7 +172,7 @@ const currentCity = city.name.toLowerCase();
     font-size: var(--fs-sm);
     line-height: 1.6;
     margin-bottom: var(--space-4);
-    opacity: 0.85;
+    opacity: 0.7;
   }
 
   .footer-address p {
@@ -178,22 +187,25 @@ const currentCity = city.name.toLowerCase();
   }
 
   .footer-hours {
+    font-family: var(--font-display);
     font-size: var(--fs-xs);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    opacity: 0.7;
-    margin-top: var(--space-2);
+    letter-spacing: 0.1em;
+    color: var(--color-electric-yellow);
+    margin-top: var(--space-3);
   }
 
   /* ---- Column headings ---- */
   .footer-heading {
-    font-family: var(--font-body);
+    font-family: var(--font-display);
     font-size: var(--fs-xs);
-    font-weight: 500;
+    font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--color-accent);
+    letter-spacing: 0.12em;
+    color: var(--color-electric-yellow);
     margin-bottom: var(--space-4);
+    padding-bottom: var(--space-2);
+    border-bottom: 3px solid rgba(247, 244, 239, 0.15);
   }
 
   /* ---- Nav lists ---- */
@@ -208,18 +220,30 @@ const currentCity = city.name.toLowerCase();
     font-size: var(--fs-sm);
     color: var(--color-off-white);
     text-decoration: none;
-    opacity: 0.8;
-    transition: opacity var(--transition-fast), color var(--transition-fast);
+    opacity: 0.7;
+    transition: opacity 120ms ease, color 120ms ease;
   }
 
   .footer-link:hover {
     opacity: 1;
+    color: var(--color-electric-yellow);
+  }
+
+  .footer-link--highlight {
+    font-family: var(--font-display);
+    font-weight: 800;
+    opacity: 1;
     color: var(--color-off-white);
+  }
+
+  .footer-link--highlight:hover {
+    color: var(--color-electric-yellow);
   }
 
   .footer-link--current {
     opacity: 1;
-    font-weight: 500;
+    font-weight: 800;
+    color: var(--color-electric-yellow);
   }
 
   /* ---- Bottom bar ---- */
@@ -227,9 +251,9 @@ const currentCity = city.name.toLowerCase();
     display: flex;
     flex-direction: column;
     gap: var(--space-3);
-    margin-top: var(--space-7);
+    margin-top: var(--space-8);
     padding-top: var(--space-5);
-    border-top: 1px solid rgba(247, 244, 239, 0.1);
+    border-top: 3px solid rgba(247, 244, 239, 0.1);
   }
 
   @media (min-width: 640px) {
@@ -242,7 +266,7 @@ const currentCity = city.name.toLowerCase();
 
   .footer-legal {
     font-size: var(--fs-xs);
-    opacity: 0.6;
+    opacity: 0.5;
     max-width: none;
   }
 
@@ -253,10 +277,10 @@ const currentCity = city.name.toLowerCase();
 
   .footer-legal-links .footer-link {
     font-size: var(--fs-xs);
-    opacity: 0.6;
+    opacity: 0.5;
   }
 
   .footer-legal-links .footer-link:hover {
-    opacity: 0.9;
+    opacity: 1;
   }
 </style>

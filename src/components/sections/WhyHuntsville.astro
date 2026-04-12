@@ -1,50 +1,55 @@
 ---
-// WhyHuntsville.astro — City character block
-// Source: 12-city-character-injection.md §3.2
-// Establishes the city's logistics significance with verified facts
+// WhyHuntsville.astro — NEOBRUTALIST City character block
+// Asymmetric layout, bold stat cards with hard shadows, industrial typography
 
 import { city } from '@data/city';
 ---
 
 <section class="why-section section" id="why-huntsville" aria-labelledby="why-heading">
   <div class="container">
-    <p class="why-eyebrow text-caps">Why {city.name}?</p>
-    <h2 class="why-heading" id="why-heading">
-      Where rockets launch<br class="hide-mobile" /> and freight lands.
-    </h2>
-
-    <div class="why-body">
-      <p class="text-lead">
-        {city.name} sits at the convergence of I-65 and I-565 — the crossroads of
-        the Southeast and the Midwest. The Port of {city.name} is one of the few
-        fully integrated inland ports in the country, combining international air
-        cargo, rail intermodal, and highway freight under a single authority, backed
-        by more than $300 million in infrastructure investment.
-      </p>
-      <p>
-        Within a one-day drive: Nashville, Atlanta, Memphis, Birmingham, Chattanooga,
-        Louisville, and Knoxville. That's not a pitch. That's geography working in
-        your favor.
-      </p>
+    <!-- Section header — left-aligned, massive -->
+    <div class="why-header">
+      <p class="why-eyebrow">Why {city.name}?</p>
+      <h2 class="why-heading" id="why-heading">
+        Where rockets launch and freight lands.
+      </h2>
     </div>
 
-    <!-- Key stats grid -->
-    <div class="stats-grid">
-      <div class="stat-card">
-        <span class="stat-number">21st</span>
-        <span class="stat-label">in the U.S. for international air cargo volume</span>
+    <!-- Asymmetric content split -->
+    <div class="why-content">
+      <div class="why-body">
+        <p class="text-lead">
+          {city.name} sits at the convergence of I-65 and I-565 — the crossroads of
+          the Southeast and the Midwest. The Port of {city.name} is one of the few
+          fully integrated inland ports in the country, combining international air
+          cargo, rail intermodal, and highway freight under a single authority, backed
+          by more than $300 million in infrastructure investment.
+        </p>
+        <p>
+          Within a one-day drive: Nashville, Atlanta, Memphis, Birmingham, Chattanooga,
+          Louisville, and Knoxville. That's not a pitch. That's geography working in
+          your favor.
+        </p>
       </div>
-      <div class="stat-card">
-        <span class="stat-number">$300M+</span>
-        <span class="stat-label">invested in air and rail infrastructure</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-number">33,745</span>
-        <span class="stat-label">rail lifts in 2024 — 22.3% YoY growth</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-number">249K+</span>
-        <span class="stat-label">residents — Alabama's largest and fastest-growing city</span>
+
+      <!-- Stats — brutalist cards, staggered -->
+      <div class="stats-grid">
+        <div class="stat-card stat-card--offset-1">
+          <span class="stat-number">21st</span>
+          <span class="stat-label">in the U.S. for international air cargo volume</span>
+        </div>
+        <div class="stat-card stat-card--yellow">
+          <span class="stat-number">$300M+</span>
+          <span class="stat-label">invested in air and rail infrastructure</span>
+        </div>
+        <div class="stat-card stat-card--offset-2">
+          <span class="stat-number">33,745</span>
+          <span class="stat-label">rail lifts in 2024 — 22.3% YoY growth</span>
+        </div>
+        <div class="stat-card stat-card--red">
+          <span class="stat-number">249K+</span>
+          <span class="stat-label">residents — Alabama's largest and fastest-growing city</span>
+        </div>
       </div>
     </div>
   </div>
@@ -53,63 +58,124 @@ import { city } from '@data/city';
 <style>
   .why-section {
     background-color: var(--color-off-white);
+    border-top: 3px solid var(--color-black);
+  }
+
+  .why-header {
+    margin-bottom: var(--space-8);
   }
 
   .why-eyebrow {
-    color: var(--color-accent);
+    font-family: var(--font-display);
+    font-size: var(--fs-sm);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-brick-red);
     margin-bottom: var(--space-3);
   }
 
   .why-heading {
     font-size: var(--fs-3xl);
-    margin-bottom: var(--space-6);
-    max-width: 18ch;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    color: var(--color-black);
+    max-width: 16ch;
   }
 
-  .hide-mobile {
-    display: none;
+  /* ---- Asymmetric content split ---- */
+  .why-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
   }
 
   @media (min-width: 768px) {
-    .hide-mobile {
-      display: inline;
+    .why-content {
+      grid-template-columns: 5fr 7fr;
+      gap: var(--space-9);
     }
   }
 
   .why-body {
-    max-width: var(--content-narrow);
-    margin-bottom: var(--space-8);
+    max-width: none;
   }
 
   .why-body p {
     max-width: none;
+    color: var(--color-black);
   }
 
-  /* ---- Stats grid ---- */
+  .why-body .text-lead {
+    border-left: 4px solid var(--color-electric-yellow);
+    padding-left: var(--space-5);
+    margin-bottom: var(--space-5);
+  }
+
+  /* ---- Stats grid — 2x2, staggered offsets ---- */
   .stats-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--space-5);
+    gap: var(--space-4);
   }
 
-  @media (min-width: 640px) {
+  @media (min-width: 480px) {
     .stats-grid {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-5);
     }
   }
 
-  @media (min-width: 1024px) {
-    .stats-grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-
+  /* ---- Stat card — brutalist, hard shadow ---- */
   .stat-card {
+    border: 3px solid var(--color-black);
+    box-shadow: 5px 5px 0 var(--color-black);
     padding: var(--space-5);
-    background: white;
-    border-radius: var(--radius-md);
-    border: 1px solid rgba(35, 75, 94, 0.08);
-    border-top: 3px solid var(--color-accent);
+    background: var(--color-off-white);
+    transition:
+      transform 80ms ease,
+      box-shadow 80ms ease;
+  }
+
+  .stat-card:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 8px 8px 0 var(--color-black);
+  }
+
+  /* Yellow accent card */
+  .stat-card--yellow {
+    background: var(--color-electric-yellow);
+  }
+
+  /* Red accent card */
+  .stat-card--red {
+    background: var(--color-brick-red);
+    color: var(--color-off-white);
+  }
+
+  .stat-card--red .stat-number {
+    color: var(--color-electric-yellow);
+  }
+
+  .stat-card--red .stat-label {
+    color: var(--color-off-white);
+    opacity: 0.9;
+  }
+
+  /* Staggered offsets on larger screens */
+  @media (min-width: 480px) {
+    .stat-card--offset-1 {
+      transform: translateY(0);
+    }
+
+    .stat-card--offset-2 {
+      transform: translateY(var(--space-5));
+    }
+
+    .stat-card--offset-2:hover {
+      transform: translate(-3px, calc(var(--space-5) - 3px));
+    }
   }
 
   .stat-number {
@@ -117,16 +183,17 @@ import { city } from '@data/city';
     font-family: var(--font-display);
     font-size: var(--fs-2xl);
     font-weight: 800;
-    color: var(--color-petrol-blue);
-    line-height: 1.1;
+    color: var(--color-black);
+    line-height: 1;
     margin-bottom: var(--space-2);
+    letter-spacing: -0.02em;
   }
 
   .stat-label {
     display: block;
     font-size: var(--fs-sm);
-    color: var(--color-petrol-blue);
-    opacity: 0.75;
-    line-height: 1.45;
+    color: var(--color-black);
+    line-height: 1.4;
+    font-weight: 500;
   }
 </style>
