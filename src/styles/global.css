@@ -71,64 +71,31 @@ ol {
 }
 
 /* ---- @font-face declarations ---- */
-/* Self-hosted fonts per 01-brand-system.md §4.5
-   Font files go in /public/fonts/ as .woff2
-   TODO: Download PP Neue Machina + PP Neue Montreal from Pangram Pangram
-   TODO: Download Fraunces from Google Fonts (self-hosted, not CDN) */
+/* GT Alpina = Display/Headlines
+   GT Standard Mono Condensed = Body (site-wide except blog)
+   GT America = Blog body (future) */
 
 @font-face {
-  font-family: 'PP Neue Machina';
-  src: url('/fonts/pp-neue-machina-regular.woff2') format('woff2');
-  font-weight: 400;
+  font-family: 'GT Alpina';
+  src: url('/fonts/GT-Alpina-Standard-Bold.woff2') format('woff2');
+  font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'PP Neue Machina';
-  src: url('/fonts/pp-neue-machina-ultrabold.woff2') format('woff2');
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'PP Neue Montreal';
-  src: url('/fonts/pp-neue-montreal-regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'PP Neue Montreal';
-  src: url('/fonts/pp-neue-montreal-medium.woff2') format('woff2');
+  font-family: 'GT Standard Mono';
+  src: url('/fonts/GT-Standard-Mono-Condensed-Medium.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Fraunces';
-  src: url('/fonts/fraunces-regular.woff2') format('woff2');
+  font-family: 'GT America';
+  src: url('/fonts/GT-America-Standard-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Fraunces';
-  src: url('/fonts/fraunces-semibold.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Fraunces';
-  src: url('/fonts/fraunces-italic.woff2') format('woff2');
-  font-weight: 400;
-  font-style: italic;
   font-display: swap;
 }
 
@@ -162,10 +129,10 @@ ol {
   --color-border-light: rgba(10, 10, 10, 0.15);
 
   /* --- Typography --- */
-  --font-display: 'PP Neue Machina', 'Arial Black', system-ui, sans-serif;
-  --font-body: 'PP Neue Montreal', 'Helvetica Neue', Arial, system-ui, sans-serif;
-  --font-editorial: 'Fraunces', Georgia, 'Times New Roman', serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', Menlo, monospace;
+  --font-display: 'GT Alpina', Georgia, 'Times New Roman', serif;
+  --font-body: 'GT Standard Mono', 'Courier New', Courier, monospace;
+  --font-editorial: 'GT America', 'Helvetica Neue', Arial, system-ui, sans-serif;
+  --font-mono: 'GT Standard Mono', 'Courier New', Courier, monospace;
 
   /* --- MASSIVE Type Scale (Neobrutalist) ---
      Hero: 80–120px | Section heads: 48–64px | Everything else proportional */
@@ -195,10 +162,10 @@ ol {
   --space-10: 8rem;      /* 128px */
   --space-11: 12rem;     /* 192px */
 
-  /* --- Layout --- */
-  --content-width: 1280px;
+  /* --- Layout (wide — content pushes toward edges) --- */
+  --content-width: 1440px;
   --content-narrow: 720px;
-  --content-gutter: var(--space-5);
+  --content-gutter: clamp(1rem, 2vw, 1.5rem);
 
   /* --- BRUTALIST Borders --- */
   --border-thin: 2px solid var(--color-border);
@@ -238,7 +205,7 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
   color: var(--color-text-heading);
   line-height: 1.05;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: -0.02em;
   text-transform: uppercase;
 }
@@ -281,7 +248,7 @@ p:last-child {
   text-transform: uppercase;
   letter-spacing: 0.1em;
   font-size: var(--fs-sm);
-  font-weight: 800;
+  font-weight: 700;
   font-family: var(--font-display);
 }
 
@@ -330,7 +297,7 @@ a:not([class]):hover {
   color: var(--color-electric-yellow);
   font-family: var(--font-display);
   font-size: var(--fs-sm);
-  font-weight: 800;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   border: var(--border-thick);
@@ -347,9 +314,15 @@ a:not([class]):hover {
    ============================================================ */
 .container {
   width: 100%;
-  max-width: var(--content-width);
+  max-width: 1600px;
   margin-inline: auto;
-  padding-inline: var(--content-gutter);
+  padding-inline: clamp(1rem, 3vw, 2rem);
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding-inline: clamp(2rem, 4vw, 3.5rem);
+  }
 }
 
 .container--narrow {
@@ -389,7 +362,7 @@ a:not([class]):hover {
   padding: var(--space-3) var(--space-6);
   font-family: var(--font-display);
   font-size: var(--fs-base);
-  font-weight: 800;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   text-decoration: none;

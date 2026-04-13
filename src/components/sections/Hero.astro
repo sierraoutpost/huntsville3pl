@@ -1,6 +1,11 @@
 ---
-// Hero.astro — NEOBRUTALIST Homepage Hero
-// Massive type. Asymmetric. Industrial Signal palette.
+// Hero.astro — NEOBRUTALIST Homepage Hero (v2)
+// Based on Tyler's Figma wireframe:
+// - Everything fits in one viewport
+// - Headline anchored top-left, massive
+// - Photo offset to the right, intentionally misaligned
+// - Services listed individually (not a paragraph)
+// - Both phone instances styled as CTA buttons
 // Non-Negotiable #28: Every page has a real photograph in the hero banner
 
 import { city } from '@data/city';
@@ -12,28 +17,36 @@ import { brand } from '@data/brand';
   <!-- Electric yellow accent strip at top -->
   <div class="hero-strip"></div>
 
-  <div class="hero-inner container">
-    <!-- Eyebrow -->
-    <p class="hero-eyebrow">{brand.name} // {city.name}, {city.state}</p>
+  <div class="hero-inner">
+    <!-- Row 1: Eyebrow -->
+    <p class="hero-eyebrow">{brand.name} // {city.name}</p>
 
-    <!-- MASSIVE headline -->
+    <!-- Row 2: MASSIVE headline — anchored top-left -->
     <h1 class="hero-title">
       <span class="hero-title-line">The Rocket City</span>
       <span class="hero-title-line hero-title-accent">runs on</span>
       <span class="hero-title-line">precision.</span>
     </h1>
 
-    <!-- Split: description + photo -->
+    <!-- Row 3: Split — services list + CTAs on left, photo on right -->
     <div class="hero-split">
       <div class="hero-text">
+        <!-- Services listed individually -->
+        <ul class="hero-services" role="list">
+          <li>Warehousing</li>
+          <li>Fulfillment</li>
+          <li>Cross-docking</li>
+          <li>Transloading</li>
+          <li>Transportation</li>
+          <li>Kitting</li>
+          <li>Returns</li>
+        </ul>
         <p class="hero-sub">
-          Warehousing. Fulfillment. Cross-docking. Transloading.
-          Transportation. Kitting. Returns processing.
           Powered by {city.name}'s world-class logistics infrastructure.
         </p>
         <div class="hero-actions">
-          <a href={ctaNav.href} class="btn btn-primary">Connect With Us</a>
-          <a href={brand.phone.href} class="btn btn-secondary">{brand.phone.display}</a>
+          <a href={ctaNav.href} class="hero-btn hero-btn--primary">Connect</a>
+          <a href={brand.phone.href} class="hero-btn hero-btn--phone">{brand.phone.display}</a>
         </div>
       </div>
 
@@ -54,59 +67,66 @@ import { brand } from '@data/brand';
 </section>
 
 <style>
-  /* ---- Hero shell ---- */
+  /* ---- Hero shell — fits in one viewport ---- */
   .hero {
     background-color: var(--color-off-white);
     position: relative;
     overflow: hidden;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
   }
 
-  /* Electric yellow top strip — industrial signal tape */
+  /* Electric yellow top strip */
   .hero-strip {
     height: 6px;
     background-color: var(--color-electric-yellow);
+    flex-shrink: 0;
   }
 
   .hero-inner {
-    padding-top: var(--space-7);
-    padding-bottom: var(--space-8);
-  }
-
-  @media (min-width: 768px) {
-    .hero-inner {
-      padding-top: var(--space-8);
-      padding-bottom: var(--space-9);
-    }
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--space-5) clamp(1rem, 3vw, 2rem);
+    max-width: 1600px;
+    width: 100%;
   }
 
   @media (min-width: 1024px) {
     .hero-inner {
-      padding-top: var(--space-9);
-      padding-bottom: var(--space-10);
+      padding: var(--space-5) clamp(2rem, 4vw, 3.5rem);
     }
   }
 
-  /* ---- Eyebrow — mono style, uppercase ---- */
+  /* ---- Eyebrow ---- */
   .hero-eyebrow {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--fs-sm);
-    font-weight: 800;
+    font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.12em;
     color: var(--color-rocket-silver);
+    margin-bottom: var(--space-3);
+    max-width: none;
+  }
+
+  /* ---- MASSIVE headline — top-left anchored ---- */
+  .hero-title {
+    font-size: var(--fs-hero);
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    color: var(--color-black);
     margin-bottom: var(--space-5);
     max-width: none;
   }
 
-  /* ---- MASSIVE headline ---- */
-  .hero-title {
-    font-size: var(--fs-hero);
-    line-height: 0.95;
-    letter-spacing: -0.03em;
-    text-transform: uppercase;
-    color: var(--color-black);
-    margin-bottom: var(--space-7);
-    max-width: none;
+  @media (min-width: 1024px) {
+    .hero-title {
+      margin-bottom: var(--space-6);
+    }
   }
 
   .hero-title-line {
@@ -117,53 +137,139 @@ import { brand } from '@data/brand';
     color: var(--color-brick-red);
   }
 
-  /* ---- Split layout ---- */
+  /* ---- Split: text left, photo right ---- */
   .hero-split {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--space-7);
-    align-items: start;
+    gap: var(--space-5);
+    align-items: end;
   }
 
   @media (min-width: 768px) {
     .hero-split {
-      grid-template-columns: 1fr 1fr;
-      gap: var(--space-8);
-      align-items: center;
+      grid-template-columns: auto 1fr;
+      gap: var(--space-7);
     }
   }
 
   @media (min-width: 1024px) {
     .hero-split {
-      grid-template-columns: 5fr 7fr;
+      grid-template-columns: auto 1fr;
+      gap: var(--space-8);
     }
   }
 
   /* ---- Text column ---- */
-  .hero-sub {
-    font-size: var(--fs-md);
-    line-height: 1.6;
-    color: var(--color-black);
-    max-width: 48ch;
-    margin-bottom: var(--space-6);
-    font-weight: 500;
+  .hero-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
   }
 
+  /* ---- Services listed individually ---- */
+  .hero-services {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: var(--space-3);
+  }
+
+  .hero-services li {
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-black);
+    line-height: 1.6;
+  }
+
+  .hero-sub {
+    font-size: var(--fs-sm);
+    line-height: 1.5;
+    color: var(--color-rocket-silver);
+    max-width: 36ch;
+    margin-bottom: var(--space-5);
+  }
+
+  /* ---- CTA buttons — both styled the same ---- */
   .hero-actions {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-4);
+    gap: var(--space-3);
   }
 
-  /* ---- Photo — bordered, hard shadow, NOT full-bleed ---- */
+  .hero-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-2) var(--space-5);
+    font-family: var(--font-display);
+    font-size: var(--fs-sm);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    border: 3px solid var(--color-black);
+    box-shadow: 4px 4px 0 var(--color-black);
+    transition:
+      transform 80ms ease,
+      box-shadow 80ms ease;
+    white-space: nowrap;
+  }
+
+  .hero-btn:active {
+    transform: translate(3px, 3px);
+    box-shadow: none;
+  }
+
+  .hero-btn--primary {
+    background-color: var(--color-brick-red);
+    color: var(--color-off-white);
+  }
+
+  .hero-btn--primary:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--color-black);
+  }
+
+  .hero-btn--phone {
+    background-color: var(--color-off-white);
+    color: var(--color-black);
+  }
+
+  .hero-btn--phone:hover {
+    background-color: var(--color-black);
+    color: var(--color-off-white);
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--color-black);
+  }
+
+  /* ---- Photo — bordered, hard shadow, offset right ---- */
   .hero-image-wrap {
     border: 3px solid var(--color-black);
     box-shadow: 8px 8px 0 var(--color-black);
     overflow: hidden;
     position: relative;
+    max-width: 100%;
   }
 
-  /* Yellow corner accent — like a signal tab */
+  @media (min-width: 768px) {
+    .hero-image-wrap {
+      /* Intentional asymmetry: push photo right, don't align with nav edge */
+      margin-right: -1rem;
+      box-shadow: 10px 10px 0 var(--color-black);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero-image-wrap {
+      margin-right: -2rem;
+      box-shadow: 12px 12px 0 var(--color-black);
+    }
+  }
+
+  /* Yellow corner accent — signal tab */
   .hero-image-wrap::after {
     content: '';
     position: absolute;
@@ -181,11 +287,5 @@ import { brand } from '@data/brand';
     display: block;
     object-fit: cover;
     aspect-ratio: 16 / 9;
-  }
-
-  @media (min-width: 768px) {
-    .hero-image-wrap {
-      box-shadow: 12px 12px 0 var(--color-black);
-    }
   }
 </style>

@@ -11,7 +11,7 @@ const currentPath = Astro.url.pathname;
 ---
 
 <header class="site-header" id="site-header">
-  <div class="header-inner container">
+  <div class="header-inner">
     <!-- Logo lockup -->
     <a href="/" class="logo-lockup" aria-label={`${city.name} 3PL — ${brand.name} — Home`}>
       <span class="logo-city">{city.name}<span class="logo-3pl">3PL</span></span>
@@ -115,6 +115,16 @@ const currentPath = Astro.url.pathname;
     justify-content: space-between;
     height: 76px;
     gap: var(--space-5);
+    padding-inline: clamp(1rem, 3vw, 2rem);
+    max-width: 1600px;
+    width: 100%;
+    margin-inline: auto;
+  }
+
+  @media (min-width: 1024px) {
+    .header-inner {
+      padding-inline: clamp(2rem, 4vw, 3.5rem);
+    }
   }
 
   /* ---- Logo lockup — bold, industrial ---- */
@@ -128,7 +138,7 @@ const currentPath = Astro.url.pathname;
   .logo-city {
     font-family: var(--font-display);
     font-size: clamp(1.4rem, 2.5vw, 1.75rem);
-    font-weight: 800;
+    font-weight: 700;
     color: var(--color-black);
     line-height: 1;
     text-transform: uppercase;
@@ -170,7 +180,7 @@ const currentPath = Astro.url.pathname;
   .nav-link {
     font-family: var(--font-display);
     font-size: var(--fs-sm);
-    font-weight: 800;
+    font-weight: 700;
     color: var(--color-black);
     text-decoration: none;
     text-transform: uppercase;
@@ -203,17 +213,36 @@ const currentPath = Astro.url.pathname;
   }
 
   .header-phone {
-    font-family: var(--font-mono, var(--font-display));
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-2) var(--space-4);
+    font-family: var(--font-display);
     font-size: var(--fs-sm);
-    font-weight: 500;
+    font-weight: 700;
     color: var(--color-black);
     text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    border: 3px solid var(--color-black);
+    box-shadow: 3px 3px 0 var(--color-black);
     white-space: nowrap;
-    transition: color var(--transition-fast);
+    transition:
+      transform 80ms ease,
+      box-shadow 80ms ease,
+      background-color 120ms ease;
   }
 
   .header-phone:hover {
-    color: var(--color-brick-red);
+    background-color: var(--color-black);
+    color: var(--color-off-white);
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 var(--color-black);
+  }
+
+  .header-phone:active {
+    transform: translate(3px, 3px);
+    box-shadow: none;
   }
 
   /* ---- Header CTA — Brick Red, hard shadow, NO radius ---- */
@@ -226,7 +255,7 @@ const currentPath = Astro.url.pathname;
     color: var(--color-off-white);
     font-family: var(--font-display);
     font-size: var(--fs-sm);
-    font-weight: 800;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     text-decoration: none;
@@ -337,7 +366,7 @@ const currentPath = Astro.url.pathname;
     color: var(--color-off-white);
     font-family: var(--font-display);
     font-size: var(--fs-lg);
-    font-weight: 800;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     text-decoration: none;
@@ -348,7 +377,7 @@ const currentPath = Astro.url.pathname;
   .mobile-phone {
     font-family: var(--font-display);
     font-size: var(--fs-xl);
-    font-weight: 800;
+    font-weight: 700;
     color: var(--color-electric-yellow);
     text-decoration: none;
     letter-spacing: -0.01em;
@@ -363,7 +392,7 @@ const currentPath = Astro.url.pathname;
   .mobile-nav-link {
     font-family: var(--font-display);
     font-size: var(--fs-lg);
-    font-weight: 800;
+    font-weight: 700;
     color: var(--color-off-white);
     text-transform: uppercase;
     letter-spacing: 0.05em;
