@@ -5,11 +5,11 @@
 ---
 
 <div class="brand-banner">
+  <span class="brand-sub">A Sams 3PL Solutions Company</span>
   <div class="brand-block">
     <a href="/" class="brand-banner-link" aria-label="Huntsville 3PL — Home">
       <span class="brand-name">Huntsville<span class="brand-3pl">3PL</span></span>
     </a>
-    <span class="brand-sub">A Sams 3PL Solutions Company</span>
   </div>
 </div>
 
@@ -19,9 +19,10 @@
     padding: var(--space-3) 1.25rem var(--space-2);
     display: flex;
     justify-content: center;
+    position: relative;
+    overflow: hidden;
   }
 
-  /* This block wraps both name + subtitle so subtitle left-aligns with H */
   .brand-block {
     display: flex;
     flex-direction: column;
@@ -50,14 +51,25 @@
   }
 
   .brand-sub {
+    position: absolute;
+    left: 1.25rem;
+    bottom: 0.5rem;
     font-family: var(--font-body);
-    font-size: var(--fs-sm);
+    font-size: var(--fs-xs);
     font-weight: 500;
     color: var(--color-black);
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    margin-top: var(--space-1);
-    /* Fine-tune: nudge right to exact-align with H */
-    padding-left: 0.15em;
+    white-space: nowrap;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    transform-origin: center center;
+  }
+
+  /* Hide vertical subtitle on small screens where it crowds the logo */
+  @media (max-width: 767px) {
+    .brand-sub {
+      display: none;
+    }
   }
 </style>
