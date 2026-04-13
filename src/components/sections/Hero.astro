@@ -19,12 +19,13 @@ import { brand } from '@data/brand';
   <div class="hero-layout">
     <!-- LEFT COLUMN: headline + services + CTAs -->
     <div class="hero-left">
-      <p class="hero-eyebrow">{brand.name} // {city.name}</p>
+      <p class="hero-eyebrow">{brand.name} // {city.name}, AL</p>
 
       <h1 class="hero-title">
-        <span class="hero-title-line">The Rocket City</span>
-        <span class="hero-title-line hero-title-accent">runs on</span>
-        <span class="hero-title-line">precision.</span>
+        <span class="hero-title-line">Precision Logistics</span>
+        <span class="hero-title-line">Services.</span>
+        <span class="hero-title-line hero-title-accent">Simplifying your</span>
+        <span class="hero-title-line hero-title-accent">Supply Chain.</span>
       </h1>
 
       <ul class="hero-services" role="list">
@@ -38,7 +39,7 @@ import { brand } from '@data/brand';
       </ul>
 
       <p class="hero-sub">
-        Powered by {city.name}'s world-class logistics infrastructure.
+        Powered by {city.name}, AL's world-class logistics infrastructure.
       </p>
 
       <div class="hero-actions">
@@ -83,7 +84,7 @@ import { brand } from '@data/brand';
     display: flex;
     flex-direction: column;
     gap: var(--space-5);
-    padding: var(--space-4) clamp(1rem, 3vw, 2rem);
+    padding: var(--space-4) 1rem;
     min-height: calc(100svh - 82px); /* viewport minus header height */
   }
 
@@ -91,15 +92,15 @@ import { brand } from '@data/brand';
     .hero-layout {
       flex-direction: row;
       align-items: center;
-      gap: var(--space-6);
-      padding: var(--space-4) clamp(1.5rem, 3vw, 2.5rem);
+      gap: var(--space-5);
+      padding: var(--space-4) 1.25rem;
     }
   }
 
   @media (min-width: 1024px) {
     .hero-layout {
-      padding: var(--space-5) clamp(2rem, 4vw, 3.5rem);
-      gap: var(--space-7);
+      padding: var(--space-5) 1.25rem;
+      gap: var(--space-6);
     }
   }
 
@@ -114,13 +115,13 @@ import { brand } from '@data/brand';
 
   @media (min-width: 768px) {
     .hero-left {
-      flex: 0 1 50%;
+      flex: 0 1 55%;
     }
   }
 
   @media (min-width: 1024px) {
     .hero-left {
-      flex: 0 1 45%;
+      flex: 0 1 52%;
     }
   }
 
@@ -136,14 +137,14 @@ import { brand } from '@data/brand';
     max-width: none;
   }
 
-  /* ---- Headline — large but must fit with everything else ---- */
+  /* ---- Headline — LARGE ---- */
   .hero-title {
-    font-size: clamp(2.5rem, 5.5vw, 5rem);
-    line-height: 0.92;
+    font-size: clamp(2.8rem, 6.5vw, 5.5rem);
+    line-height: 0.95;
     letter-spacing: -0.03em;
     text-transform: uppercase;
     color: var(--color-black);
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-5);
     max-width: none;
   }
 
@@ -165,7 +166,7 @@ import { brand } from '@data/brand';
 
   .hero-services li {
     font-family: var(--font-body);
-    font-size: var(--fs-xs);
+    font-size: var(--fs-base);
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.06em;
@@ -174,11 +175,11 @@ import { brand } from '@data/brand';
   }
 
   .hero-sub {
-    font-size: var(--fs-xs);
+    font-size: var(--fs-base);
     line-height: 1.5;
     color: var(--color-rocket-silver);
-    max-width: 36ch;
-    margin-bottom: var(--space-4);
+    max-width: 40ch;
+    margin-bottom: var(--space-5);
   }
 
   /* ---- CTA buttons — both same style ---- */
@@ -192,9 +193,9 @@ import { brand } from '@data/brand';
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: var(--space-2) var(--space-5);
+    padding: var(--space-3) var(--space-6);
     font-family: var(--font-display);
-    font-size: var(--fs-xs);
+    font-size: var(--fs-sm);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -234,26 +235,29 @@ import { brand } from '@data/brand';
     box-shadow: 6px 6px 0 var(--color-black);
   }
 
-  /* ---- RIGHT COLUMN: photo ---- */
+  /* ---- RIGHT COLUMN: photo — smaller, shifted DOWN for asymmetry ---- */
   .hero-right {
     flex: 1;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: flex-end;
     min-width: 0;
   }
 
   @media (min-width: 768px) {
     .hero-right {
-      flex: 0 1 50%;
+      flex: 0 1 42%;
+      /* Push photo down — intentionally NOT aligned with CTAs or headline */
+      align-self: flex-end;
+      padding-top: var(--space-9);
     }
   }
 
   @media (min-width: 1024px) {
     .hero-right {
-      flex: 0 1 55%;
-      /* Intentional asymmetry: push photo past right edge */
+      flex: 0 1 45%;
       margin-right: -1.5rem;
+      padding-top: var(--space-10);
     }
   }
 
