@@ -1,199 +1,92 @@
 ---
-// Hero.astro — NEOBRUTALIST Homepage Hero (v3)
-// Tyler's Figma wireframe requirements:
-// - EVERYTHING fits in one viewport (100svh minus header)
-// - Left side: headline + services list + CTAs
-// - Right side: photo, offset, fits in viewport
-// - Photo does NOT need to align with nav — intentional asymmetry
-// Non-Negotiable #28: Every page has a real photograph in the hero banner
+// Hero.astro — NEOBRUTALIST Homepage Hero (v4) — Row 3 only
+// Split: left colored block with headline + CTA, right photo
+// Fills remaining viewport after BrandBanner + Header
 
-import { city } from '@data/city';
 import { ctaNav } from '@data/navigation';
-import { brand } from '@data/brand';
 ---
 
-<section class="hero" aria-label="Homepage hero">
-  <!-- Electric yellow accent strip at top -->
-  <div class="hero-strip"></div>
+<section class="hero-split" aria-label="Homepage hero">
+  <!-- Left: colored content block -->
+  <div class="hero-content">
+    <h1 class="hero-headline">
+      Huntsville's Premier Logistics Services
+    </h1>
+    <a href={ctaNav.href} class="hero-cta">Connect</a>
+  </div>
 
-  <div class="hero-layout">
-    <!-- LEFT COLUMN: headline + services + CTAs -->
-    <div class="hero-left">
-      <p class="hero-eyebrow">{brand.name} // {city.name}, AL</p>
-
-      <h1 class="hero-title">
-        <span class="hero-title-line">Precision Logistics</span>
-        <span class="hero-title-line">Services.</span>
-        <span class="hero-title-line hero-title-accent">Simplifying your</span>
-        <span class="hero-title-line hero-title-accent">Supply Chain.</span>
-      </h1>
-
-      <ul class="hero-services" role="list">
-        <li>Warehousing</li>
-        <li>Fulfillment</li>
-        <li>Cross-docking</li>
-        <li>Transloading</li>
-        <li>Transportation</li>
-        <li>Kitting</li>
-        <li>Returns</li>
-      </ul>
-
-      <p class="hero-sub">
-        Powered by {city.name}, AL's world-class logistics infrastructure.
-      </p>
-
-      <div class="hero-actions">
-        <a href={ctaNav.href} class="hero-btn hero-btn--primary">Connect</a>
-        <a href={brand.phone.href} class="hero-btn hero-btn--phone">{brand.phone.display}</a>
-      </div>
-    </div>
-
-    <!-- RIGHT COLUMN: photo -->
-    <div class="hero-right">
-      <div class="hero-image-wrap">
-        <img
-          src="/images/hero-huntsville.webp"
-          alt="U.S. Space and Rocket Center in Huntsville, Alabama"
-          class="hero-img"
-          width="1080"
-          height="607"
-          loading="eager"
-          decoding="async"
-          fetchpriority="high"
-        />
-      </div>
-    </div>
+  <!-- Right: photo -->
+  <div class="hero-photo">
+    <img
+      src="/images/hero-huntsville.webp"
+      alt="U.S. Space and Rocket Center in Huntsville, Alabama"
+      class="hero-img"
+      width="1080"
+      height="607"
+      loading="eager"
+      decoding="async"
+      fetchpriority="high"
+    />
   </div>
 </section>
 
 <style>
-  .hero {
-    background-color: var(--color-off-white);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero-strip {
-    height: 6px;
-    background-color: var(--color-electric-yellow);
-    flex-shrink: 0;
-  }
-
-  /* ---- TWO-COLUMN LAYOUT — fits in viewport ---- */
-  .hero-layout {
+  /* ---- Split fills remaining viewport ---- */
+  .hero-split {
     display: flex;
     flex-direction: column;
-    gap: var(--space-5);
-    padding: var(--space-4) 1rem;
-    min-height: calc(100svh - 82px); /* viewport minus header height */
+    /* viewport minus banner (~150px) minus nav bar (~58px) */
+    min-height: calc(100svh - 210px);
   }
 
   @media (min-width: 768px) {
-    .hero-layout {
+    .hero-split {
       flex-direction: row;
-      align-items: center;
-      gap: var(--space-5);
-      padding: var(--space-4) 1.25rem;
     }
   }
 
-  @media (min-width: 1024px) {
-    .hero-layout {
-      padding: var(--space-5) 1.25rem;
-      gap: var(--space-6);
-    }
-  }
-
-  /* ---- LEFT COLUMN ---- */
-  .hero-left {
-    flex: 1;
+  /* ---- Left: content block ---- */
+  .hero-content {
+    background-color: var(--color-off-white);
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    min-width: 0;
+    justify-content: flex-end;
+    padding: var(--space-6) var(--space-5);
+    flex: 1;
   }
 
   @media (min-width: 768px) {
-    .hero-left {
-      flex: 0 1 55%;
+    .hero-content {
+      flex: 0 0 40%;
+      padding: var(--space-7) var(--space-6);
     }
   }
 
   @media (min-width: 1024px) {
-    .hero-left {
-      flex: 0 1 52%;
+    .hero-content {
+      padding: var(--space-8) var(--space-7);
     }
   }
 
-  /* ---- Eyebrow ---- */
-  .hero-eyebrow {
-    font-family: var(--font-body);
-    font-size: var(--fs-xs);
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--color-rocket-silver);
-    margin-bottom: var(--space-3);
-    max-width: none;
-  }
-
-  /* ---- Headline — LARGE ---- */
-  .hero-title {
-    font-size: clamp(2.8rem, 6.5vw, 5.5rem);
-    line-height: 0.95;
-    letter-spacing: -0.03em;
-    text-transform: uppercase;
+  .hero-headline {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    font-weight: 700;
+    line-height: 1.05;
     color: var(--color-black);
+    text-transform: none;
+    letter-spacing: -0.02em;
     margin-bottom: var(--space-5);
-    max-width: none;
+    max-width: 14ch;
   }
 
-  .hero-title-line {
-    display: block;
-  }
-
-  .hero-title-accent {
-    color: var(--color-brick-red);
-  }
-
-  /* ---- Services listed individually ---- */
-  .hero-services {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    margin-bottom: var(--space-2);
-  }
-
-  .hero-services li {
-    font-family: var(--font-body);
-    font-size: var(--fs-base);
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--color-black);
-    line-height: 1.7;
-  }
-
-  .hero-sub {
-    font-size: var(--fs-base);
-    line-height: 1.5;
-    color: var(--color-rocket-silver);
-    max-width: 40ch;
-    margin-bottom: var(--space-5);
-  }
-
-  /* ---- CTA buttons — both same style ---- */
-  .hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
-  }
-
-  .hero-btn {
+  .hero-cta {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     padding: var(--space-3) var(--space-6);
+    background-color: var(--color-brick-red);
+    color: white;
     font-family: var(--font-display);
     font-size: var(--fs-sm);
     font-weight: 700;
@@ -206,85 +99,38 @@ import { brand } from '@data/brand';
       transform 80ms ease,
       box-shadow 80ms ease;
     white-space: nowrap;
+    align-self: flex-start;
   }
 
-  .hero-btn:active {
+  .hero-cta:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--color-black);
+  }
+
+  .hero-cta:active {
     transform: translate(3px, 3px);
     box-shadow: none;
   }
 
-  .hero-btn--primary {
-    background-color: var(--color-brick-red);
-    color: var(--color-off-white);
-  }
-
-  .hero-btn--primary:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 var(--color-black);
-  }
-
-  .hero-btn--phone {
-    background-color: var(--color-off-white);
-    color: var(--color-black);
-  }
-
-  .hero-btn--phone:hover {
-    background-color: var(--color-black);
-    color: var(--color-off-white);
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 var(--color-black);
-  }
-
-  /* ---- RIGHT COLUMN: photo — smaller, shifted DOWN for asymmetry ---- */
-  .hero-right {
+  /* ---- Right: photo fills space ---- */
+  .hero-photo {
     flex: 1;
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-end;
-    min-width: 0;
+    overflow: hidden;
+    position: relative;
+    min-height: 200px;
   }
 
   @media (min-width: 768px) {
-    .hero-right {
-      flex: 0 1 42%;
-      /* Push photo down — intentionally NOT aligned with CTAs or headline */
-      align-self: flex-end;
-      padding-top: var(--space-9);
+    .hero-photo {
+      flex: 0 0 60%;
     }
-  }
-
-  @media (min-width: 1024px) {
-    .hero-right {
-      flex: 0 1 45%;
-      margin-right: -1.5rem;
-      padding-top: var(--space-10);
-    }
-  }
-
-  .hero-image-wrap {
-    border: 3px solid var(--color-black);
-    box-shadow: 8px 8px 0 var(--color-black);
-    overflow: hidden;
-    position: relative;
-    width: 100%;
-  }
-
-  .hero-image-wrap::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 40px;
-    height: 40px;
-    background-color: var(--color-electric-yellow);
-    clip-path: polygon(0 0, 100% 0, 100% 100%);
   }
 
   .hero-img {
     width: 100%;
-    height: auto;
-    display: block;
+    height: 100%;
     object-fit: cover;
-    aspect-ratio: 16 / 9;
+    object-position: center 40%;
+    display: block;
   }
 </style>

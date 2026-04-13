@@ -1,0 +1,38 @@
+---
+// HomeLayout.astro — Homepage-specific layout
+// Order: BrandBanner (Row 1) → Header/Nav (Row 2) → Hero + sections → Footer
+
+import BaseLayout from './BaseLayout.astro';
+import BrandBanner from '@components/sections/BrandBanner.astro';
+import Header from '@components/global/Header.astro';
+import Footer from '@components/global/Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+}
+
+const { title, description, ogImage } = Astro.props;
+---
+
+<BaseLayout title={title} description={description} ogImage={ogImage}>
+  <div class="page-wrapper">
+    <BrandBanner />
+    <Header />
+
+    <main id="main-content">
+      <slot />
+    </main>
+
+    <Footer />
+  </div>
+</BaseLayout>
+
+<style>
+  .page-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+  }
+</style>

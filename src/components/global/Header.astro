@@ -1,7 +1,8 @@
 ---
-// Header.astro — NEOBRUTALIST sticky header
-// Nav order (Non-Negotiable #22): Logo → Industries → Services → City → About → Blog → Connect CTA
-// No blur. No soft shadows. Thick borders. Industrial.
+// Header.astro — NEOBRUTALIST nav bar (Row 2 of homepage layout)
+// Reference: skincare site nav strip
+// Nav links left, phone button + Connect CTA right
+// White background, black borders top and bottom, flush to edges
 
 import { brand } from '@data/brand';
 import { city } from '@data/city';
@@ -12,41 +13,34 @@ const currentPath = Astro.url.pathname;
 
 <header class="site-header" id="site-header">
   <div class="header-inner">
-    <!-- Logo lockup — far left -->
-    <a href="/" class="logo-lockup" aria-label={`${city.name} 3PL — ${brand.name} — Home`}>
-      <span class="logo-city">{city.name}<span class="logo-3pl">3PL</span></span>
-      <span class="logo-tagline">{brand.tagline}</span>
-    </a>
+    <!-- Nav links — left side -->
+    <nav class="desktop-nav" aria-label="Main navigation">
+      <ul class="nav-list" role="list">
+        {navigation.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class:list={['nav-link', { 'nav-link--active': currentPath.startsWith(item.href) }]}
+              aria-current={currentPath.startsWith(item.href) ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
 
-    <!-- RIGHT GROUP: nav + phone + CTA all together -->
-    <div class="header-right-group">
-      <nav class="desktop-nav" aria-label="Main navigation">
-        <ul class="nav-list" role="list">
-          {navigation.map((item) => (
-            <li>
-              <a
-                href={item.href}
-                class:list={['nav-link', { 'nav-link--active': currentPath.startsWith(item.href) }]}
-                aria-current={currentPath.startsWith(item.href) ? 'page' : undefined}
-              >
-                {item.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
-
-      <div class="header-actions">
-        <a href={brand.phone.href} class="header-phone">
-          {brand.phone.display}
-        </a>
-        <a href={ctaNav.href} class="header-cta">
-          {ctaNav.label}
-        </a>
-      </div>
+    <!-- Right side: phone + Connect CTA -->
+    <div class="header-actions">
+      <a href={brand.phone.href} class="header-phone">
+        {brand.phone.display}
+      </a>
+      <a href={ctaNav.href} class="header-cta">
+        {ctaNav.label}
+      </a>
     </div>
 
-    <!-- Mobile menu toggle — brutalist block -->
+    <!-- Mobile menu toggle -->
     <button
       class="mobile-toggle"
       aria-label="Open menu"
@@ -59,20 +53,15 @@ const currentPath = Astro.url.pathname;
     </button>
   </div>
 
-  <!-- Mobile menu overlay — full black takeover -->
+  <!-- Mobile menu overlay -->
   <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
     <div class="mobile-menu-inner">
-      <!-- CTA first -->
       <a href={ctaNav.href} class="mobile-cta">
         {ctaNav.label}
       </a>
-
-      <!-- Phone -->
       <a href={brand.phone.href} class="mobile-phone">
         {brand.phone.display}
       </a>
-
-      <!-- Full nav -->
       <nav aria-label="Mobile navigation">
         <ul class="mobile-nav-list" role="list">
           {navigation.map((item) => (
@@ -88,12 +77,8 @@ const currentPath = Astro.url.pathname;
           ))}
         </ul>
       </nav>
-
-      <!-- Hours -->
       <p class="mobile-hours">{brand.hours}</p>
     </div>
-
-    <!-- Close button -->
     <button class="mobile-close" aria-label="Close menu">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -101,12 +86,10 @@ const currentPath = Astro.url.pathname;
 </header>
 
 <style>
-  /* ---- Header shell — solid, no blur, thick bottom border ---- */
+  /* ---- Nav bar — white strip, black borders ---- */
   .site-header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: var(--color-off-white);
+    background: white;
+    border-top: 3px solid var(--color-black);
     border-bottom: 3px solid var(--color-black);
   }
 
@@ -114,171 +97,104 @@ const currentPath = Astro.url.pathname;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 76px;
-    gap: var(--space-4);
-    padding-inline: 1rem;
+    height: 52px;
+    padding-inline: 1.25rem;
     width: 100%;
   }
 
-  @media (min-width: 1024px) {
-    .header-inner {
-      padding-left: 1.25rem;
-      padding-right: 1.25rem;
-    }
-  }
-
-  /* ---- Logo lockup — bold, industrial ---- */
-  .logo-lockup {
-    display: flex;
-    flex-direction: column;
-    text-decoration: none;
-    flex-shrink: 0;
-  }
-
-  .logo-city {
-    font-family: var(--font-display);
-    font-size: clamp(1.4rem, 2.5vw, 1.75rem);
-    font-weight: 700;
-    color: var(--color-black);
-    line-height: 1;
-    text-transform: uppercase;
-    letter-spacing: -0.02em;
-  }
-
-  .logo-3pl {
-    color: var(--color-brick-red);
-    margin-left: 0.15em;
-  }
-
-  .logo-tagline {
-    font-family: var(--font-display);
-    font-size: var(--fs-xs);
-    color: var(--color-rocket-silver);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    line-height: 1.2;
-    margin-top: 2px;
-  }
-
-  /* ---- Right group: nav + phone + CTA clustered together ---- */
-  .header-right-group {
+  /* ---- Desktop nav — left side ---- */
+  .desktop-nav {
     display: none;
   }
 
   @media (min-width: 1024px) {
-    .header-right-group {
-      display: flex;
-      align-items: center;
-      gap: var(--space-5);
+    .desktop-nav {
+      display: block;
     }
-  }
-
-  /* ---- Desktop nav ---- */
-  .desktop-nav {
-    display: block;
   }
 
   .nav-list {
     display: flex;
     align-items: center;
-    gap: var(--space-5);
+    gap: var(--space-6);
   }
 
   .nav-link {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--fs-sm);
-    font-weight: 700;
+    font-weight: 500;
     color: var(--color-black);
     text-decoration: none;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: var(--space-2) 0;
-    border-bottom: 3px solid transparent;
-    transition: border-color var(--transition-fast);
+    text-transform: none;
+    letter-spacing: 0.01em;
+    transition: color 120ms ease;
   }
 
   .nav-link:hover {
-    border-bottom-color: var(--color-electric-yellow);
+    color: var(--color-brick-red);
   }
 
   .nav-link--active {
-    border-bottom-color: var(--color-brick-red);
+    color: var(--color-brick-red);
   }
 
-  /* ---- Header actions (inside right group) ---- */
+  /* ---- Right side: phone + CTA ---- */
   .header-actions {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-    flex-shrink: 0;
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
   }
 
   .header-phone {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: var(--space-2) var(--space-4);
-    font-family: var(--font-display);
+    padding: 0 var(--space-5);
+    height: 52px;
+    font-family: var(--font-body);
     font-size: var(--fs-sm);
-    font-weight: 700;
+    font-weight: 500;
     color: var(--color-black);
     text-decoration: none;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-    border: 3px solid var(--color-black);
-    box-shadow: 3px 3px 0 var(--color-black);
+    border-left: 3px solid var(--color-black);
+    transition: background-color 120ms ease;
     white-space: nowrap;
-    transition:
-      transform 80ms ease,
-      box-shadow 80ms ease,
-      background-color 120ms ease;
   }
 
   .header-phone:hover {
-    background-color: var(--color-black);
-    color: var(--color-off-white);
-    transform: translate(-2px, -2px);
-    box-shadow: 5px 5px 0 var(--color-black);
+    background-color: var(--color-off-white);
   }
 
-  .header-phone:active {
-    transform: translate(3px, 3px);
-    box-shadow: none;
-  }
-
-  /* ---- Header CTA — Brick Red, hard shadow, NO radius ---- */
   .header-cta {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: var(--space-2) var(--space-5);
+    padding: 0 var(--space-6);
+    height: 52px;
     background-color: var(--color-brick-red);
-    color: var(--color-off-white);
+    color: white;
     font-family: var(--font-display);
     font-size: var(--fs-sm);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     text-decoration: none;
-    border: 3px solid var(--color-black);
-    box-shadow: 3px 3px 0 var(--color-black);
-    transition:
-      transform var(--transition-brutal, 80ms ease),
-      box-shadow var(--transition-brutal, 80ms ease);
+    border-left: 3px solid var(--color-black);
+    transition: background-color 120ms ease;
     white-space: nowrap;
   }
 
   .header-cta:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 5px 5px 0 var(--color-black);
+    background-color: var(--color-brick-red-hover);
   }
 
-  .header-cta:active {
-    transform: translate(3px, 3px);
-    box-shadow: none;
-  }
-
-  /* ---- Mobile toggle — thick lines, brutalist ---- */
+  /* ---- Mobile toggle ---- */
   .mobile-toggle {
     display: flex;
     flex-direction: column;
@@ -288,14 +204,9 @@ const currentPath = Astro.url.pathname;
     width: 48px;
     height: 48px;
     background: none;
-    border: 3px solid var(--color-black);
+    border: none;
     cursor: pointer;
     padding: var(--space-2);
-    transition: background-color var(--transition-fast);
-  }
-
-  .mobile-toggle:hover {
-    background: var(--color-electric-yellow);
   }
 
   @media (min-width: 1024px) {
@@ -309,7 +220,7 @@ const currentPath = Astro.url.pathname;
     width: 24px;
     height: 3px;
     background-color: var(--color-black);
-    transition: transform var(--transition-fast), opacity var(--transition-fast);
+    transition: transform 150ms ease, opacity 150ms ease;
   }
 
   .mobile-toggle[aria-expanded='true'] .hamburger-line:nth-child(1) {
@@ -324,7 +235,7 @@ const currentPath = Astro.url.pathname;
     transform: translateY(-9px) rotate(-45deg);
   }
 
-  /* ---- Mobile menu overlay — BLACK TAKEOVER ---- */
+  /* ---- Mobile menu overlay ---- */
   .mobile-menu {
     position: fixed;
     inset: 0;
@@ -364,15 +275,14 @@ const currentPath = Astro.url.pathname;
     justify-content: center;
     padding: var(--space-3) var(--space-7);
     background-color: var(--color-brick-red);
-    color: var(--color-off-white);
+    color: white;
     font-family: var(--font-display);
     font-size: var(--fs-lg);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     text-decoration: none;
-    border: 3px solid var(--color-off-white);
-    box-shadow: 5px 5px 0 var(--color-electric-yellow);
+    border: 3px solid white;
   }
 
   .mobile-phone {
@@ -381,7 +291,6 @@ const currentPath = Astro.url.pathname;
     font-weight: 700;
     color: var(--color-electric-yellow);
     text-decoration: none;
-    letter-spacing: -0.01em;
   }
 
   .mobile-nav-list {
@@ -391,34 +300,29 @@ const currentPath = Astro.url.pathname;
   }
 
   .mobile-nav-link {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--fs-lg);
-    font-weight: 700;
-    color: var(--color-off-white);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    font-weight: 500;
+    color: white;
     text-decoration: none;
     padding: var(--space-3) var(--space-5);
     min-height: 56px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-bottom: 3px solid transparent;
-    transition: border-color var(--transition-fast), color var(--transition-fast);
+    transition: color 120ms ease;
   }
 
   .mobile-nav-link:hover {
     color: var(--color-electric-yellow);
-    border-bottom-color: var(--color-electric-yellow);
   }
 
   .mobile-nav-link--active {
     color: var(--color-electric-yellow);
-    border-bottom-color: var(--color-brick-red);
   }
 
   .mobile-hours {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--fs-sm);
     color: var(--color-rocket-silver);
     letter-spacing: 0.1em;
@@ -435,11 +339,11 @@ const currentPath = Astro.url.pathname;
     align-items: center;
     justify-content: center;
     background: none;
-    border: 3px solid var(--color-off-white);
+    border: 3px solid white;
     font-size: 1.75rem;
-    color: var(--color-off-white);
+    color: white;
     cursor: pointer;
-    transition: background-color var(--transition-fast), color var(--transition-fast);
+    transition: background-color 120ms ease;
   }
 
   .mobile-close:hover {
@@ -450,7 +354,6 @@ const currentPath = Astro.url.pathname;
 </style>
 
 <script>
-  // Mobile menu toggle
   const toggle = document.querySelector('.mobile-toggle') as HTMLButtonElement;
   const menu = document.getElementById('mobile-menu');
   const closeBtn = document.querySelector('.mobile-close') as HTMLButtonElement;
@@ -480,14 +383,12 @@ const currentPath = Astro.url.pathname;
 
   closeBtn?.addEventListener('click', closeMenu);
 
-  // Close on Escape
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && menu?.classList.contains('open')) {
       closeMenu();
     }
   });
 
-  // Close when clicking a nav link
   menu?.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', closeMenu);
   });

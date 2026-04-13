@@ -1,8 +1,8 @@
 ---
 // Home Page — Huntsville 3PL
-// The homepage assembles all section components in order.
+// Uses HomeLayout for BrandBanner → Nav → Hero flow
 
-import PageLayout from '@layouts/PageLayout.astro';
+import HomeLayout from '@layouts/HomeLayout.astro';
 import Hero from '@components/sections/Hero.astro';
 import WhyHuntsville from '@components/sections/WhyHuntsville.astro';
 import ServicesOverview from '@components/sections/ServicesOverview.astro';
@@ -12,7 +12,7 @@ import { city } from '@data/city';
 import { brand } from '@data/brand';
 ---
 
-<PageLayout
+<HomeLayout
   title="Home"
   description={`${city.tagline} ${brand.name} — ${city.name}, Alabama. Warehousing, fulfillment, cross-docking, transloading, transportation, kitting, and returns processing.`}
 >
@@ -21,4 +21,4 @@ import { brand } from '@data/brand';
   <ServicesOverview />
   <Differentiators />
   <ConnectCTA />
-</PageLayout>
+</HomeLayout>
