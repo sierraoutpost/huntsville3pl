@@ -1,29 +1,34 @@
 ---
-// ServicesOverview.astro — NEOBRUTALIST services grid
-// Thick borders, hard shadows, bold type. No soft cards.
+// ServicesOverview.astro — NEOBRUTALIST services section (v2)
+// Asymmetric: heading on left, services stagger right
+// Thick borders, hard shadows, bold type.
 
 import { services } from '@data/services';
 ---
 
 <section class="services-section section" aria-labelledby="services-heading">
-  <!-- Black background with off-white text -->
   <div class="container">
-    <div class="services-header">
-      <p class="services-eyebrow">What We Do</p>
-      <h2 class="services-heading" id="services-heading">
-        Full-service 3PL. One call to connect.
-      </h2>
-    </div>
+    <!-- Asymmetric layout: header left, cards right -->
+    <div class="services-layout">
+      <div class="services-header">
+        <p class="services-eyebrow">What We Do</p>
+        <h2 class="services-heading" id="services-heading">
+          Full-service 3PL.<br />One call to&nbsp;connect.
+        </h2>
+      </div>
 
-    <div class="services-grid">
-      {services.map((service, i) => (
-        <a href={`/services/${service.slug}/`} class="service-card">
-          <span class="service-index">{String(i + 1).padStart(2, '0')}</span>
-          <h3 class="service-title">{service.title}</h3>
-          <p class="service-desc">{service.shortDescription}</p>
-          <span class="service-link" aria-hidden="true">Learn more &rarr;</span>
-        </a>
-      ))}
+      <div class="services-cards">
+        {services.map((service, i) => (
+          <a href={`/services/${service.slug}/`} class:list={['service-card', { 'service-card--accent': i === 0 || i === 4 }]}>
+            <div class="service-top">
+              <span class="service-index">{String(i + 1).padStart(2, '0')}</span>
+              <span class="service-link" aria-hidden="true">&rarr;</span>
+            </div>
+            <h3 class="service-title">{service.title}</h3>
+            <p class="service-desc">{service.shortDescription}</p>
+          </a>
+        ))}
+      </div>
     </div>
   </div>
 </section>
@@ -35,8 +40,31 @@ import { services } from '@data/services';
     border-top: 6px solid var(--color-electric-yellow);
   }
 
+  /* ---- Asymmetric layout ---- */
+  .services-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-7);
+  }
+
+  @media (min-width: 1024px) {
+    .services-layout {
+      grid-template-columns: 1fr 2fr;
+      gap: var(--space-8);
+      align-items: start;
+    }
+  }
+
+  /* ---- Header — sticky on left at desktop ---- */
   .services-header {
-    margin-bottom: var(--space-8);
+    /* stays left */
+  }
+
+  @media (min-width: 1024px) {
+    .services-header {
+      position: sticky;
+      top: calc(76px + var(--space-7));
+    }
   }
 
   .services-eyebrow {
@@ -55,35 +83,28 @@ import { services } from '@data/services';
     letter-spacing: -0.03em;
     text-transform: uppercase;
     color: var(--color-off-white);
-    max-width: 20ch;
   }
 
-  /* ---- Grid ---- */
-  .services-grid {
+  /* ---- Cards grid — 2-col on right side ---- */
+  .services-cards {
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--space-4);
   }
 
   @media (min-width: 640px) {
-    .services-grid {
+    .services-cards {
       grid-template-columns: repeat(2, 1fr);
     }
   }
 
-  @media (min-width: 1024px) {
-    .services-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
-  /* ---- Service card — BRUTALIST ---- */
+  /* ---- Service card ---- */
   .service-card {
     display: flex;
     flex-direction: column;
     padding: var(--space-5);
     background: transparent;
-    border: 3px solid rgba(247, 244, 239, 0.2);
+    border: 2px solid rgba(247, 244, 239, 0.15);
     text-decoration: none;
     color: var(--color-off-white);
     transition:
@@ -98,14 +119,35 @@ import { services } from '@data/services';
     transform: translate(-3px, -3px);
   }
 
+  /* Accent cards — yellow border from the start */
+  .service-card--accent {
+    border-color: var(--color-electric-yellow);
+    border-width: 3px;
+  }
+
+  .service-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-4);
+  }
+
   .service-index {
-    display: block;
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--fs-xs);
-    font-weight: 700;
+    font-weight: 500;
     color: var(--color-electric-yellow);
     letter-spacing: 0.1em;
-    margin-bottom: var(--space-4);
+  }
+
+  .service-link {
+    font-size: var(--fs-lg);
+    color: var(--color-electric-yellow);
+    transition: transform 120ms ease;
+  }
+
+  .service-card:hover .service-link {
+    transform: translateX(4px);
   }
 
   .service-title {
@@ -120,26 +162,11 @@ import { services } from '@data/services';
   }
 
   .service-desc {
-    font-size: var(--fs-sm);
+    font-size: var(--fs-xs);
     color: var(--color-off-white);
-    opacity: 0.7;
+    opacity: 0.6;
     line-height: 1.5;
     flex-grow: 1;
     max-width: none;
-    margin-bottom: var(--space-4);
-  }
-
-  .service-link {
-    font-family: var(--font-display);
-    font-size: var(--fs-sm);
-    font-weight: 700;
-    color: var(--color-electric-yellow);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    transition: color 120ms ease;
-  }
-
-  .service-card:hover .service-link {
-    color: var(--color-off-white);
   }
 </style>

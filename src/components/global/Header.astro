@@ -12,37 +12,38 @@ const currentPath = Astro.url.pathname;
 
 <header class="site-header" id="site-header">
   <div class="header-inner">
-    <!-- Logo lockup -->
+    <!-- Logo lockup — far left -->
     <a href="/" class="logo-lockup" aria-label={`${city.name} 3PL — ${brand.name} — Home`}>
       <span class="logo-city">{city.name}<span class="logo-3pl">3PL</span></span>
       <span class="logo-tagline">{brand.tagline}</span>
     </a>
 
-    <!-- Desktop nav -->
-    <nav class="desktop-nav" aria-label="Main navigation">
-      <ul class="nav-list" role="list">
-        {navigation.map((item) => (
-          <li>
-            <a
-              href={item.href}
-              class:list={['nav-link', { 'nav-link--active': currentPath.startsWith(item.href) }]}
-              aria-current={currentPath.startsWith(item.href) ? 'page' : undefined}
-            >
-              {item.label}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
+    <!-- RIGHT GROUP: nav + phone + CTA all together -->
+    <div class="header-right-group">
+      <nav class="desktop-nav" aria-label="Main navigation">
+        <ul class="nav-list" role="list">
+          {navigation.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class:list={['nav-link', { 'nav-link--active': currentPath.startsWith(item.href) }]}
+                aria-current={currentPath.startsWith(item.href) ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
 
-    <!-- Phone + CTA (desktop) -->
-    <div class="header-actions">
-      <a href={brand.phone.href} class="header-phone">
-        {brand.phone.display}
-      </a>
-      <a href={ctaNav.href} class="header-cta">
-        {ctaNav.label}
-      </a>
+      <div class="header-actions">
+        <a href={brand.phone.href} class="header-phone">
+          {brand.phone.display}
+        </a>
+        <a href={ctaNav.href} class="header-cta">
+          {ctaNav.label}
+        </a>
+      </div>
     </div>
 
     <!-- Mobile menu toggle — brutalist block -->
@@ -160,21 +161,28 @@ const currentPath = Astro.url.pathname;
     margin-top: 2px;
   }
 
-  /* ---- Desktop nav — uppercase, bold, underline on hover ---- */
-  .desktop-nav {
+  /* ---- Right group: nav + phone + CTA clustered together ---- */
+  .header-right-group {
     display: none;
   }
 
   @media (min-width: 1024px) {
-    .desktop-nav {
-      display: block;
+    .header-right-group {
+      display: flex;
+      align-items: center;
+      gap: var(--space-5);
     }
+  }
+
+  /* ---- Desktop nav ---- */
+  .desktop-nav {
+    display: block;
   }
 
   .nav-list {
     display: flex;
     align-items: center;
-    gap: var(--space-6);
+    gap: var(--space-5);
   }
 
   .nav-link {
@@ -198,18 +206,12 @@ const currentPath = Astro.url.pathname;
     border-bottom-color: var(--color-brick-red);
   }
 
-  /* ---- Header actions (desktop) ---- */
+  /* ---- Header actions (inside right group) ---- */
   .header-actions {
-    display: none;
+    display: flex;
     align-items: center;
-    gap: var(--space-5);
+    gap: var(--space-3);
     flex-shrink: 0;
-  }
-
-  @media (min-width: 1024px) {
-    .header-actions {
-      display: flex;
-    }
   }
 
   .header-phone {

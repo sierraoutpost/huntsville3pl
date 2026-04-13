@@ -1,11 +1,10 @@
 ---
-// Hero.astro — NEOBRUTALIST Homepage Hero (v2)
-// Based on Tyler's Figma wireframe:
-// - Everything fits in one viewport
-// - Headline anchored top-left, massive
-// - Photo offset to the right, intentionally misaligned
-// - Services listed individually (not a paragraph)
-// - Both phone instances styled as CTA buttons
+// Hero.astro — NEOBRUTALIST Homepage Hero (v3)
+// Tyler's Figma wireframe requirements:
+// - EVERYTHING fits in one viewport (100svh minus header)
+// - Left side: headline + services list + CTAs
+// - Right side: photo, offset, fits in viewport
+// - Photo does NOT need to align with nav — intentional asymmetry
 // Non-Negotiable #28: Every page has a real photograph in the hero banner
 
 import { city } from '@data/city';
@@ -17,43 +16,43 @@ import { brand } from '@data/brand';
   <!-- Electric yellow accent strip at top -->
   <div class="hero-strip"></div>
 
-  <div class="hero-inner">
-    <!-- Row 1: Eyebrow -->
-    <p class="hero-eyebrow">{brand.name} // {city.name}</p>
+  <div class="hero-layout">
+    <!-- LEFT COLUMN: headline + services + CTAs -->
+    <div class="hero-left">
+      <p class="hero-eyebrow">{brand.name} // {city.name}</p>
 
-    <!-- Row 2: MASSIVE headline — anchored top-left -->
-    <h1 class="hero-title">
-      <span class="hero-title-line">The Rocket City</span>
-      <span class="hero-title-line hero-title-accent">runs on</span>
-      <span class="hero-title-line">precision.</span>
-    </h1>
+      <h1 class="hero-title">
+        <span class="hero-title-line">The Rocket City</span>
+        <span class="hero-title-line hero-title-accent">runs on</span>
+        <span class="hero-title-line">precision.</span>
+      </h1>
 
-    <!-- Row 3: Split — services list + CTAs on left, photo on right -->
-    <div class="hero-split">
-      <div class="hero-text">
-        <!-- Services listed individually -->
-        <ul class="hero-services" role="list">
-          <li>Warehousing</li>
-          <li>Fulfillment</li>
-          <li>Cross-docking</li>
-          <li>Transloading</li>
-          <li>Transportation</li>
-          <li>Kitting</li>
-          <li>Returns</li>
-        </ul>
-        <p class="hero-sub">
-          Powered by {city.name}'s world-class logistics infrastructure.
-        </p>
-        <div class="hero-actions">
-          <a href={ctaNav.href} class="hero-btn hero-btn--primary">Connect</a>
-          <a href={brand.phone.href} class="hero-btn hero-btn--phone">{brand.phone.display}</a>
-        </div>
+      <ul class="hero-services" role="list">
+        <li>Warehousing</li>
+        <li>Fulfillment</li>
+        <li>Cross-docking</li>
+        <li>Transloading</li>
+        <li>Transportation</li>
+        <li>Kitting</li>
+        <li>Returns</li>
+      </ul>
+
+      <p class="hero-sub">
+        Powered by {city.name}'s world-class logistics infrastructure.
+      </p>
+
+      <div class="hero-actions">
+        <a href={ctaNav.href} class="hero-btn hero-btn--primary">Connect</a>
+        <a href={brand.phone.href} class="hero-btn hero-btn--phone">{brand.phone.display}</a>
       </div>
+    </div>
 
+    <!-- RIGHT COLUMN: photo -->
+    <div class="hero-right">
       <div class="hero-image-wrap">
         <img
           src="/images/hero-huntsville.webp"
-          alt="U.S. Space and Rocket Center in Huntsville, Alabama — the Rocket City's aerospace heritage meets modern logistics infrastructure"
+          alt="U.S. Space and Rocket Center in Huntsville, Alabama"
           class="hero-img"
           width="1080"
           height="607"
@@ -67,43 +66,68 @@ import { brand } from '@data/brand';
 </section>
 
 <style>
-  /* ---- Hero shell — fits in one viewport ---- */
   .hero {
     background-color: var(--color-off-white);
     position: relative;
     overflow: hidden;
-    min-height: 100svh;
-    display: flex;
-    flex-direction: column;
   }
 
-  /* Electric yellow top strip */
   .hero-strip {
     height: 6px;
     background-color: var(--color-electric-yellow);
     flex-shrink: 0;
   }
 
-  .hero-inner {
+  /* ---- TWO-COLUMN LAYOUT — fits in viewport ---- */
+  .hero-layout {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    padding: var(--space-4) clamp(1rem, 3vw, 2rem);
+    min-height: calc(100svh - 82px); /* viewport minus header height */
+  }
+
+  @media (min-width: 768px) {
+    .hero-layout {
+      flex-direction: row;
+      align-items: center;
+      gap: var(--space-6);
+      padding: var(--space-4) clamp(1.5rem, 3vw, 2.5rem);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero-layout {
+      padding: var(--space-5) clamp(2rem, 4vw, 3.5rem);
+      gap: var(--space-7);
+    }
+  }
+
+  /* ---- LEFT COLUMN ---- */
+  .hero-left {
     flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: var(--space-5) clamp(1rem, 3vw, 2rem);
-    max-width: 1600px;
-    width: 100%;
+    min-width: 0;
+  }
+
+  @media (min-width: 768px) {
+    .hero-left {
+      flex: 0 1 50%;
+    }
   }
 
   @media (min-width: 1024px) {
-    .hero-inner {
-      padding: var(--space-5) clamp(2rem, 4vw, 3.5rem);
+    .hero-left {
+      flex: 0 1 45%;
     }
   }
 
   /* ---- Eyebrow ---- */
   .hero-eyebrow {
     font-family: var(--font-body);
-    font-size: var(--fs-sm);
+    font-size: var(--fs-xs);
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.12em;
@@ -112,21 +136,15 @@ import { brand } from '@data/brand';
     max-width: none;
   }
 
-  /* ---- MASSIVE headline — top-left anchored ---- */
+  /* ---- Headline — large but must fit with everything else ---- */
   .hero-title {
-    font-size: var(--fs-hero);
+    font-size: clamp(2.5rem, 5.5vw, 5rem);
     line-height: 0.92;
     letter-spacing: -0.03em;
     text-transform: uppercase;
     color: var(--color-black);
-    margin-bottom: var(--space-5);
+    margin-bottom: var(--space-4);
     max-width: none;
-  }
-
-  @media (min-width: 1024px) {
-    .hero-title {
-      margin-bottom: var(--space-6);
-    }
   }
 
   .hero-title-line {
@@ -137,62 +155,33 @@ import { brand } from '@data/brand';
     color: var(--color-brick-red);
   }
 
-  /* ---- Split: text left, photo right ---- */
-  .hero-split {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-5);
-    align-items: end;
-  }
-
-  @media (min-width: 768px) {
-    .hero-split {
-      grid-template-columns: auto 1fr;
-      gap: var(--space-7);
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .hero-split {
-      grid-template-columns: auto 1fr;
-      gap: var(--space-8);
-    }
-  }
-
-  /* ---- Text column ---- */
-  .hero-text {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-  }
-
   /* ---- Services listed individually ---- */
   .hero-services {
     display: flex;
     flex-direction: column;
     gap: 0;
-    margin-bottom: var(--space-3);
+    margin-bottom: var(--space-2);
   }
 
   .hero-services li {
     font-family: var(--font-body);
-    font-size: var(--fs-sm);
+    font-size: var(--fs-xs);
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--color-black);
-    line-height: 1.6;
+    line-height: 1.7;
   }
 
   .hero-sub {
-    font-size: var(--fs-sm);
+    font-size: var(--fs-xs);
     line-height: 1.5;
     color: var(--color-rocket-silver);
     max-width: 36ch;
-    margin-bottom: var(--space-5);
+    margin-bottom: var(--space-4);
   }
 
-  /* ---- CTA buttons — both styled the same ---- */
+  /* ---- CTA buttons — both same style ---- */
   .hero-actions {
     display: flex;
     flex-wrap: wrap;
@@ -205,7 +194,7 @@ import { brand } from '@data/brand';
     justify-content: center;
     padding: var(--space-2) var(--space-5);
     font-family: var(--font-display);
-    font-size: var(--fs-sm);
+    font-size: var(--fs-xs);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -245,38 +234,44 @@ import { brand } from '@data/brand';
     box-shadow: 6px 6px 0 var(--color-black);
   }
 
-  /* ---- Photo — bordered, hard shadow, offset right ---- */
+  /* ---- RIGHT COLUMN: photo ---- */
+  .hero-right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    min-width: 0;
+  }
+
+  @media (min-width: 768px) {
+    .hero-right {
+      flex: 0 1 50%;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero-right {
+      flex: 0 1 55%;
+      /* Intentional asymmetry: push photo past right edge */
+      margin-right: -1.5rem;
+    }
+  }
+
   .hero-image-wrap {
     border: 3px solid var(--color-black);
     box-shadow: 8px 8px 0 var(--color-black);
     overflow: hidden;
     position: relative;
-    max-width: 100%;
+    width: 100%;
   }
 
-  @media (min-width: 768px) {
-    .hero-image-wrap {
-      /* Intentional asymmetry: push photo right, don't align with nav edge */
-      margin-right: -1rem;
-      box-shadow: 10px 10px 0 var(--color-black);
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .hero-image-wrap {
-      margin-right: -2rem;
-      box-shadow: 12px 12px 0 var(--color-black);
-    }
-  }
-
-  /* Yellow corner accent — signal tab */
   .hero-image-wrap::after {
     content: '';
     position: absolute;
     top: 0;
     right: 0;
-    width: 48px;
-    height: 48px;
+    width: 40px;
+    height: 40px;
     background-color: var(--color-electric-yellow);
     clip-path: polygon(0 0, 100% 0, 100% 100%);
   }
