@@ -18,7 +18,7 @@ export const city = {
       street: 'Huntsville Metro Area',
       city: 'Huntsville',
       state: 'AL',
-      zip: 'TBD',
+      zip: '',
     },
     climateControl: true,
     security: true,

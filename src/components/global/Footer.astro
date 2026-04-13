@@ -25,7 +25,7 @@ const currentCity = city.name.toLowerCase();
         </div>
         <address class="footer-address">
           <p>{city.facility.address.street}</p>
-          <p>{city.facility.address.city}, {city.facility.address.state} {city.facility.address.zip}</p>
+          <p>{city.facility.address.city}, {city.facility.address.state}{city.facility.address.zip ? ` ${city.facility.address.zip}` : ''}</p>
         </address>
         <div class="footer-contact">
           <p>
