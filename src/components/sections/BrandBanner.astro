@@ -1,22 +1,31 @@
 ---
 // BrandBanner.astro — Massive "HUNTSVILLE 3PL" banner (Row 1)
 // White background, black text, 3PL in Brick Red
-// "A SAMS 3PL SOLUTIONS COMPANY" positioned under "HUNT"
+// "A SAMS 3PL SOLUTIONS COMPANY" aligned under the H
 ---
 
 <div class="brand-banner">
-  <a href="/" class="brand-banner-link" aria-label="Huntsville 3PL — Home">
-    <span class="brand-name">Huntsville<span class="brand-3pl">3PL</span></span>
-  </a>
-  <span class="brand-sub">A Sams 3PL Solutions Company</span>
+  <div class="brand-block">
+    <a href="/" class="brand-banner-link" aria-label="Huntsville 3PL — Home">
+      <span class="brand-name">Huntsville<span class="brand-3pl">3PL</span></span>
+    </a>
+    <span class="brand-sub">A Sams 3PL Solutions Company</span>
+  </div>
 </div>
 
 <style>
   .brand-banner {
     background: white;
-    text-align: center;
-    padding: var(--space-4) 1.25rem;
-    position: relative;
+    padding: var(--space-3) 1.25rem var(--space-2);
+    display: flex;
+    justify-content: center;
+  }
+
+  /* This block wraps both name + subtitle so subtitle left-aligns with H */
+  .brand-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .brand-banner-link {
@@ -41,15 +50,12 @@
   }
 
   .brand-sub {
-    display: block;
     font-family: var(--font-body);
     font-size: var(--fs-sm);
     font-weight: 500;
     color: var(--color-black);
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    margin-top: var(--space-2);
-    text-align: left;
-    padding-left: clamp(0.5rem, 2vw, 2rem);
+    margin-top: var(--space-1);
   }
 </style>
