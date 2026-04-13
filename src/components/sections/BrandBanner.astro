@@ -5,7 +5,10 @@
 ---
 
 <div class="brand-banner">
-  <span class="brand-sub">A Sams 3PL Solutions Company</span>
+  <div class="brand-sub-group">
+    <span class="brand-sub">A Sams 3PL Solutions</span>
+    <span class="brand-sub brand-sub--right">Company</span>
+  </div>
   <div class="brand-block">
     <a href="/" class="brand-banner-link" aria-label="Huntsville 3PL — Home">
       <span class="brand-name">Huntsville<span class="brand-3pl">3PL</span></span>
@@ -50,10 +53,17 @@
     margin-left: 0.05em;
   }
 
-  .brand-sub {
+  .brand-sub-group {
     position: absolute;
     left: 1.25rem;
     bottom: 0.5rem;
+    top: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    gap: 0.35rem;
+  }
+
+  .brand-sub {
     font-family: var(--font-body);
     font-size: var(--fs-xs);
     font-weight: 500;
@@ -68,7 +78,7 @@
 
   /* Hide vertical subtitle on small screens where it crowds the logo */
   @media (max-width: 767px) {
-    .brand-sub {
+    .brand-sub-group {
       display: none;
     }
   }
