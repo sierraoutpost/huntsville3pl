@@ -1,30 +1,79 @@
 ---
-// Header.astro — NEOBRUTALIST nav bar (Row 2 of homepage layout)
-// Reference: skincare site nav strip
-// Nav links left, phone button + Connect CTA right
-// White background, black borders top and bottom, flush to edges
+// Header.astro — NEOBRUTALIST nav bar (Row 2 of site layout)
+// Nav links left, phone + Connect CTA right.
+// Nav items with `children` render a dropdown panel on hover/focus.
+// The dropdown arrow is an inline SVG that uses `fill="currentColor"` —
+// so it inherits whatever color the nav link is (including hover color).
 
 import { brand } from '@data/brand';
-import { city } from '@data/city';
 import { navigation, ctaNav } from '@data/navigation';
 
+interface Props {
+  mirrored?: boolean;
+}
+
+const { mirrored = false } = Astro.props;
 const currentPath = Astro.url.pathname;
+
+// Decide whether a top-level nav item should be marked "active".
+// For items with children, we treat the parent as active if the current path
+// starts with the parent's href OR matches any child href.
+function isActive(item: (typeof navigation)[number]) {
+  if (currentPath.startsWith(item.href)) return true;
+  if (item.children) {
+    return item.children.some((c) => currentPath.startsWith(c.href));
+  }
+  return false;
+}
 ---
 
-<header class="site-header" id="site-header">
+<header class="site-header" id="site-header" data-mirrored={mirrored ? 'true' : undefined}>
   <div class="header-inner">
-    <!-- Nav links — left side -->
+    <!-- Desktop nav — left side -->
     <nav class="desktop-nav" aria-label="Main navigation">
       <ul class="nav-list" role="list">
         {navigation.map((item) => (
-          <li>
+          <li class:list={['nav-item', { 'nav-item--dropdown': item.children }]}>
             <a
               href={item.href}
-              class:list={['nav-link', { 'nav-link--active': currentPath.startsWith(item.href) }]}
-              aria-current={currentPath.startsWith(item.href) ? 'page' : undefined}
+              class:list={['nav-link', { 'nav-link--active': isActive(item) }]}
+              aria-current={isActive(item) ? 'page' : undefined}
+              aria-haspopup={item.children ? 'true' : undefined}
+              aria-expanded={item.children ? 'false' : undefined}
             >
-              {item.label}
+              <span class="nav-link-label">{item.label}</span>
+              {item.children && (
+                <svg
+                  class="nav-arrow"
+                  viewBox="0 0 1200 1200"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path
+                    fill="currentColor"
+                    d="m447.66 630.47v-60.938c0-3.75-1.4062-7.4062-3.8906-10.172l-137.11-152.34c-2.9062-3.2344-6.9844-5.0625-11.344-5.0625h-167.58c-8.3906 0-15.234 6.7969-15.234 15.234v60.938c0 3.75 1.4062 7.4062 3.8906 10.172l100.5 111.7-100.5 111.7c-2.5312 2.8125-3.8906 6.4219-3.8906 10.172v60.938c0 8.4375 6.8438 15.234 15.234 15.234h167.58c4.3125 0 8.4375-1.8281 11.344-5.0625l137.11-152.34c2.5312-2.8125 3.8906-6.4219 3.8906-10.172zm-304.69-158.21v-15.375l101.39 112.64-6.9375 7.6875zm133.22 107.44c5.2031-5.7656 5.2031-14.578 0-20.391l-114.23-126.94h126.56l123.37 137.11-123.37 137.11h-126.61l114.23-126.94zm12.328 187.87h-145.55v-30.469h152.34c4.3125 0 8.4375-1.8281 11.344-5.0625l110.53-122.86v15.422zm479.06-137.11v-60.938c0-3.75-1.4062-7.4062-3.8906-10.172l-137.11-152.34c-2.9062-3.2344-6.9844-5.0625-11.344-5.0625h-167.58c-8.3906 0-15.234 6.7969-15.234 15.234v60.938c0 3.75 1.4062 7.4062 3.8906 10.172l100.5 111.7-100.5 111.7c-2.5312 2.8125-3.8906 6.4219-3.8906 10.172v60.938c0 8.4375 6.8438 15.234 15.234 15.234h167.58c4.3125 0 8.4375-1.8281 11.344-5.0625l137.11-152.34c2.5312-2.8125 3.8906-6.4219 3.8906-10.172zm-304.69-158.21v-15.375l101.39 112.64-6.9375 7.6875zm133.22 107.44c5.2031-5.7656 5.2031-14.578 0-20.391l-114.23-126.94h126.56l123.37 137.11-123.37 137.11h-126.61l114.23-126.94zm12.328 187.87h-145.55v-30.469h152.34c4.3125 0 8.4375-1.8281 11.344-5.0625l110.53-122.86v15.422zm475.18-208.22-137.11-152.34c-2.9062-3.2344-6.9844-5.0625-11.344-5.0625h-167.58c-8.3906 0-15.234 6.7969-15.234 15.234v60.938c0 3.75 1.4062 7.4062 3.8906 10.172l100.5 111.7-100.5 111.7c-2.5312 2.8125-3.8906 6.4219-3.8906 10.172v60.938c0 8.4375 6.8438 15.234 15.234 15.234h167.58c4.3125 0 8.4375-1.8281 11.344-5.0625l137.11-152.34c2.5312-2.8125 3.8906-6.4219 3.8906-10.172v-60.938c0-3.75-1.4062-7.4062-3.8906-10.172zm-300.79-87.094v-15.375l101.39 112.64-6.9375 7.6875zm133.22 107.44c5.2031-5.7656 5.2031-14.578 0-20.391l-114.23-126.94h126.56l123.37 137.11-123.37 137.11h-126.61l114.23-126.94zm12.328 187.87h-145.55v-30.469h152.34c4.3125 0 8.4375-1.8281 11.344-5.0625l110.53-122.86v15.422z"
+                  />
+                </svg>
+              )}
             </a>
+
+            {item.children && (
+              <div class="dropdown-wrapper">
+                <ul class="dropdown-panel" role="list">
+                  {item.children.map((child) => (
+                    <li>
+                      <a
+                        href={child.href}
+                        class:list={['dropdown-link', { 'dropdown-link--active': currentPath.startsWith(child.href) }]}
+                        aria-current={currentPath.startsWith(child.href) ? 'page' : undefined}
+                      >
+                        {child.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </li>
         ))}
       </ul>
@@ -65,14 +114,28 @@ const currentPath = Astro.url.pathname;
       <nav aria-label="Mobile navigation">
         <ul class="mobile-nav-list" role="list">
           {navigation.map((item) => (
-            <li>
+            <li class="mobile-nav-item">
               <a
                 href={item.href}
-                class:list={['mobile-nav-link', { 'mobile-nav-link--active': currentPath.startsWith(item.href) }]}
-                aria-current={currentPath.startsWith(item.href) ? 'page' : undefined}
+                class:list={['mobile-nav-link', { 'mobile-nav-link--active': isActive(item) }]}
+                aria-current={isActive(item) ? 'page' : undefined}
               >
                 {item.label}
               </a>
+              {item.children && (
+                <ul class="mobile-sub-list" role="list">
+                  {item.children.map((child) => (
+                    <li>
+                      <a
+                        href={child.href}
+                        class:list={['mobile-sub-link', { 'mobile-sub-link--active': currentPath.startsWith(child.href) }]}
+                      >
+                        {child.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </li>
           ))}
         </ul>
@@ -91,6 +154,8 @@ const currentPath = Astro.url.pathname;
     background: white;
     border-top: 3px solid var(--color-black);
     border-bottom: 3px solid var(--color-black);
+    position: relative; /* anchor for any absolutely-positioned children */
+    z-index: 40;
   }
 
   .header-inner {
@@ -115,11 +180,22 @@ const currentPath = Astro.url.pathname;
 
   .nav-list {
     display: flex;
-    align-items: center;
+    align-items: stretch;
     gap: var(--space-6);
+    height: 52px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    position: relative; /* dropdown anchor */
   }
 
   .nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    height: 52px;
     font-family: var(--font-body);
     font-size: var(--fs-base);
     font-weight: 500;
@@ -130,11 +206,83 @@ const currentPath = Astro.url.pathname;
     transition: color 120ms ease;
   }
 
-  .nav-link:hover {
+  .nav-link:hover,
+  .nav-link:focus-visible {
     color: var(--color-brick-red);
   }
 
   .nav-link--active {
+    color: var(--color-brick-red);
+  }
+
+  /* ---- Dropdown arrow — inherits color via currentColor ---- */
+  .nav-arrow {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    color: inherit; /* path uses fill="currentColor" */
+    transform: rotate(-90deg); /* base SVG points right — rotate to point UP at rest */
+    transform-origin: center;
+    transition: transform 220ms ease;
+  }
+
+  /* On hover/focus of the dropdown nav item, flip arrow 180° so it points DOWN */
+  .nav-item--dropdown:hover .nav-arrow,
+  .nav-item--dropdown:focus-within .nav-arrow {
+    transform: rotate(90deg);
+  }
+
+  /* ---- Dropdown panel ---- */
+  .dropdown-wrapper {
+    position: absolute;
+    top: 100%; /* directly below the nav bar's bottom border */
+    left: 0;
+    padding-top: 0.75rem; /* invisible hover bridge */
+    display: none;
+    z-index: 60;
+  }
+
+  .nav-item--dropdown:hover .dropdown-wrapper,
+  .nav-item--dropdown:focus-within .dropdown-wrapper {
+    display: block;
+  }
+
+  .dropdown-panel {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    min-width: 280px;
+    background: white;
+    border: 3px solid var(--color-black);
+    box-shadow: 6px 6px 0 var(--color-brick-red);
+  }
+
+  .dropdown-link {
+    display: block;
+    padding: var(--space-3) var(--space-4);
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    color: var(--color-black);
+    text-decoration: none;
+    border-bottom: 2px solid var(--color-black);
+    transition:
+      background-color 120ms ease,
+      color 120ms ease;
+  }
+
+  .dropdown-panel li:last-child .dropdown-link {
+    border-bottom: none;
+  }
+
+  .dropdown-link:hover,
+  .dropdown-link:focus-visible {
+    background: var(--color-electric-yellow);
+    color: var(--color-black);
+  }
+
+  .dropdown-link--active {
+    background: var(--color-off-white);
     color: var(--color-brick-red);
   }
 
@@ -194,6 +342,34 @@ const currentPath = Astro.url.pathname;
     background-color: var(--color-brick-red-hover);
   }
 
+  /* ---- MIRRORED VARIANT ---- */
+  /* Used on Industries pages: Connect CTA + phone on the LEFT,
+     nav links on the RIGHT. BrandBanner above is unaffected. */
+  .site-header[data-mirrored='true'] .header-inner {
+    flex-direction: row-reverse;
+  }
+
+  .site-header[data-mirrored='true'] .header-actions {
+    flex-direction: row-reverse;
+  }
+
+  .site-header[data-mirrored='true'] .header-phone {
+    border-left: none;
+    border-right: 3px solid var(--color-black);
+  }
+
+  .site-header[data-mirrored='true'] .header-cta {
+    border-left: none;
+    border-right: 3px solid var(--color-black);
+  }
+
+  /* Dropdown panel anchored to right side of its parent in mirrored mode,
+     so long dropdowns don't overflow the viewport on the right. */
+  .site-header[data-mirrored='true'] .dropdown-wrapper {
+    left: auto;
+    right: 0;
+  }
+
   /* ---- Mobile toggle ---- */
   .mobile-toggle {
     display: flex;
@@ -220,7 +396,9 @@ const currentPath = Astro.url.pathname;
     width: 24px;
     height: 3px;
     background-color: var(--color-black);
-    transition: transform 150ms ease, opacity 150ms ease;
+    transition:
+      transform 150ms ease,
+      opacity 150ms ease;
   }
 
   .mobile-toggle[aria-expanded='true'] .hamburger-line:nth-child(1) {
@@ -247,7 +425,10 @@ const currentPath = Astro.url.pathname;
     justify-content: center;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 200ms ease, visibility 200ms ease;
+    transition:
+      opacity 200ms ease,
+      visibility 200ms ease;
+    overflow-y: auto;
   }
 
   .mobile-menu.open {
@@ -265,8 +446,9 @@ const currentPath = Astro.url.pathname;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--space-7);
+    gap: var(--space-6);
     text-align: center;
+    padding: var(--space-7) var(--space-4);
   }
 
   .mobile-cta {
@@ -296,7 +478,17 @@ const currentPath = Astro.url.pathname;
   .mobile-nav-list {
     display: flex;
     flex-direction: column;
-    gap: var(--space-4);
+    gap: var(--space-3);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
   }
 
   .mobile-nav-link {
@@ -306,7 +498,7 @@ const currentPath = Astro.url.pathname;
     color: white;
     text-decoration: none;
     padding: var(--space-3) var(--space-5);
-    min-height: 56px;
+    min-height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -319,6 +511,39 @@ const currentPath = Astro.url.pathname;
 
   .mobile-nav-link--active {
     color: var(--color-electric-yellow);
+  }
+
+  .mobile-sub-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    border-left: 2px solid var(--color-electric-yellow);
+    padding-left: var(--space-4);
+  }
+
+  .mobile-sub-link {
+    font-family: var(--font-body);
+    font-size: var(--fs-base);
+    font-weight: 400;
+    color: var(--color-off-white);
+    opacity: 0.85;
+    text-decoration: none;
+    padding: var(--space-2) var(--space-3);
+    display: block;
+    transition: color 120ms ease, opacity 120ms ease;
+  }
+
+  .mobile-sub-link:hover {
+    color: var(--color-electric-yellow);
+    opacity: 1;
+  }
+
+  .mobile-sub-link--active {
+    color: var(--color-electric-yellow);
+    opacity: 1;
   }
 
   .mobile-hours {

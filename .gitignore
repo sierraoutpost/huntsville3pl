@@ -1,0 +1,34 @@
+# build output
+dist/
+.output/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# environment variables
+.env
+.env.production
+.env.local
+
+# macOS
+.DS_Store
+
+# jetbrains setting folder
+.idea/
+
+# astro cache
+.astro/
+
+# source photo originals (we only ship the optimized .webp versions)
+public/images/*.jpg
+public/images/*.png
+public/images/*.jpeg
+
+# but DO keep SVG icons
+!public/images/*.svg

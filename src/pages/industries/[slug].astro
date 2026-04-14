@@ -1,0 +1,45 @@
+---
+// Dynamic industry page — Huntsville 3PL
+// One route file generates all 10 /industries/[slug]/ pages at build time.
+// Content lives in src/data/industries.ts.
+
+import type { GetStaticPaths } from 'astro';
+import IndustryLayout from '@layouts/IndustryLayout.astro';
+import IndustryPageTemplate from '@components/templates/IndustryPageTemplate.astro';
+import { industries } from '@data/industries';
+
+export const getStaticPaths = (() => {
+  return industries.map((industry, i) => ({
+    params: { slug: industry.slug },
+    props: {
+      industry,
+      // 01, 02, 03... zero-padded index for the eyebrow
+      industryIndex: String(i + 1).padStart(2, '0'),
+    },
+  }));
+}) satisfies GetStaticPaths;
+
+const { industry, industryIndex } = Astro.props;
+---
+
+<IndustryLayout
+  title={industry.metaTitle}
+  description={industry.metaDescription}
+  industryName={industry.name}
+  industrySlug={industry.slug}
+>
+  <IndustryPageTemplate
+    industryIndex={industryIndex}
+    industryName={industry.name}
+    tagline={industry.tagline}
+    heroImage={industry.heroImage}
+    heroAlt={industry.heroAlt}
+    leadCopy={industry.leadCopy}
+    whyLabel={industry.whyLabel}
+    whyCopy={industry.whyCopy}
+    capHeadingLine1={industry.capHeadingLine1}
+    capHeadingLine2={industry.capHeadingLine2}
+    capabilities={industry.capabilities}
+    stats={industry.stats}
+  />
+</IndustryLayout>

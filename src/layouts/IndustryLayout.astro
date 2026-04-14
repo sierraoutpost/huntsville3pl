@@ -1,0 +1,92 @@
+---
+// IndustryLayout.astro — Industry page layout
+// MIRROR of ServiceLayout: Header renders with mirrored={true}, flipping
+// Connect CTA + phone to the LEFT and nav links to the RIGHT.
+// BrandBanner (Row 1) is unchanged — HUNTSVILLE3PL + vertical subtitle stay put.
+//
+// Injects Industry-focused JSON-LD (Service + LocalBusiness + about Industry)
+// for SEO / AEO / LLMO.
+
+import BaseLayout from './BaseLayout.astro';
+import BrandBanner from '@components/sections/BrandBanner.astro';
+import Header from '@components/global/Header.astro';
+import Footer from '@components/global/Footer.astro';
+import { brand } from '@data/brand';
+import { city } from '@data/city';
+
+interface Props {
+  title: string;
+  description: string;
+  industryName: string;
+  industrySlug: string;
+  ogImage?: string;
+}
+
+const { title, description, industryName, industrySlug, ogImage } = Astro.props;
+const site = Astro.site?.toString().replace(/\/$/, '') ?? '';
+const industryUrl = `${site}/industries/${industrySlug}/`;
+
+// Industry schema — Service page semantically, with industry served.
+const industrySchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: `${industryName} Logistics — ${city.name}, ${city.state}`,
+  serviceType: `${industryName} Logistics & 3PL Services`,
+  description,
+  url: industryUrl,
+  audience: {
+    '@type': 'BusinessAudience',
+    audienceType: industryName,
+  },
+  areaServed: {
+    '@type': 'City',
+    name: city.name,
+    containedInPlace: {
+      '@type': 'State',
+      name: 'Alabama',
+    },
+  },
+  provider: {
+    '@type': 'LocalBusiness',
+    name: `${city.name} 3PL`,
+    parentOrganization: {
+      '@type': 'Organization',
+      name: brand.name,
+    },
+    telephone: brand.phone,
+    email: brand.email,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: city.facility.address.street,
+      addressLocality: city.facility.address.city,
+      addressRegion: city.facility.address.state,
+      addressCountry: 'US',
+    },
+    areaServed: city.name,
+  },
+};
+---
+
+<BaseLayout title={title} description={description} ogImage={ogImage}>
+  <div class="page-wrapper">
+    <BrandBanner />
+    <Header mirrored={true} />
+
+    <main id="main-content">
+      <slot />
+    </main>
+
+    <Footer />
+  </div>
+
+  <!-- Industry schema for SEO / AEO / LLMO -->
+  <script type="application/ld+json" set:html={JSON.stringify(industrySchema)} />
+</BaseLayout>
+
+<style>
+  .page-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+  }
+</style>

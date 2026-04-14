@@ -1,0 +1,469 @@
+---
+// IndustryPageTemplate.astro — Shared layout template for all 10 industry pages
+// MIRROR of ServicePageTemplate: photo RIGHT, content LEFT, text RIGHT-aligned.
+// Capabilities rows: number on RIGHT, title/desc on LEFT.
+
+import ConnectCTA from '@components/sections/ConnectCTA.astro';
+
+export interface Capability {
+  num: string;
+  title: string;
+  desc: string;
+}
+
+export interface Stat {
+  value: string;
+  label: string;
+}
+
+interface Props {
+  industryIndex: string;
+  industryName: string;
+  tagline: string;
+  heroImage: string;
+  heroAlt: string;
+  leadCopy: string;
+  whyLabel: string;
+  whyCopy: string;
+  capHeadingLine1: string;
+  capHeadingLine2: string;
+  capabilities: Capability[];
+  stats: Stat[];
+}
+
+const {
+  industryIndex,
+  industryName,
+  tagline,
+  heroImage,
+  heroAlt,
+  leadCopy,
+  whyLabel,
+  whyCopy,
+  capHeadingLine1,
+  capHeadingLine2,
+  capabilities,
+  stats,
+} = Astro.props;
+---
+
+<!-- ============================================= -->
+<!-- HERO: MIRRORED — content LEFT, photo RIGHT    -->
+<!-- ============================================= -->
+<section class="industry-hero" aria-labelledby="industry-heading">
+  <div class="hero-content">
+    <p class="hero-eyebrow">Industries / {industryIndex}</p>
+    <h1 class="hero-title" id="industry-heading">{industryName}</h1>
+    <p class="hero-tagline">{tagline}</p>
+
+    <div class="hero-body">
+      <p class="hero-lead">{leadCopy}</p>
+      <p class="hero-why-label">{whyLabel}</p>
+      <p class="hero-why">{whyCopy}</p>
+    </div>
+  </div>
+
+  <div class="hero-photo">
+    <img
+      src={heroImage}
+      alt={heroAlt}
+      loading="eager"
+      decoding="async"
+      fetchpriority="high"
+    />
+  </div>
+</section>
+
+<!-- ============================================= -->
+<!-- CAPABILITIES: MIRRORED — number RIGHT, text LEFT -->
+<!-- ============================================= -->
+<section class="capabilities" aria-labelledby="capabilities-heading">
+  <header class="cap-header">
+    <p class="cap-eyebrow">Capabilities</p>
+    <h2 class="cap-heading" id="capabilities-heading">
+      {capHeadingLine1}<br />{capHeadingLine2}
+    </h2>
+  </header>
+
+  <ol class="cap-list">
+    {capabilities.map((cap) => (
+      <li class="cap-row">
+        <div class="cap-text">
+          <h3 class="cap-title">{cap.title}</h3>
+          <p class="cap-desc">{cap.desc}</p>
+        </div>
+        <span class="cap-num">{cap.num}</span>
+      </li>
+    ))}
+  </ol>
+</section>
+
+<!-- ============================================= -->
+<!-- STATS: Full-bleed strip (4 across, right-aligned text) -->
+<!-- ============================================= -->
+<section class="stats-strip" aria-label="Key statistics">
+  <div class="stats-row">
+    {stats.map((stat) => (
+      <div class="stat-cell">
+        <span class="stat-value">{stat.value}</span>
+        <span class="stat-label">{stat.label}</span>
+      </div>
+    ))}
+  </div>
+</section>
+
+<!-- ============================================= -->
+<!-- CONNECT CTA (symmetric — unchanged)            -->
+<!-- ============================================= -->
+<ConnectCTA />
+
+<style>
+  /* =============================================================
+     HERO — MIRRORED: content LEFT, photo RIGHT, text right-aligned
+     HARD CAP to viewport height.
+     ============================================================= */
+  .industry-hero {
+    display: flex;
+    flex-direction: column;
+    background: var(--color-off-white);
+    height: calc(100svh - 210px);
+    overflow: hidden;
+  }
+
+  @media (min-width: 768px) {
+    .industry-hero {
+      flex-direction: row;
+    }
+  }
+
+  .hero-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    padding: var(--space-5) 1.25rem;
+    overflow: hidden;
+    text-align: right;
+  }
+
+  @media (min-width: 768px) {
+    .hero-content {
+      flex: 0 0 50%;
+      padding: var(--space-5) 1.25rem var(--space-5) var(--space-5);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero-content {
+      padding: var(--space-6) 1.25rem var(--space-6) var(--space-6);
+    }
+  }
+
+  .hero-photo {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    min-height: 320px;
+    background: var(--color-black);
+  }
+
+  @media (min-width: 768px) {
+    .hero-photo {
+      flex: 0 0 50%;
+      min-height: 0;
+    }
+  }
+
+  .hero-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-brick-red);
+    margin-bottom: var(--space-2);
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.75rem, 5.5vw, 4.5rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--color-black);
+    text-transform: none;
+    margin-bottom: var(--space-2);
+  }
+
+  .hero-tagline {
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-black);
+    margin-bottom: var(--space-4);
+    max-width: 32ch;
+  }
+
+  .hero-body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--space-3);
+  }
+
+  /* Lead: yellow accent BAR on the RIGHT side (mirror of services) */
+  .hero-lead {
+    font-size: var(--fs-base);
+    line-height: 1.45;
+    color: var(--color-black);
+    max-width: 55ch;
+    border-right: 3px solid var(--color-electric-yellow);
+    padding-right: var(--space-3);
+    margin: 0;
+  }
+
+  .hero-why-label {
+    font-family: var(--font-display);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-brick-red);
+    margin: var(--space-2) 0 0 0;
+  }
+
+  .hero-why {
+    font-size: var(--fs-sm);
+    line-height: 1.45;
+    color: var(--color-black);
+    max-width: 55ch;
+    margin: 0;
+  }
+
+  /* =============================================================
+     CAPABILITIES — MIRRORED: number RIGHT, title/desc LEFT
+     Header text right-aligned.
+     ============================================================= */
+  .capabilities {
+    background: white;
+    border-top: 3px solid var(--color-black);
+    border-bottom: 3px solid var(--color-black);
+  }
+
+  .cap-header {
+    padding: var(--space-7) 1.25rem var(--space-6);
+    border-bottom: 3px solid var(--color-black);
+    text-align: right;
+  }
+
+  @media (min-width: 1024px) {
+    .cap-header {
+      padding: var(--space-8) 1.25rem var(--space-7);
+    }
+  }
+
+  .cap-eyebrow {
+    font-family: var(--font-display);
+    font-size: var(--fs-base);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-brick-red);
+    margin-bottom: var(--space-3);
+  }
+
+  .cap-heading {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--color-black);
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .cap-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* Mobile: single column, number still appears on the right visually */
+  .cap-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+    padding: var(--space-5) 1.25rem;
+    border-bottom: 2px solid var(--color-black);
+    transition: background-color 120ms ease;
+    text-align: right;
+  }
+
+  .cap-row:last-child {
+    border-bottom: none;
+  }
+
+  /* Desktop: grid with text LEFT, number RIGHT */
+  @media (min-width: 768px) {
+    .cap-row {
+      grid-template-columns: 1fr clamp(8rem, 20%, 14rem);
+      gap: var(--space-6);
+      align-items: baseline;
+      padding: var(--space-6) 1.25rem;
+      text-align: left;
+    }
+  }
+
+  .cap-row:hover {
+    background: var(--color-off-white);
+  }
+
+  /* Alternating brick-red numbers for odd rows (same as services) */
+  .cap-row:nth-child(odd) .cap-num {
+    color: var(--color-brick-red);
+  }
+
+  .cap-num {
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 7vw, 6rem);
+    font-weight: 700;
+    line-height: 0.85;
+    letter-spacing: -0.02em;
+    color: var(--color-black);
+    text-align: right;
+  }
+
+  .cap-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--space-2);
+    text-align: right;
+  }
+
+  @media (min-width: 768px) {
+    .cap-text {
+      align-items: flex-start;
+      text-align: left;
+    }
+  }
+
+  .cap-title {
+    font-family: var(--font-display);
+    font-size: var(--fs-xl);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    color: var(--color-black);
+    margin: 0;
+  }
+
+  .cap-desc {
+    font-size: var(--fs-base);
+    line-height: 1.55;
+    color: var(--color-black);
+    opacity: 0.85;
+    max-width: 60ch;
+    margin: 0;
+  }
+
+  /* =============================================================
+     STATS STRIP — MIRRORED: right-aligned text within cells
+     Black bg, yellow dividers, 4 cells across.
+     ============================================================= */
+  .stats-strip {
+    background: var(--color-black);
+    color: var(--color-off-white);
+    border-bottom: 3px solid var(--color-black);
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 640px) {
+    .stats-row {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .stats-row {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .stat-cell {
+    padding: var(--space-6) 1.25rem;
+    border-bottom: 2px solid var(--color-electric-yellow);
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  @media (min-width: 640px) {
+    .stat-cell {
+      border-right: 2px solid var(--color-electric-yellow);
+    }
+
+    .stat-cell:nth-child(2n) {
+      border-right: none;
+    }
+
+    .stat-cell:nth-last-child(-n+2) {
+      border-bottom: none;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .stat-cell {
+      border-bottom: none;
+      padding: var(--space-7) 1.25rem;
+    }
+
+    .stat-cell:nth-child(2n) {
+      border-right: 2px solid var(--color-electric-yellow);
+    }
+
+    .stat-cell:last-child {
+      border-right: none;
+    }
+  }
+
+  .stat-value {
+    display: block;
+    font-family: var(--font-display);
+    font-size: clamp(2.75rem, 6vw, 4.5rem);
+    font-weight: 700;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    color: var(--color-electric-yellow);
+    margin-bottom: var(--space-3);
+  }
+
+  .stat-label {
+    display: block;
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--color-off-white);
+    opacity: 0.85;
+    max-width: 28ch;
+  }
+</style>
