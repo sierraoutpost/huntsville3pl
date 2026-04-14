@@ -1,0 +1,84 @@
+---
+// ServiceLayout.astro — Service page layout
+// Order: BrandBanner (Row 1) → Header/Nav (Row 2) → Service content → Footer
+// Injects Service + LocalBusiness schema.org JSON-LD for SEO/AEO/LLMO.
+
+import BaseLayout from './BaseLayout.astro';
+import BrandBanner from '@components/sections/BrandBanner.astro';
+import Header from '@components/global/Header.astro';
+import Footer from '@components/global/Footer.astro';
+import { brand } from '@data/brand';
+import { city } from '@data/city';
+
+interface Props {
+  title: string;
+  description: string;
+  serviceName: string;
+  serviceSlug: string;
+  ogImage?: string;
+}
+
+const { title, description, serviceName, serviceSlug, ogImage } = Astro.props;
+const site = Astro.site?.toString().replace(/\/$/, '') ?? '';
+const serviceUrl = `${site}/services/${serviceSlug}/`;
+
+// Service JSON-LD — optimized for AEO (Answer Engine Optimization) + LLMO
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: `${serviceName} — ${city.name}, ${city.state}`,
+  serviceType: serviceName,
+  description,
+  url: serviceUrl,
+  areaServed: {
+    '@type': 'City',
+    name: city.name,
+    containedInPlace: {
+      '@type': 'State',
+      name: 'Alabama',
+    },
+  },
+  provider: {
+    '@type': 'LocalBusiness',
+    name: `${city.name} 3PL`,
+    parentOrganization: {
+      '@type': 'Organization',
+      name: brand.name,
+    },
+    telephone: brand.phone,
+    email: brand.email,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: city.facility.address.street,
+      addressLocality: city.facility.address.city,
+      addressRegion: city.facility.address.state,
+      addressCountry: 'US',
+    },
+    areaServed: city.name,
+  },
+};
+---
+
+<BaseLayout title={title} description={description} ogImage={ogImage}>
+  <div class="page-wrapper">
+    <BrandBanner />
+    <Header />
+
+    <main id="main-content">
+      <slot />
+    </main>
+
+    <Footer />
+  </div>
+
+  <!-- Service schema for SEO / AEO / LLMO -->
+  <script type="application/ld+json" set:html={JSON.stringify(serviceSchema)} />
+</BaseLayout>
+
+<style>
+  .page-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+  }
+</style>
