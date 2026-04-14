@@ -1,0 +1,73 @@
+---
+// Transportation & Freight service page — Huntsville 3PL
+// Sources: city-research-brief-huntsville3pl.md §2.1–2.5, §3, §4.1, §7
+
+import ServiceLayout from '@layouts/ServiceLayout.astro';
+import ServicePageTemplate from '@components/templates/ServicePageTemplate.astro';
+
+const pageTitle = 'Transportation & Freight in Huntsville, AL';
+const pageDescription =
+  'FTL, LTL, and drayage services in Huntsville, Alabama — leveraging I-65 and I-565 access plus regional carrier networks to move freight across the Southeast and Midwest.';
+
+const capabilities = [
+  {
+    num: '01',
+    title: 'Full Truckload (FTL)',
+    desc: 'Dedicated and spot FTL capacity across the Southeast and Midwest — priced and scheduled to fit your lanes, not forced into a generic carrier grid.',
+  },
+  {
+    num: '02',
+    title: 'Less-Than-Truckload (LTL)',
+    desc: 'Next-day LTL service to Atlanta, Nashville, Charlotte, Memphis, Cincinnati, Louisville, and more — with consolidation options to lower per-unit costs.',
+  },
+  {
+    num: '03',
+    title: 'Drayage + Intermodal',
+    desc: 'Port of Huntsville and regional intermodal drayage, plus short-haul container moves between rail yards, terminals, and our facility.',
+  },
+  {
+    num: '04',
+    title: 'Dedicated Contract Carriage',
+    desc: 'Dedicated fleet capacity for shippers with predictable volume — fixed rates, guaranteed equipment, and service-level commitments that hold up under pressure.',
+  },
+  {
+    num: '05',
+    title: 'Expedited + Time-Critical',
+    desc: 'Team-driver and expedited options for aerospace, defense, and manufacturing shipments that can\'t wait for a standard transit window.',
+  },
+  {
+    num: '06',
+    title: 'Brokerage + Capacity Sourcing',
+    desc: 'Vetted carrier network across the Southeast and Midwest — with rate transparency and load tracking so you always know what you\'re paying for.',
+  },
+];
+
+const stats = [
+  { value: '2', label: 'Interstates at the facility: I-65 and I-565' },
+  { value: 'Next-Day', label: 'LTL reach: Atlanta, Nashville, Charlotte, Memphis, Louisville' },
+  { value: '1-Day', label: 'FTL drive reach across the Southeast Triangle' },
+  { value: '2-Day', label: 'Ground reach covering the full Southeast + Midwest' },
+];
+---
+
+<ServiceLayout
+  title={pageTitle}
+  description={pageDescription}
+  serviceName="Transportation & Freight"
+  serviceSlug="transportation"
+>
+  <ServicePageTemplate
+    serviceIndex="05"
+    serviceName="Transportation & Freight"
+    tagline="FTL, LTL, drayage. Every mile engineered."
+    heroImage="/images/transportation-hero-huntsville.webp"
+    heroAlt="Stacked intermodal shipping containers in a Huntsville, Alabama freight yard — FTL, LTL, and drayage transportation services for North Alabama shippers"
+    leadCopy="Full truckload, less-than-truckload, drayage, and expedited freight services built on the advantage of Huntsville's interstate access. Whether you need a dedicated lane, a one-off spot move, or cross-dock brokerage capacity — we route the freight through the right combination of mode and carrier."
+    whyLabel="Why Huntsville for transportation —"
+    whyCopy="Huntsville sits at the convergence of I-65 and I-565, with next-day LTL service to Atlanta, Nashville, Charlotte, Memphis, Cincinnati, Louisville, and more. Combined with direct access to the Port of Huntsville's rail and air cargo infrastructure, your freight has options here that inland metros simply can\'t offer."
+    capHeadingLine1="Every load,"
+    capHeadingLine2="every mode, engineered."
+    capabilities={capabilities}
+    stats={stats}
+  />
+</ServiceLayout>

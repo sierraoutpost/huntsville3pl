@@ -1,0 +1,73 @@
+---
+// Transloading service page — Huntsville 3PL
+// Sources: city-research-brief-huntsville3pl.md §2.1–2.5, §3, §4.1, §7
+
+import ServiceLayout from '@layouts/ServiceLayout.astro';
+import ServicePageTemplate from '@components/templates/ServicePageTemplate.astro';
+
+const pageTitle = 'Transloading in Huntsville, AL';
+const pageDescription =
+  'Container-to-trailer and intermodal transloading in Huntsville, Alabama — leveraging Port of Huntsville rail and air cargo infrastructure for domestic and international freight.';
+
+const capabilities = [
+  {
+    num: '01',
+    title: 'Rail-to-Truck Transfers',
+    desc: 'Direct transloading from Norfolk Southern intermodal containers to over-the-road trailers at the Port of Huntsville\'s International Intermodal Center.',
+  },
+  {
+    num: '02',
+    title: 'Air Cargo Transloading',
+    desc: 'Coordinated transfers from Huntsville International Airport air freight into highway carriers — ideal for time-critical aerospace, defense, and high-value shipments.',
+  },
+  {
+    num: '03',
+    title: 'Container Deconsolidation',
+    desc: 'Ocean or domestic containers broken down SKU-by-SKU and repalletized for efficient trailer loading or regional distribution runs.',
+  },
+  {
+    num: '04',
+    title: 'Bulk + Palletized Handling',
+    desc: 'Equipment and expertise for both bulk commodities and palletized freight — we meet the load where it\'s at, not the other way around.',
+  },
+  {
+    num: '05',
+    title: 'Foreign Trade Zone Adjacent',
+    desc: 'Operations adjacent to the Port of Huntsville\'s Foreign Trade Zone #83, supporting international freight with deferred-duty workflows when beneficial.',
+  },
+  {
+    num: '06',
+    title: 'Chain-of-Custody Discipline',
+    desc: 'Full documentation and seal integrity from rail or air arrival through outbound trailer departure — critical for defense, aerospace, and regulated cargo.',
+  },
+];
+
+const stats = [
+  { value: '21st', label: 'U.S. ranking for international air cargo volume' },
+  { value: '33,745', label: 'Rail lifts through Port of Huntsville IIC in 2024' },
+  { value: '$300M+', label: 'Port of Huntsville air + rail infrastructure investment' },
+  { value: 'FTZ #83', label: 'Foreign Trade Zone designation at Port of Huntsville' },
+];
+---
+
+<ServiceLayout
+  title={pageTitle}
+  description={pageDescription}
+  serviceName="Transloading"
+  serviceSlug="transloading"
+>
+  <ServicePageTemplate
+    serviceIndex="04"
+    serviceName="Transloading"
+    tagline="Rail, air, road — one stop between modes."
+    heroImage="/images/transloading-hero-huntsville.webp"
+    heroAlt="Rail intermodal yard at the Port of Huntsville, Alabama — container-to-trailer transloading and Norfolk Southern rail cargo transfers for domestic and international logistics"
+    leadCopy="Container-to-trailer and intermodal transfers that leverage Huntsville's unique convergence of rail, air, and road freight. Whether you're moving inbound ocean containers, aerospace air cargo, or domestic intermodal boxes — we get the freight off the rails, out of the container, and onto the trailer."
+    whyLabel="Why Huntsville for transloading —"
+    whyCopy="The Port of Huntsville's International Intermodal Center — with 33,745 rail lifts in 2024 (up 22.3% YoY) and direct Norfolk Southern main line access — makes Huntsville a natural transloading hub. Combined with a 21st-in-the-nation ranking for international air cargo volume and FTZ #83 designation, Huntsville offers mode-agnostic logistics that inland markets can\'t match."
+    capHeadingLine1="Between modes,"
+    capHeadingLine2="without the friction."
+    capabilities={capabilities}
+    stats={stats}
+  />
+</ServiceLayout>

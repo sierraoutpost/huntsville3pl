@@ -1,0 +1,73 @@
+---
+// Cross-Docking service page — Huntsville 3PL
+// Sources: city-research-brief-huntsville3pl.md §2.1–2.5, §3, §4.1, §7
+
+import ServiceLayout from '@layouts/ServiceLayout.astro';
+import ServicePageTemplate from '@components/templates/ServicePageTemplate.astro';
+
+const pageTitle = 'Cross-Docking in Huntsville, AL';
+const pageDescription =
+  'Dedicated cross-docking in Huntsville, Alabama — minimize dwell time, consolidate LTL into FTL, and keep freight moving at the I-65 and I-565 convergence without unnecessary storage steps.';
+
+const capabilities = [
+  {
+    num: '01',
+    title: 'Inbound-to-Outbound Transfers',
+    desc: 'Direct dock-to-dock transfers that skip storage entirely — inbound trailers broken down and loaded onto outbound trailers the same shift.',
+  },
+  {
+    num: '02',
+    title: 'LTL Consolidation',
+    desc: 'Multiple LTL shipments consolidated into full trailer loads for cost-efficient long-haul movement — especially valuable for Southeast and Midwest lanes.',
+  },
+  {
+    num: '03',
+    title: 'Deconsolidation + Sortation',
+    desc: 'Inbound containers and trailers broken down, sorted by destination, and staged for regional carrier pickup with full chain-of-custody visibility.',
+  },
+  {
+    num: '04',
+    title: 'Multiple Loading Docks',
+    desc: 'Multi-dock configuration designed for efficient throughput — no waiting for a door, no bottleneck on busy inbound days.',
+  },
+  {
+    num: '05',
+    title: 'Port of Huntsville Hand-Off',
+    desc: 'Rapid cross-dock transfers from Port of Huntsville air cargo and Norfolk Southern rail into over-the-road trailers for final-mile delivery.',
+  },
+  {
+    num: '06',
+    title: 'Real-Time Freight Visibility',
+    desc: 'Live status on every load — inbound ETA, on-dock, cross-docked, outbound — so your team and your customers never have to ask where the freight is.',
+  },
+];
+
+const stats = [
+  { value: '2', label: 'Interstates at the facility: I-65 and I-565 convergence' },
+  { value: '33,745', label: 'Rail lifts through Port of Huntsville IIC in 2024' },
+  { value: '22.3%', label: 'YoY growth in Port of Huntsville rail lifts' },
+  { value: '1-Day', label: 'Drive reach: Nashville, Atlanta, Memphis, Birmingham' },
+];
+---
+
+<ServiceLayout
+  title={pageTitle}
+  description={pageDescription}
+  serviceName="Cross-Docking"
+  serviceSlug="cross-docking"
+>
+  <ServicePageTemplate
+    serviceIndex="03"
+    serviceName="Cross-Docking"
+    tagline="Freight in. Freight out. No dwell, no detours."
+    heroImage="/images/cross-docking-hero-huntsville.webp"
+    heroAlt="Cross-docking operation at a Huntsville, Alabama truck terminal — inbound-to-outbound freight transfers, LTL consolidation, and dock-to-dock handoffs for North Alabama logistics"
+    leadCopy="Dedicated cross-dock operations engineered to minimize dwell time and keep freight moving. Inbound trailers get broken down, sorted, and loaded onto outbound carriers the same shift — no unnecessary storage, no billable handling time your operation doesn't need."
+    whyLabel="Why Huntsville for cross-docking —"
+    whyCopy="Sitting at the convergence of I-65 and I-565, with minutes-away access to the Port of Huntsville's International Intermodal Center and Norfolk Southern main line, Huntsville is a natural consolidation and deconsolidation hub. Rail lifts through the IIC grew 22.3% in 2024 — freight is moving here, and fast."
+    capHeadingLine1="Freight that keeps"
+    capHeadingLine2="moving through."
+    capabilities={capabilities}
+    stats={stats}
+  />
+</ServiceLayout>

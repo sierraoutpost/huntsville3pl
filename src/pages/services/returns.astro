@@ -1,0 +1,73 @@
+---
+// Returns Processing service page — Huntsville 3PL
+// Sources: city-research-brief-huntsville3pl.md §2.1–2.5, §3, §4.1, §7
+
+import ServiceLayout from '@layouts/ServiceLayout.astro';
+import ServicePageTemplate from '@components/templates/ServicePageTemplate.astro';
+
+const pageTitle = 'Returns Processing in Huntsville, AL';
+const pageDescription =
+  'Reverse logistics and returns management in Huntsville, Alabama — sort, inspect, restock, and recover value from returned inventory with workflows designed for speed and accuracy.';
+
+const capabilities = [
+  {
+    num: '01',
+    title: 'Intake + Sortation',
+    desc: 'Inbound returns unloaded, sorted by disposition (restock, refurbish, liquidate, dispose), and tracked SKU-by-SKU from the moment they hit the dock.',
+  },
+  {
+    num: '02',
+    title: 'Inspection + Grading',
+    desc: 'Condition assessment against your grading rules — A/B/C stock, open-box, damaged, or non-sellable — with photo documentation when the channel requires it.',
+  },
+  {
+    num: '03',
+    title: 'Restock + Re-Entry',
+    desc: 'Sellable inventory cleaned, relabeled if needed, and returned to active pick locations quickly — so recovered units don\'t sit idle burning carrying cost.',
+  },
+  {
+    num: '04',
+    title: 'Refurbishment + Repack',
+    desc: 'Light refurb, repackaging, and kit reconstruction for open-box or lightly-used items that can re-enter the sales channel at an appropriate price point.',
+  },
+  {
+    num: '05',
+    title: 'Liquidation + Disposition',
+    desc: 'Managed outflow to liquidation channels, donation partners, or certified disposal — with the documentation your finance and sustainability teams need.',
+  },
+  {
+    num: '06',
+    title: 'Returns Analytics',
+    desc: 'SKU-level return rate reporting, reason-code tracking, and disposition ratios — so you can spot product issues and channel problems before they compound.',
+  },
+];
+
+const stats = [
+  { value: '1-Day', label: 'Turn time: inbound returns to restock or disposition' },
+  { value: '24/7', label: 'Operations coverage for peak post-holiday return volume' },
+  { value: '1-Day', label: 'Drive reach: Nashville, Atlanta, Memphis, Birmingham' },
+  { value: '249K+', label: 'Huntsville metro population — growing faster than the state' },
+];
+---
+
+<ServiceLayout
+  title={pageTitle}
+  description={pageDescription}
+  serviceName="Returns Processing"
+  serviceSlug="returns"
+>
+  <ServicePageTemplate
+    serviceIndex="07"
+    serviceName="Returns Processing"
+    tagline="Reverse logistics that recovers value — not just volume."
+    heroImage="/images/returns-hero-huntsville.webp"
+    heroAlt="Returns processing and reverse logistics operation in Huntsville, Alabama — pallet jack moving returned inventory through sortation, inspection, and restocking workflows"
+    leadCopy="Reverse logistics built to recover value, not just absorb volume. Returned inventory gets sorted, inspected, graded, and dispositioned — restock, refurbish, liquidate, or dispose — with SKU-level accuracy and the documentation your finance team actually needs."
+    whyLabel="Why Huntsville for returns —"
+    whyCopy="Huntsville\'s one-day drive reach to Nashville, Atlanta, Memphis, and Birmingham makes it a cost-efficient returns hub for brands serving the Southeast and Midwest — without the real-estate and labor premiums of an Atlanta or Memphis address. Combined with 24/7 operations coverage, peak post-holiday return waves don\'t turn into six-week backlogs."
+    capHeadingLine1="Returns in,"
+    capHeadingLine2="value recovered."
+    capabilities={capabilities}
+    stats={stats}
+  />
+</ServiceLayout>

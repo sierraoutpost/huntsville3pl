@@ -1,0 +1,453 @@
+---
+// ServicePageTemplate.astro — Shared layout template for all service pages
+// Keeps all 7 service pages visually consistent. Each service page supplies:
+//   - hero props (image, alt, title, tagline, lead, why copy)
+//   - capabilities array
+//   - stats array
+//   - service index number
+//
+// Structure:
+//   Hero split (B&W photo + content, capped to viewport)
+//   Capabilities (brutalist full-bleed numbered rows)
+//   Stats strip (full-bleed horizontal band, 4 cells)
+//   Connect CTA
+
+import ConnectCTA from '@components/sections/ConnectCTA.astro';
+
+export interface Capability {
+  num: string;
+  title: string;
+  desc: string;
+}
+
+export interface Stat {
+  value: string;
+  label: string;
+}
+
+interface Props {
+  serviceIndex: string; // e.g. "01", "02"
+  serviceName: string;
+  tagline: string;
+  heroImage: string; // path under /images/
+  heroAlt: string;
+  leadCopy: string;
+  whyLabel: string; // e.g. "Why Huntsville for warehousing —"
+  whyCopy: string;
+  capHeadingLine1: string; // e.g. "What we run"
+  capHeadingLine2: string; // e.g. "in the Rocket City."
+  capabilities: Capability[];
+  stats: Stat[];
+}
+
+const {
+  serviceIndex,
+  serviceName,
+  tagline,
+  heroImage,
+  heroAlt,
+  leadCopy,
+  whyLabel,
+  whyCopy,
+  capHeadingLine1,
+  capHeadingLine2,
+  capabilities,
+  stats,
+} = Astro.props;
+---
+
+<!-- ============================================= -->
+<!-- HERO: Split photo + content                   -->
+<!-- ============================================= -->
+<section class="service-hero" aria-labelledby="service-heading">
+  <div class="hero-photo">
+    <img
+      src={heroImage}
+      alt={heroAlt}
+      loading="eager"
+      decoding="async"
+      fetchpriority="high"
+    />
+  </div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">Services / {serviceIndex}</p>
+    <h1 class="hero-title" id="service-heading">{serviceName}</h1>
+    <p class="hero-tagline">{tagline}</p>
+
+    <div class="hero-body">
+      <p class="hero-lead">{leadCopy}</p>
+      <p class="hero-why-label">{whyLabel}</p>
+      <p class="hero-why">{whyCopy}</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================= -->
+<!-- CAPABILITIES: Brutalist full-bleed rows       -->
+<!-- ============================================= -->
+<section class="capabilities" aria-labelledby="capabilities-heading">
+  <header class="cap-header">
+    <p class="cap-eyebrow">Capabilities</p>
+    <h2 class="cap-heading" id="capabilities-heading">
+      {capHeadingLine1}<br />{capHeadingLine2}
+    </h2>
+  </header>
+
+  <ol class="cap-list">
+    {capabilities.map((cap) => (
+      <li class="cap-row">
+        <span class="cap-num">{cap.num}</span>
+        <div class="cap-text">
+          <h3 class="cap-title">{cap.title}</h3>
+          <p class="cap-desc">{cap.desc}</p>
+        </div>
+      </li>
+    ))}
+  </ol>
+</section>
+
+<!-- ============================================= -->
+<!-- STATS: Full-bleed strip (4 across)            -->
+<!-- ============================================= -->
+<section class="stats-strip" aria-label="Key statistics">
+  <div class="stats-row">
+    {stats.map((stat) => (
+      <div class="stat-cell">
+        <span class="stat-value">{stat.value}</span>
+        <span class="stat-label">{stat.label}</span>
+      </div>
+    ))}
+  </div>
+</section>
+
+<!-- ============================================= -->
+<!-- CONNECT CTA                                    -->
+<!-- ============================================= -->
+<ConnectCTA />
+
+<style>
+  /* =============================================================
+     HERO — Split photo + content
+     B&W photo left, off-white content right.
+     HARD CAP to viewport height (fits above the fold).
+     ============================================================= */
+  .service-hero {
+    display: flex;
+    flex-direction: column;
+    background: var(--color-off-white);
+    height: calc(100svh - 210px);
+    overflow: hidden;
+  }
+
+  @media (min-width: 768px) {
+    .service-hero {
+      flex-direction: row;
+    }
+  }
+
+  .hero-photo {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    min-height: 320px;
+    background: var(--color-black);
+  }
+
+  @media (min-width: 768px) {
+    .hero-photo {
+      flex: 0 0 50%;
+      min-height: 0;
+    }
+  }
+
+  .hero-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  .hero-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--space-5) 1.25rem;
+    overflow: hidden;
+  }
+
+  @media (min-width: 768px) {
+    .hero-content {
+      flex: 0 0 50%;
+      padding: var(--space-5) var(--space-5) var(--space-5) 1.25rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero-content {
+      padding: var(--space-6) var(--space-6) var(--space-6) 1.25rem;
+    }
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-brick-red);
+    margin-bottom: var(--space-2);
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.75rem, 5.5vw, 4.5rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--color-black);
+    text-transform: none;
+    margin-bottom: var(--space-2);
+  }
+
+  .hero-tagline {
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-black);
+    margin-bottom: var(--space-4);
+    max-width: 32ch;
+  }
+
+  .hero-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .hero-lead {
+    font-size: var(--fs-base);
+    line-height: 1.45;
+    color: var(--color-black);
+    max-width: 55ch;
+    border-left: 3px solid var(--color-electric-yellow);
+    padding-left: var(--space-3);
+    margin: 0;
+  }
+
+  .hero-why-label {
+    font-family: var(--font-display);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-brick-red);
+    margin: var(--space-2) 0 0 0;
+  }
+
+  .hero-why {
+    font-size: var(--fs-sm);
+    line-height: 1.45;
+    color: var(--color-black);
+    max-width: 55ch;
+    margin: 0;
+  }
+
+  /* =============================================================
+     CAPABILITIES — Brutalist full-bleed numbered rows
+     ============================================================= */
+  .capabilities {
+    background: white;
+    border-top: 3px solid var(--color-black);
+    border-bottom: 3px solid var(--color-black);
+  }
+
+  .cap-header {
+    padding: var(--space-7) 1.25rem var(--space-6);
+    border-bottom: 3px solid var(--color-black);
+  }
+
+  @media (min-width: 1024px) {
+    .cap-header {
+      padding: var(--space-8) 1.25rem var(--space-7);
+    }
+  }
+
+  .cap-eyebrow {
+    font-family: var(--font-display);
+    font-size: var(--fs-base);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-brick-red);
+    margin-bottom: var(--space-3);
+  }
+
+  .cap-heading {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--color-black);
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .cap-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .cap-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+    padding: var(--space-5) 1.25rem;
+    border-bottom: 2px solid var(--color-black);
+    transition: background-color 120ms ease;
+  }
+
+  .cap-row:last-child {
+    border-bottom: none;
+  }
+
+  @media (min-width: 768px) {
+    .cap-row {
+      grid-template-columns: clamp(8rem, 20%, 14rem) 1fr;
+      gap: var(--space-6);
+      align-items: baseline;
+      padding: var(--space-6) 1.25rem;
+    }
+  }
+
+  .cap-row:hover {
+    background: var(--color-off-white);
+  }
+
+  .cap-row:nth-child(odd) .cap-num {
+    color: var(--color-brick-red);
+  }
+
+  .cap-num {
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 7vw, 6rem);
+    font-weight: 700;
+    line-height: 0.85;
+    letter-spacing: -0.02em;
+    color: var(--color-black);
+  }
+
+  .cap-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .cap-title {
+    font-family: var(--font-display);
+    font-size: var(--fs-xl);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    color: var(--color-black);
+    margin: 0;
+  }
+
+  .cap-desc {
+    font-size: var(--fs-base);
+    line-height: 1.55;
+    color: var(--color-black);
+    opacity: 0.85;
+    max-width: 60ch;
+    margin: 0;
+  }
+
+  /* =============================================================
+     STATS STRIP — Full-bleed band, 4 cells
+     ============================================================= */
+  .stats-strip {
+    background: var(--color-black);
+    color: var(--color-off-white);
+    border-bottom: 3px solid var(--color-black);
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 640px) {
+    .stats-row {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .stats-row {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .stat-cell {
+    padding: var(--space-6) 1.25rem;
+    border-bottom: 2px solid var(--color-electric-yellow);
+  }
+
+  @media (min-width: 640px) {
+    .stat-cell {
+      border-right: 2px solid var(--color-electric-yellow);
+    }
+
+    .stat-cell:nth-child(2n) {
+      border-right: none;
+    }
+
+    .stat-cell:nth-last-child(-n+2) {
+      border-bottom: none;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .stat-cell {
+      border-bottom: none;
+      padding: var(--space-7) 1.25rem;
+    }
+
+    .stat-cell:nth-child(2n) {
+      border-right: 2px solid var(--color-electric-yellow);
+    }
+
+    .stat-cell:last-child {
+      border-right: none;
+    }
+  }
+
+  .stat-value {
+    display: block;
+    font-family: var(--font-display);
+    font-size: clamp(2.75rem, 6vw, 4.5rem);
+    font-weight: 700;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    color: var(--color-electric-yellow);
+    margin-bottom: var(--space-3);
+  }
+
+  .stat-label {
+    display: block;
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--color-off-white);
+    opacity: 0.85;
+    max-width: 28ch;
+  }
+</style>

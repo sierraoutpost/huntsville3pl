@@ -1,0 +1,73 @@
+---
+// Kitting & Assembly service page — Huntsville 3PL
+// Sources: city-research-brief-huntsville3pl.md §2.1–2.5, §3, §4.1, §7
+
+import ServiceLayout from '@layouts/ServiceLayout.astro';
+import ServicePageTemplate from '@components/templates/ServicePageTemplate.astro';
+
+const pageTitle = 'Kitting & Assembly in Huntsville, AL';
+const pageDescription =
+  'Value-added kitting and light assembly in Huntsville, Alabama — supporting aerospace, defense, manufacturing, and retail clients with the precision the Rocket City expects.';
+
+const capabilities = [
+  {
+    num: '01',
+    title: 'Multi-SKU Kitting',
+    desc: 'Bundle multiple SKUs into ready-to-ship kits — subscription boxes, retail display packs, promotional assemblies, and component-level kits for manufacturing feed lines.',
+  },
+  {
+    num: '02',
+    title: 'Light Assembly',
+    desc: 'Sub-assembly work, simple mechanical joins, and component marriage — bridging the gap between raw inbound inventory and finished goods ready for distribution.',
+  },
+  {
+    num: '03',
+    title: 'Retail-Ready Packaging',
+    desc: 'Shelf-ready packs, display cases, retail routing-guide compliance, and branded packaging that arrives ready to merchandise — no store-level rework.',
+  },
+  {
+    num: '04',
+    title: 'Quality Inspection',
+    desc: 'SKU-level inspection during kit build — catch defects, short-shipments, and pack-out errors before they reach a customer\'s dock or an end consumer\'s doorstep.',
+  },
+  {
+    num: '05',
+    title: 'Manufacturing Line Feed',
+    desc: 'Sequenced kit delivery to manufacturing partners — components arrive in the right order, at the right time, for the right workstation.',
+  },
+  {
+    num: '06',
+    title: 'Labeling + Serialization',
+    desc: 'Custom labeling, lot coding, serial tracking, and compliance documentation — built for regulated industries that need audit trails, not guesswork.',
+  },
+];
+
+const stats = [
+  { value: '80K+', label: 'Aerospace workers in the Huntsville metro' },
+  { value: '249K+', label: 'Huntsville metro population — growing faster than the state' },
+  { value: '24/7', label: 'Operations coverage for production schedule alignment' },
+  { value: '1-Day', label: 'Drive reach to manufacturing across the Southeast' },
+];
+---
+
+<ServiceLayout
+  title={pageTitle}
+  description={pageDescription}
+  serviceName="Kitting & Assembly"
+  serviceSlug="kitting"
+>
+  <ServicePageTemplate
+    serviceIndex="06"
+    serviceName="Kitting & Assembly"
+    tagline="Rocket City precision. Retail and manufacturing ready."
+    heroImage="/images/kitting-hero-huntsville.webp"
+    heroAlt="Kitting and light assembly operation in Huntsville, Alabama — stacked product cases staged for multi-SKU bundling, retail-ready packaging, and manufacturing line feed"
+    leadCopy="Value-added kitting, light assembly, retail-ready packaging, and manufacturing line-feed services — all under the same roof as your warehousing and fulfillment. From multi-SKU subscription kits to sequenced component marriage for production lines, we handle the work that sits between raw inventory and finished shipment."
+    whyLabel="Why Huntsville for kitting & assembly —"
+    whyCopy="With nearly 80,000 aerospace workers in the Huntsville metro, precision is in the region\'s DNA. Our kitting and assembly operations reflect that same standard of accuracy — critical for defense-adjacent clients, aerospace suppliers, and any brand where pack-out errors become customer-service problems."
+    capHeadingLine1="Precision work,"
+    capHeadingLine2="under one roof."
+    capabilities={capabilities}
+    stats={stats}
+  />
+</ServiceLayout>

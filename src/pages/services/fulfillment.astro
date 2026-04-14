@@ -1,0 +1,73 @@
+---
+// Fulfillment & Distribution service page — Huntsville 3PL
+// Sources: city-research-brief-huntsville3pl.md §2.1–2.5, §3, §4.1, §7
+
+import ServiceLayout from '@layouts/ServiceLayout.astro';
+import ServicePageTemplate from '@components/templates/ServicePageTemplate.astro';
+
+const pageTitle = 'Fulfillment & Distribution in Huntsville, AL';
+const pageDescription =
+  'B2B and direct-to-consumer fulfillment in Huntsville, Alabama — pick/pack/ship accuracy, same-day cutoffs, and regional distribution reach across the Southeast and Midwest.';
+
+const capabilities = [
+  {
+    num: '01',
+    title: 'B2B + Retail Fulfillment',
+    desc: 'Purchase-order accuracy, routing-guide compliance, and retail-ready labeling — built for wholesale, big-box, and specialty retail channels.',
+  },
+  {
+    num: '02',
+    title: 'Direct-to-Consumer Pick/Pack',
+    desc: 'E-commerce order processing with SKU-level accuracy, branded packaging options, and carrier-rate shopping to keep shipping costs honest.',
+  },
+  {
+    num: '03',
+    title: 'Same-Day Cutoffs',
+    desc: 'Late-afternoon order cutoffs that still make next-day delivery windows — because your customers don\'t care about our schedule, they care about theirs.',
+  },
+  {
+    num: '04',
+    title: 'Multi-Carrier Rate Shopping',
+    desc: 'Real-time rate comparison across carriers so every order ships on the best combination of speed and cost — no rigid single-carrier lock-in.',
+  },
+  {
+    num: '05',
+    title: 'Returns + Exchanges',
+    desc: 'Integrated reverse logistics for DTC and retail returns, with inspection, restocking, or disposition workflows built into the same facility.',
+  },
+  {
+    num: '06',
+    title: 'EDI + API Integrations',
+    desc: 'Direct integrations with Shopify, major marketplaces, and retail EDI platforms — so orders flow in and tracking flows out without manual touches.',
+  },
+];
+
+const stats = [
+  { value: '1-Day', label: 'Ground reach to Nashville, Atlanta, Memphis, Birmingham' },
+  { value: '2-Day', label: 'Ground reach covering the full Southeast + Midwest' },
+  { value: '249K+', label: 'Huntsville metro population — growing faster than the state' },
+  { value: '24/7', label: 'Operations coverage keyed to carrier pickup windows' },
+];
+---
+
+<ServiceLayout
+  title={pageTitle}
+  description={pageDescription}
+  serviceName="Fulfillment & Distribution"
+  serviceSlug="fulfillment"
+>
+  <ServicePageTemplate
+    serviceIndex="02"
+    serviceName="Fulfillment & Distribution"
+    tagline="Orders in. Orders out. Rocket City accuracy, regional reach."
+    heroImage="/images/fulfillment-hero-huntsville.webp"
+    heroAlt="Fulfillment and distribution operation in Huntsville, Alabama — B2B retail and direct-to-consumer pick, pack, and ship services for Southeast and Midwest e-commerce brands"
+    leadCopy="B2B, retail, and direct-to-consumer fulfillment engineered for the pace of modern commerce. We combine SKU-level accuracy, same-day cutoffs, and multi-carrier rate shopping — so your orders ship on time, at the right cost, with the right carrier."
+    whyLabel="Why Huntsville for fulfillment —"
+    whyCopy="Huntsville's position in the Tennessee Valley puts your inventory within a one-day ground drive of Nashville, Atlanta, Memphis, and Birmingham — and within a two-day reach of the full Southeast and Midwest. You get faster delivery windows to major metros without paying the congestion and real-estate premiums of Atlanta or Dallas."
+    capHeadingLine1="Orders that move"
+    capHeadingLine2="at Rocket City pace."
+    capabilities={capabilities}
+    stats={stats}
+  />
+</ServiceLayout>
