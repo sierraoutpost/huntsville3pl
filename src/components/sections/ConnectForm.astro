@@ -535,33 +535,8 @@ const ZAPIER_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/25782870/ujycfzd/';
     height: 0;
   }
 
-  .shatter-tile {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    background: var(--color-black);
-    transform-origin: center;
-    will-change: transform, opacity;
-    /* Custom properties set per-tile by JS */
-    --tx: 0px;
-    --ty: 0px;
-    --r: 0deg;
-    animation: shatter-fly 720ms cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
-  }
-
-  @keyframes shatter-fly {
-    0% {
-      transform: translate(0, 0) rotate(0deg);
-      opacity: 1;
-    }
-    60% {
-      opacity: 1;
-    }
-    100% {
-      transform: translate(var(--tx), var(--ty)) rotate(var(--r));
-      opacity: 0;
-    }
-  }
+  /* Tile styles + keyframes live in a separate :global block below
+     because they're applied to JS-created elements (no scope hash). */
 
   /* FORM FADE — covers the form-wrap (so only the confirmation card
      remains visible after the shatter completes). */
@@ -694,6 +669,52 @@ const ZAPIER_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/25782870/ujycfzd/';
   }
 </style>
 
+<!-- Global styles for the shatter tiles. These apply to elements
+     created at runtime by JS, which do NOT carry Astro's scope hash. -->
+<style is:global>
+  .shatter-tile {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: #0A0A0A;
+    transform-origin: center;
+    will-change: transform, opacity;
+    --tx: 0px;
+    --ty: 0px;
+    --r: 0deg;
+    --s: 1;
+    animation: hsv3pl-shatter-fly 1100ms cubic-bezier(0.16, 0.84, 0.44, 1) forwards;
+  }
+
+  @keyframes hsv3pl-shatter-fly {
+    0% {
+      transform: translate(0, 0) rotate(0deg) scale(1);
+      opacity: 1;
+    }
+    35% {
+      transform:
+        translate(calc(var(--tx) * 0.55), calc(var(--ty) * 0.55 - 30px))
+        rotate(calc(var(--r) * 0.4))
+        scale(calc(var(--s) * 1.15));
+      opacity: 1;
+    }
+    100% {
+      transform:
+        translate(var(--tx), var(--ty))
+        rotate(var(--r))
+        scale(var(--s));
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .shatter-tile {
+      animation: none;
+      opacity: 0;
+    }
+  }
+</style>
+
 <script>
   // =============================================================
   // FORM BEHAVIOR — POST JSON to Zapier, show status, prevent mailto
@@ -812,9 +833,14 @@ const ZAPIER_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/25782870/ujycfzd/';
     }
 
     const rect = submitBtn.getBoundingClientRect();
-    const TILE = 10;
+    const TILE = 12;
     const cols = Math.max(1, Math.ceil(rect.width / TILE));
     const rows = Math.max(1, Math.ceil(rect.height / TILE));
+    const cx = rect.width / 2;
+    const cy = rect.height / 2;
+    // Diagonal of the viewport — used as a max travel distance so
+    // tiles can fly fully off-screen on any device.
+    const maxDist = Math.hypot(window.innerWidth, window.innerHeight);
 
     // Position the stage exactly over the button (viewport-fixed).
     shatterStage.style.top = `${rect.top}px`;
@@ -827,27 +853,53 @@ const ZAPIER_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/25782870/ujycfzd/';
     submitBtn.style.visibility = 'hidden';
 
     // Build tiles. DocumentFragment keeps the DOM write to a single
-    // reflow even with ~150–200 tiles.
+    // reflow even with hundreds of tiles.
     const frag = document.createDocumentFragment();
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols; col++) {
         const tile = document.createElement('div');
         tile.className = 'shatter-tile';
-        tile.style.left = `${col * TILE}px`;
-        tile.style.top = `${row * TILE}px`;
+        const px = col * TILE;
+        const py = row * TILE;
+        tile.style.left = `${px}px`;
+        tile.style.top = `${py}px`;
 
-        // Random outward translate, with an upward bias so the
-        // shatter feels like it explodes up + out, not just outward.
-        const angle = Math.random() * Math.PI * 2;
-        const dist = 90 + Math.random() * 240;
-        const tx = Math.cos(angle) * dist;
-        const ty = Math.sin(angle) * dist - 60;
-        const rot = (Math.random() - 0.5) * 540;
-        const delay = Math.random() * 180;
+        // Direction: vector pointing OUTWARD from the button center.
+        // Each tile flies away from where it was sitting — gives the
+        // explosion physical coherence (true outward burst, not noise).
+        const dx = px + TILE / 2 - cx;
+        const dy = py + TILE / 2 - cy;
+        const len = Math.hypot(dx, dy) || 1;
+        const dirX = dx / len;
+        const dirY = dy / len;
+
+        // Distance: huge — tiles really fly off-screen. Edge tiles go
+        // farthest, center tiles get a generous minimum so nothing
+        // looks anchored.
+        const dist = 320 + Math.random() * (maxDist * 0.55);
+
+        // Add some random angular jitter so it doesn't look mechanical.
+        const jitterAngle = (Math.random() - 0.5) * 0.9; // ±0.45 rad
+        const cosJ = Math.cos(jitterAngle);
+        const sinJ = Math.sin(jitterAngle);
+        const jx = dirX * cosJ - dirY * sinJ;
+        const jy = dirX * sinJ + dirY * cosJ;
+
+        const tx = jx * dist;
+        // Upward bias — shatter feels gravity-defying, not just outward.
+        const ty = jy * dist - 220 - Math.random() * 120;
+
+        // Wild tumble: ±2.5 rotations
+        const rot = (Math.random() - 0.5) * 1800;
+        // Slight scale variance — some tiles look thrown harder
+        const scl = 0.7 + Math.random() * 1.1;
+        // Stagger so the explosion isn't a single instant
+        const delay = Math.random() * 240;
 
         tile.style.setProperty('--tx', `${tx}px`);
         tile.style.setProperty('--ty', `${ty}px`);
         tile.style.setProperty('--r', `${rot}deg`);
+        tile.style.setProperty('--s', `${scl}`);
         tile.style.animationDelay = `${delay}ms`;
 
         frag.appendChild(tile);
@@ -856,15 +908,15 @@ const ZAPIER_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/25782870/ujycfzd/';
     shatterStage.appendChild(frag);
 
     // Fade the form to off-white partway through the shatter.
-    setTimeout(() => formFade?.setAttribute('data-active', 'true'), 360);
+    setTimeout(() => formFade?.setAttribute('data-active', 'true'), 700);
 
-    // Reveal the confirmation card after the shatter completes.
-    setTimeout(showConfirmCard, 880);
+    // Reveal the confirmation card after the shatter mostly completes.
+    setTimeout(showConfirmCard, 1250);
 
-    // Cleanup the tile DOM once they're invisible.
+    // Cleanup the tile DOM once they're invisible / off-screen.
     setTimeout(() => {
       if (shatterStage) shatterStage.innerHTML = '';
-    }, 1400);
+    }, 1800);
   }
 
   // Close button → navigate to homepage.
