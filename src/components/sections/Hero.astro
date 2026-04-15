@@ -1,8 +1,10 @@
 ---
 // Hero.astro — NEOBRUTALIST Homepage Hero
-// Split: left content block with two-line headline + CTA, right photo
-// Compact above-the-fold footprint — leaves more room for the next section
-// to peek above the fold.
+// Layout (desktop): left content block (headline + CTA) | photo anchored right.
+// The photo is sized to a fixed height that fits above the fold; its width
+// is computed from the image's intrinsic aspect ratio (1600/2114 = portrait),
+// so the image scales proportionally — no distortion, no cropping.
+// Off-white fills the gap between the content block and the photo.
 
 import { ctaNav } from '@data/navigation';
 ---
@@ -17,7 +19,7 @@ import { ctaNav } from '@data/navigation';
     <a href={ctaNav.href} class="hero-cta">Connect</a>
   </div>
 
-  <!-- Right: photo -->
+  <!-- Right: photo anchored right edge, height-constrained -->
   <div class="hero-photo">
     <img
       src="/images/hero-homepage.webp"
@@ -33,51 +35,48 @@ import { ctaNav } from '@data/navigation';
 </section>
 
 <style>
-  /* ---- Split: compact above-the-fold footprint ---- */
+  /* ===== Section shell ===== */
   .hero-split {
     display: flex;
     flex-direction: column;
-    /* Tighter than before — the old layout filled the viewport.
-       Now the hero is sized to its content with a sensible max,
-       so the next section peeks above the fold on most screens. */
-    min-height: clamp(380px, 56svh, 580px);
+    background: var(--color-off-white);
   }
 
   @media (min-width: 768px) {
     .hero-split {
       flex-direction: row;
+      align-items: stretch;
+      /* Section height is bounded so headline + CTA + photo all fit
+         comfortably above the fold on standard desktop viewports. */
+      min-height: clamp(360px, 50svh, 460px);
+      max-height: clamp(360px, 50svh, 460px);
     }
   }
 
-  /* ---- Left: content block ---- */
+  /* ===== Left: content block ===== */
   .hero-content {
+    flex: 1;
     background-color: var(--color-off-white);
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     padding: var(--space-5) var(--space-5) var(--space-5) 1.25rem;
-    flex: 1;
   }
 
   @media (min-width: 768px) {
     .hero-content {
-      flex: 0 0 59%;
       padding: var(--space-6) var(--space-6) var(--space-6) 1.25rem;
     }
   }
 
   @media (min-width: 1024px) {
     .hero-content {
-      padding: var(--space-6) var(--space-7) var(--space-7) 1.25rem;
+      padding: var(--space-6) var(--space-7) var(--space-6) 1.25rem;
     }
   }
 
-  /* Two-line headline, broken intentionally:
-     Line 1: "Huntsville's Premier Logistics"
-     Line 2: "Services" (its own line for brutalist emphasis)
-
-     Font reduced by 4px from the prior build — both ends of the
-     clamp dropped by 0.25rem (3rem→2.75rem, 4.5rem→4.25rem). */
+  /* Two-line headline — line 1: "Huntsville's Premier Logistics",
+     line 2: "Services". Font sized 4px smaller than the v4 build. */
   .hero-headline {
     font-family: var(--font-display);
     font-size: clamp(2.75rem, 5.25vw, 4.25rem);
@@ -87,7 +86,6 @@ import { ctaNav } from '@data/navigation';
     text-transform: none;
     letter-spacing: -0.02em;
     margin: 0 0 var(--space-5) 0;
-    /* No max-width — first line should not wrap */
   }
 
   .headline-line {
@@ -126,25 +124,33 @@ import { ctaNav } from '@data/navigation';
     box-shadow: none;
   }
 
-  /* ---- Right: photo fills its column ---- */
+  /* ===== Right: photo (anchored right, proportional) =====
+     Mobile (column layout): photo sits below the content at full width,
+       natural aspect ratio, no crop.
+     Desktop (row layout): photo's HEIGHT matches the section height
+       (clamped above ~460px), WIDTH is auto so the aspect ratio is
+       preserved → no distortion. The photo container shrinks to wrap
+       the image and is anchored to the right edge of the row. */
   .hero-photo {
-    flex: 1;
+    flex: 0 0 auto;
+    background: var(--color-off-white);
     overflow: hidden;
-    position: relative;
-    min-height: 200px;
-  }
-
-  @media (min-width: 768px) {
-    .hero-photo {
-      flex: 0 0 41%;
-    }
+    display: flex;
+    justify-content: flex-end;
+    align-items: stretch;
   }
 
   .hero-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center 35%;
     display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  @media (min-width: 768px) {
+    .hero-img {
+      width: auto;
+      height: 100%;
+      max-height: clamp(360px, 50svh, 460px);
+    }
   }
 </style>

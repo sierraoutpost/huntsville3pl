@@ -43,16 +43,18 @@ const sisters = brand.network.filter((c) => c.domain !== city.domain);
     </div>
 
     <div class="hero-photo">
-      <img
-        src="/images/about-hero.webp"
-        alt="Huntsville 3PL warehouse operations — black and white view of the logistics floor"
-        class="hero-img"
-        width="590"
-        height="443"
-        loading="eager"
-        decoding="async"
-        fetchpriority="high"
-      />
+      <div class="photo-frame">
+        <img
+          src="/images/about-hero.webp"
+          alt="Huntsville 3PL warehouse operations — black and white view of the logistics floor"
+          class="hero-img"
+          width="590"
+          height="443"
+          loading="eager"
+          decoding="async"
+          fetchpriority="high"
+        />
+      </div>
     </div>
   </section>
 
@@ -136,7 +138,12 @@ const sisters = brand.network.filter((c) => c.domain !== city.domain);
 
 <style>
   /* =============================================================
-     1) HERO — split: tagline LEFT, B&W photo RIGHT
+     1) HERO — split: tagline LEFT, framed B&W photo RIGHT
+     -------------------------------------------------------------
+     Section height is sized so the bottom 3px border sits just above
+     the viewport fold — placing the next (black) section below the
+     fold while leaving a thin black line peeking near the fold edge.
+     200px ≈ BrandBanner (~150px) + Header nav (~50px).
      ============================================================= */
   .about-hero {
     display: flex;
@@ -149,6 +156,7 @@ const sisters = brand.network.filter((c) => c.domain !== city.domain);
     .about-hero {
       flex-direction: row;
       align-items: stretch;
+      min-height: calc(100svh - 200px);
     }
   }
 
@@ -198,21 +206,38 @@ const sisters = brand.network.filter((c) => c.domain !== city.domain);
     }
   }
 
+  /* Photo column — holds the framed photo. Padding gives the frame
+     breathing room from the section edges so the yellow shadow is
+     visible. The section's flex stretches this column to full height. */
   .hero-photo {
     flex: 1;
-    overflow: hidden;
     position: relative;
-    min-height: 240px;
-    border-top: 3px solid var(--color-black);
+    min-height: 280px;
+    padding: var(--space-4) 1.25rem var(--space-4) 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   @media (min-width: 900px) {
     .hero-photo {
       flex: 0 0 40%;
       min-height: 0;
-      border-top: none;
-      border-left: 3px solid var(--color-black);
+      padding: var(--space-5) var(--space-5) var(--space-5) 0;
     }
+  }
+
+  /* The brutalist frame — black border + hard yellow offset shadow.
+     The frame ADDS to the photo's footprint slightly (border width
+     + shadow extends beyond the photo's pixel edges). */
+  .photo-frame {
+    width: 100%;
+    height: 100%;
+    border: 4px solid var(--color-black);
+    box-shadow: 10px 10px 0 var(--color-electric-yellow);
+    background: var(--color-black);
+    overflow: hidden;
+    display: block;
   }
 
   .hero-img {
