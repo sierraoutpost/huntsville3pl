@@ -1,0 +1,476 @@
+---
+// /about/ — Huntsville 3PL about page
+// Sections, top to bottom:
+//   1. AboutHero        — pure-typography tagline + B&W photo
+//   2. AboutWhyHuntsville — six brutalist fact cards from city.whyHuntsville
+//   3. AboutLeadership  — single quiet sentence (Tyler's spec)
+//   4. AboutNetwork     — "1 of 12 cities" — Sams 3PL Solutions footprint
+//   5. ConnectCTA       — closing call to action
+
+import AboutLayout from '@layouts/AboutLayout.astro';
+import ConnectCTA from '@components/sections/ConnectCTA.astro';
+import { brand } from '@data/brand';
+import { city } from '@data/city';
+
+const title = 'About Huntsville 3PL | Logistics Built Around Your Operation';
+const description =
+  'Huntsville 3PL is part of the Sams 3PL Solutions network. We continuously work towards designing, managing, and optimizing your logistics operations — not just running a warehouse. Built on the precision of the Rocket City.';
+const ogImage = '/images/about-hero.webp';
+
+// City facts from the research brief (data/city.ts)
+const facts = city.whyHuntsville;
+
+// Sister cities for the network footprint section
+const sisters = brand.network.filter((c) => c.domain !== city.domain);
+---
+
+<AboutLayout title={title} description={description} ogImage={ogImage}>
+  <!-- =========================================================
+       1) HERO — pure-typography tagline + B&W photo (split)
+       ========================================================= -->
+  <section class="about-hero" aria-labelledby="about-heading">
+    <div class="hero-content">
+      <p class="hero-eyebrow">About / 01</p>
+
+      <h1 class="hero-tagline" id="about-heading">
+        <span class="tagline-line tagline-line--1">
+          We continuously work towards designing, managing, and optimizing your logistics operations,
+        </span>
+        <span class="tagline-line tagline-line--2">
+          not just running a warehouse.
+        </span>
+      </h1>
+    </div>
+
+    <div class="hero-photo">
+      <img
+        src="/images/about-hero.webp"
+        alt="Huntsville 3PL warehouse operations — black and white view of the logistics floor"
+        class="hero-img"
+        width="590"
+        height="443"
+        loading="eager"
+        decoding="async"
+        fetchpriority="high"
+      />
+    </div>
+  </section>
+
+  <!-- =========================================================
+       2) WHY HUNTSVILLE — six brutalist fact cards
+       ========================================================= -->
+  <section class="why" aria-labelledby="why-heading">
+    <div class="why-inner">
+      <header class="why-header">
+        <p class="why-eyebrow">Why Huntsville</p>
+        <h2 class="why-heading" id="why-heading">
+          The Rocket City runs on precision.<br />
+          So does your supply chain.
+        </h2>
+      </header>
+
+      <ul class="why-grid" role="list">
+        {
+          facts.map((fact, i) => (
+            <li class="why-card">
+              <span class="why-num" aria-hidden="true">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <p class="why-text">{fact}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       3) LEADERSHIP — single quiet sentence
+       ========================================================= -->
+  <section class="leadership" aria-label="Leadership">
+    <p class="leadership-line">
+      Led by an experienced logistics team with deep roots in the {brand.name} network.
+    </p>
+  </section>
+
+  <!-- =========================================================
+       4) NETWORK FOOTPRINT — 1 of 12 cities
+       ========================================================= -->
+  <section class="network" aria-labelledby="network-heading">
+    <div class="network-inner">
+      <header class="network-header">
+        <p class="network-eyebrow">National Network</p>
+        <h2 class="network-heading" id="network-heading">
+          One of <span class="network-count">12 cities</span><br />
+          in the {brand.name} network.
+        </h2>
+        <p class="network-sub">
+          Local presence, national capacity. Need coverage in another market?
+          Our sister facilities are ready.
+        </p>
+      </header>
+
+      <ul class="network-grid" role="list">
+        <li class="network-tile network-tile--current">
+          <span class="tile-state">{city.state}</span>
+          <span class="tile-name">{city.name}</span>
+          <span class="tile-flag">You are here</span>
+        </li>
+        {
+          sisters.map((c) => (
+            <li class="network-tile">
+              <span class="tile-state">{c.state}</span>
+              <span class="tile-name">{c.name}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       5) CLOSING CTA
+       ========================================================= -->
+  <ConnectCTA />
+</AboutLayout>
+
+<style>
+  /* =============================================================
+     1) HERO — split: tagline LEFT, B&W photo RIGHT
+     ============================================================= */
+  .about-hero {
+    display: flex;
+    flex-direction: column;
+    background: var(--color-off-white);
+    border-bottom: 3px solid var(--color-black);
+  }
+
+  @media (min-width: 900px) {
+    .about-hero {
+      flex-direction: row;
+      align-items: stretch;
+    }
+  }
+
+  .hero-content {
+    flex: 1;
+    padding: var(--space-5) 1.25rem var(--space-6);
+  }
+
+  @media (min-width: 900px) {
+    .hero-content {
+      flex: 0 0 60%;
+      padding: var(--space-6) var(--space-6) var(--space-7) 1.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-brick-red);
+    margin: 0 0 var(--space-3) 0;
+  }
+
+  .hero-tagline {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1.04;
+    letter-spacing: -0.025em;
+    color: var(--color-black);
+    text-transform: none;
+    margin: 0;
+  }
+
+  .tagline-line {
+    display: block;
+    font-size: clamp(1.5rem, 4.4vw, 3.5rem);
+  }
+
+  @media (min-width: 900px) {
+    .tagline-line--2 {
+      padding-left: 4vw;
+    }
+  }
+
+  .hero-photo {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    min-height: 240px;
+    border-top: 3px solid var(--color-black);
+  }
+
+  @media (min-width: 900px) {
+    .hero-photo {
+      flex: 0 0 40%;
+      min-height: 0;
+      border-top: none;
+      border-left: 3px solid var(--color-black);
+    }
+  }
+
+  .hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    display: block;
+    /* B&W is baked into the file (about-hero.webp converted with -colorspace Gray),
+       so no CSS filter needed and no color flash on slow connections. */
+  }
+
+  /* =============================================================
+     2) WHY HUNTSVILLE — fact card grid
+     ============================================================= */
+  .why {
+    background: var(--color-black);
+    color: var(--color-off-white);
+    padding: var(--space-7) 1.25rem;
+    border-bottom: 3px solid var(--color-black);
+  }
+
+  @media (min-width: 900px) {
+    .why {
+      padding: var(--space-8) var(--space-6);
+    }
+  }
+
+  .why-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .why-header {
+    margin-bottom: var(--space-6);
+  }
+
+  .why-eyebrow {
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--color-electric-yellow);
+    margin: 0 0 var(--space-3) 0;
+  }
+
+  .why-heading {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+    color: var(--color-off-white);
+    text-transform: none;
+    margin: 0;
+  }
+
+  .why-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 720px) {
+    .why-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .why-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .why-card {
+    position: relative;
+    padding: var(--space-5);
+    background: var(--color-off-white);
+    color: var(--color-black);
+    border: 3px solid var(--color-off-white);
+    box-shadow: 6px 6px 0 var(--color-brick-red);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    min-height: 180px;
+  }
+
+  .why-num {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-brick-red);
+  }
+
+  .why-text {
+    font-family: var(--font-body);
+    font-size: var(--fs-base);
+    line-height: 1.45;
+    color: var(--color-black);
+    margin: 0;
+  }
+
+  /* =============================================================
+     3) LEADERSHIP — single quiet sentence
+     ============================================================= */
+  .leadership {
+    background: var(--color-off-white);
+    padding: var(--space-6) 1.25rem;
+    border-bottom: 3px solid var(--color-black);
+  }
+
+  @media (min-width: 900px) {
+    .leadership {
+      padding: var(--space-7) var(--space-6);
+    }
+  }
+
+  .leadership-line {
+    max-width: 880px;
+    margin: 0 auto;
+    font-family: var(--font-display);
+    font-size: clamp(1.15rem, 2.2vw, 1.65rem);
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    color: var(--color-black);
+    text-align: center;
+  }
+
+  /* =============================================================
+     4) NETWORK FOOTPRINT — 1 of 12
+     ============================================================= */
+  .network {
+    background: var(--color-off-white);
+    padding: var(--space-7) 1.25rem;
+    border-bottom: 3px solid var(--color-black);
+  }
+
+  @media (min-width: 900px) {
+    .network {
+      padding: var(--space-8) var(--space-6);
+    }
+  }
+
+  .network-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .network-header {
+    margin-bottom: var(--space-6);
+    max-width: 880px;
+  }
+
+  .network-eyebrow {
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--color-brick-red);
+    margin: 0 0 var(--space-3) 0;
+  }
+
+  .network-heading {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+    color: var(--color-black);
+    text-transform: none;
+    margin: 0 0 var(--space-3) 0;
+  }
+
+  .network-count {
+    background: var(--color-electric-yellow);
+    padding: 0 0.25em;
+    border: 3px solid var(--color-black);
+  }
+
+  .network-sub {
+    font-family: var(--font-body);
+    font-size: var(--fs-base);
+    line-height: 1.5;
+    color: var(--color-black);
+    opacity: 0.85;
+    margin: var(--space-3) 0 0 0;
+  }
+
+  .network-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-3);
+  }
+
+  @media (min-width: 720px) {
+    .network-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .network-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .network-tile {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: var(--space-4);
+    background: var(--color-off-white);
+    border: 3px solid var(--color-black);
+    color: var(--color-black);
+  }
+
+  .network-tile--current {
+    background: var(--color-black);
+    color: var(--color-off-white);
+    box-shadow: 6px 6px 0 var(--color-electric-yellow);
+  }
+
+  .tile-state {
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    opacity: 0.65;
+  }
+
+  .tile-name {
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    line-height: 1.05;
+  }
+
+  .tile-flag {
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-electric-yellow);
+    margin-top: 0.4rem;
+  }
+</style>

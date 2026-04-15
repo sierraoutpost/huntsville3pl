@@ -1,0 +1,76 @@
+---
+// AboutLayout.astro — About page layout
+// Order: BrandBanner (Row 1) → Header/Nav (Row 2) → About content → Footer
+// Injects AboutPage + Organization JSON-LD for SEO/AEO/LLMO.
+
+import BaseLayout from './BaseLayout.astro';
+import BrandBanner from '@components/sections/BrandBanner.astro';
+import Header from '@components/global/Header.astro';
+import Footer from '@components/global/Footer.astro';
+import { brand } from '@data/brand';
+import { city } from '@data/city';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+}
+
+const { title, description, ogImage } = Astro.props;
+const site = Astro.site?.toString().replace(/\/$/, '') ?? '';
+const aboutUrl = `${site}/about/`;
+
+// AboutPage schema — signals to search engines this is the "about us" page,
+// nested under the LocalBusiness so the Organization is unambiguous.
+const aboutSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  name: `About ${city.name} 3PL`,
+  description,
+  url: aboutUrl,
+  mainEntity: {
+    '@type': 'LocalBusiness',
+    name: `${city.name} 3PL`,
+    parentOrganization: {
+      '@type': 'Organization',
+      name: brand.name,
+      url: `https://${city.domain}/`,
+    },
+    telephone: brand.phone.display,
+    email: brand.email.display,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: city.facility.address.street,
+      addressLocality: city.facility.address.city,
+      addressRegion: city.facility.address.state,
+      addressCountry: 'US',
+    },
+    areaServed: city.name,
+    slogan: city.tagline,
+  },
+};
+---
+
+<BaseLayout title={title} description={description} ogImage={ogImage}>
+  <div class="page-wrapper">
+    <BrandBanner />
+    <Header />
+
+    <main id="main-content">
+      <slot />
+    </main>
+
+    <Footer />
+  </div>
+
+  <!-- AboutPage schema for SEO / AEO / LLMO -->
+  <script type="application/ld+json" set:html={JSON.stringify(aboutSchema)} />
+</BaseLayout>
+
+<style>
+  .page-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+  }
+</style>
