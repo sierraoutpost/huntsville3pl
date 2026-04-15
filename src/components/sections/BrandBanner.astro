@@ -26,11 +26,22 @@
     overflow: hidden;
   }
 
-  /* On desktop, right-align wordmark so trailing "L" meets phone/CTA divider */
+  /* On desktop, right-align wordmark so trailing "L" meets phone/CTA divider.
+     Right padding clears the Connect CTA column. Stepped down at mid widths
+     so the wordmark has room and can't overflow the viewport. */
   @media (min-width: 1024px) {
     .brand-banner {
       justify-content: flex-end;
-      /* Right padding = nav padding (1.25rem) + Connect CTA width (~9.25rem) */
+      padding-right: 7rem;
+    }
+  }
+  @media (min-width: 1280px) {
+    .brand-banner {
+      padding-right: 9.5rem;
+    }
+  }
+  @media (min-width: 1536px) {
+    .brand-banner {
       padding-right: 11.5rem;
     }
   }
@@ -49,12 +60,16 @@
   .brand-name {
     display: block;
     font-family: var(--font-display);
-    font-size: clamp(4rem, 13vw, 11rem);
+    /* Fluid across every breakpoint. Ceiling tuned so 13-char "HUNTSVILLE3PL"
+       always fits inside the banner row after accounting for CTA-column
+       padding on desktop. */
+    font-size: clamp(3rem, 11vw, 9rem);
     font-weight: 700;
     color: var(--color-black);
     line-height: 0.85;
     letter-spacing: -0.03em;
     text-transform: uppercase;
+    white-space: nowrap;
   }
 
   .brand-3pl {

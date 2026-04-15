@@ -46,10 +46,12 @@ import { ctaNav } from '@data/navigation';
     .hero-split {
       flex-direction: row;
       align-items: stretch;
-      /* Section height is bounded so headline + CTA + photo all fit
-         comfortably above the fold on standard desktop viewports. */
-      min-height: clamp(360px, 50svh, 460px);
-      max-height: clamp(360px, 50svh, 460px);
+      /* Fill the remaining above-fold space below the BrandBanner + nav.
+         200px ≈ BrandBanner (~150px) + Header nav (~50px). Section bottom
+         border lands exactly at the viewport fold on any desktop viewport.
+         Bounded so it doesn't collapse on very short screens. */
+      min-height: clamp(380px, calc(100svh - 200px), 900px);
+      max-height: calc(100svh - 200px);
     }
   }
 
@@ -150,7 +152,7 @@ import { ctaNav } from '@data/navigation';
     .hero-img {
       width: auto;
       height: 100%;
-      max-height: clamp(360px, 50svh, 460px);
+      max-height: calc(100svh - 200px);
     }
   }
 </style>
