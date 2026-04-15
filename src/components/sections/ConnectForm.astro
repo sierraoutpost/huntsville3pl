@@ -1,0 +1,559 @@
+---
+// ConnectForm.astro — Brutalist contact form
+// Chunk 2: form structure, styles, Zapier webhook wiring, mailto fallback
+// Chunk 3 will add side cards to the right of this form
+// Chunk 4 will apply the damier dissolve effect to the .form-region wrapper
+
+import { brand } from '@data/brand';
+import { services } from '@data/services';
+
+// Zapier Catch Hook — posts JSON payload of the form on submit
+const ZAPIER_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/25782870/ujycfzd/';
+---
+
+<section class="form-region" aria-labelledby="form-heading" data-form-region>
+  <div class="form-wrap">
+    <header class="form-header">
+      <h2 class="form-heading" id="form-heading">Send Us A Message</h2>
+      <p class="form-sub">
+        Whether you want pricing or just a quick question, drop us a line.
+        Fields marked optional are only for quote requests.
+      </p>
+    </header>
+
+    <!--
+      Form strategy:
+      - Default `action` is a mailto: fallback so the form works even with JS disabled.
+      - Client JS (below) intercepts submit, POSTs JSON to the Zapier Catch Hook,
+        and shows success/error states. mailto: is prevented on success.
+    -->
+    <form
+      class="connect-form"
+      name="huntsville-connect"
+      method="POST"
+      action={brand.email.href}
+      enctype="text/plain"
+      data-connect-form
+      data-webhook={ZAPIER_WEBHOOK}
+      novalidate
+    >
+      <!-- Row 1: Name + Email (both required) -->
+      <div class="field-row">
+        <label class="field">
+          <span class="field-label">Name <span class="req" aria-hidden="true">*</span></span>
+          <input
+            class="field-input"
+            type="text"
+            name="name"
+            required
+            autocomplete="name"
+            placeholder="Your name"
+          />
+        </label>
+
+        <label class="field">
+          <span class="field-label">Email <span class="req" aria-hidden="true">*</span></span>
+          <input
+            class="field-input"
+            type="email"
+            name="email"
+            required
+            autocomplete="email"
+            placeholder="you@company.com"
+          />
+        </label>
+      </div>
+
+      <!-- Row 2: Phone + Company (both optional) -->
+      <div class="field-row">
+        <label class="field">
+          <span class="field-label">Phone</span>
+          <input
+            class="field-input"
+            type="tel"
+            name="phone"
+            autocomplete="tel"
+            placeholder="(555) 123-4567"
+          />
+        </label>
+
+        <label class="field">
+          <span class="field-label">Company</span>
+          <input
+            class="field-input"
+            type="text"
+            name="company"
+            autocomplete="organization"
+            placeholder="Your company (optional)"
+          />
+        </label>
+      </div>
+
+      <!-- Reason -->
+      <label class="field field--full">
+        <span class="field-label">What's this about?</span>
+        <select class="field-input field-input--select" name="reason">
+          <option value="">Select a reason (optional)</option>
+          <option value="quote">Request a quote</option>
+          <option value="question">General question</option>
+          <option value="partnership">Partnership / referral</option>
+          <option value="carrier-vendor">Carrier or vendor inquiry</option>
+          <option value="career">Careers</option>
+          <option value="other">Other</option>
+        </select>
+      </label>
+
+      <!-- Quote details group -->
+      <fieldset class="quote-group">
+        <legend class="quote-legend">
+          Quote Details <span class="quote-hint">(Optional — select N/A if not requesting pricing)</span>
+        </legend>
+
+        <div class="field-row">
+          <label class="field">
+            <span class="field-label">Service of Interest</span>
+            <select class="field-input field-input--select" name="service">
+              <option value="">Select...</option>
+              {services.map((s) => (
+                <option value={s.slug}>{s.title}</option>
+              ))}
+              <option value="not-sure">Not sure yet</option>
+              <option value="na">N/A</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span class="field-label">Estimated Volume</span>
+            <select class="field-input field-input--select" name="volume">
+              <option value="">Select...</option>
+              <option value="<100">Less than 100 orders/month</option>
+              <option value="100-1k">100 – 1,000 orders/month</option>
+              <option value="1k-10k">1,000 – 10,000 orders/month</option>
+              <option value="10k+">10,000+ orders/month</option>
+              <option value="na">N/A</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="field-row">
+          <label class="field">
+            <span class="field-label">Origin</span>
+            <input
+              class="field-input"
+              type="text"
+              name="origin"
+              placeholder="City, State or N/A"
+            />
+          </label>
+
+          <label class="field">
+            <span class="field-label">Destination</span>
+            <input
+              class="field-input"
+              type="text"
+              name="destination"
+              placeholder="City, State or N/A"
+            />
+          </label>
+        </div>
+
+        <label class="field field--full">
+          <span class="field-label">Timeline</span>
+          <select class="field-input field-input--select" name="timeline">
+            <option value="">Select...</option>
+            <option value="asap">ASAP</option>
+            <option value="<30">Less than 30 days</option>
+            <option value="30-90">30 – 90 days</option>
+            <option value="90+">90+ days</option>
+            <option value="exploring">Just exploring</option>
+            <option value="na">N/A</option>
+          </select>
+        </label>
+      </fieldset>
+
+      <!-- Message (required) -->
+      <label class="field field--full">
+        <span class="field-label">Message <span class="req" aria-hidden="true">*</span></span>
+        <textarea
+          class="field-input field-textarea"
+          name="message"
+          required
+          rows="6"
+          placeholder="Tell us what you need — a quick hello, a question, or details on a quote request."
+        />
+      </label>
+
+      <!-- Honeypot: bots fill this in, humans don't see it. Submissions with
+           a non-empty value are silently discarded client-side. -->
+      <label class="honeypot" aria-hidden="true">
+        Leave this field empty
+        <input type="text" name="website" tabindex="-1" autocomplete="off" />
+      </label>
+
+      <!-- Submit + status area -->
+      <div class="form-footer">
+        <button type="submit" class="submit-btn" data-submit>
+          <span class="submit-label">Send Message</span>
+          <span class="submit-arrow" aria-hidden="true">→</span>
+        </button>
+
+        <p class="form-status" data-form-status role="status" aria-live="polite"></p>
+      </div>
+    </form>
+  </div>
+</section>
+
+<style>
+  /* =============================================================
+     FORM REGION — full-bleed container; chunk 4 will hook here
+     ============================================================= */
+  .form-region {
+    position: relative;
+    background: var(--color-off-white);
+    border-bottom: 3px solid var(--color-black);
+  }
+
+  .form-wrap {
+    padding: var(--space-6) 1.25rem var(--space-7);
+  }
+
+  @media (min-width: 900px) {
+    .form-wrap {
+      padding: var(--space-7) var(--space-6) var(--space-8);
+      /* Chunk 3 will flip this to a 2-col grid with the side cards */
+      max-width: 900px;
+    }
+  }
+
+  /* =============================================================
+     FORM HEADER
+     ============================================================= */
+  .form-header {
+    margin-bottom: var(--space-5);
+  }
+
+  .form-heading {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 3.25vw, 2.75rem);
+    font-weight: 700;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    color: var(--color-black);
+    text-transform: uppercase;
+    margin: 0 0 var(--space-2) 0;
+  }
+
+  .form-sub {
+    font-family: var(--font-body);
+    font-size: var(--fs-base);
+    line-height: 1.5;
+    color: var(--color-black);
+    opacity: 0.8;
+    margin: 0;
+    max-width: 55ch;
+  }
+
+  /* =============================================================
+     FIELDS — brutalist: thick black borders, no radius, hard focus
+     ============================================================= */
+  .connect-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 640px) {
+    .field-row {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .field--full {
+    grid-column: 1 / -1;
+  }
+
+  .field-label {
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-black);
+  }
+
+  .req {
+    color: var(--color-brick-red);
+    margin-left: 0.15em;
+  }
+
+  .field-input {
+    font-family: var(--font-body);
+    font-size: var(--fs-base);
+    line-height: 1.3;
+    padding: 0.85rem 0.9rem;
+    background: white;
+    color: var(--color-black);
+    border: 3px solid var(--color-black);
+    border-radius: 0;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: box-shadow 120ms ease, transform 120ms ease;
+  }
+
+  .field-input::placeholder {
+    color: var(--color-black);
+    opacity: 0.4;
+  }
+
+  .field-input:focus {
+    /* Hard offset shadow — brutalist "pop" */
+    box-shadow: 6px 6px 0 var(--color-electric-yellow);
+    transform: translate(-2px, -2px);
+  }
+
+  .field-input:invalid:not(:placeholder-shown) {
+    box-shadow: 6px 6px 0 var(--color-brick-red);
+  }
+
+  .field-textarea {
+    resize: vertical;
+    min-height: 160px;
+    font-family: var(--font-body);
+  }
+
+  /* Custom dropdown chevron — brutalist, square, black */
+  .field-input--select {
+    background-image: linear-gradient(45deg, transparent 50%, var(--color-black) 50%),
+      linear-gradient(135deg, var(--color-black) 50%, transparent 50%);
+    background-position: calc(100% - 22px) 55%, calc(100% - 14px) 55%;
+    background-size: 8px 8px, 8px 8px;
+    background-repeat: no-repeat;
+    padding-right: 3rem;
+    cursor: pointer;
+  }
+
+  /* =============================================================
+     QUOTE DETAILS GROUP — bordered subsection
+     ============================================================= */
+  .quote-group {
+    border: 3px solid var(--color-black);
+    background: white;
+    padding: var(--space-4);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 640px) {
+    .quote-group {
+      padding: var(--space-5);
+    }
+  }
+
+  .quote-legend {
+    font-family: var(--font-display);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-black);
+    background: var(--color-electric-yellow);
+    border: 3px solid var(--color-black);
+    padding: 0.35rem 0.65rem;
+    margin-left: -3px;
+  }
+
+  .quote-hint {
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    opacity: 0.75;
+    margin-left: 0.5ch;
+  }
+
+  /* =============================================================
+     HONEYPOT — hidden from users, visible to dumb bots
+     ============================================================= */
+  .honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  /* =============================================================
+     SUBMIT — brutalist CTA button
+     ============================================================= */
+  .form-footer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+  }
+
+  .submit-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    width: 100%;
+    padding: 1.1rem 1.4rem;
+    font-family: var(--font-display);
+    font-size: var(--fs-lg);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-electric-yellow);
+    background: var(--color-black);
+    border: 3px solid var(--color-black);
+    border-radius: 0;
+    cursor: pointer;
+    transition: transform 120ms ease, box-shadow 120ms ease, background-color 120ms ease;
+    box-shadow: 6px 6px 0 var(--color-brick-red);
+  }
+
+  @media (min-width: 640px) {
+    .submit-btn {
+      width: auto;
+      min-width: 280px;
+    }
+  }
+
+  .submit-btn:hover,
+  .submit-btn:focus-visible {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0 var(--color-brick-red);
+    outline: none;
+  }
+
+  .submit-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--color-brick-red);
+  }
+
+  .submit-btn[data-pending='true'] {
+    cursor: wait;
+    opacity: 0.7;
+  }
+
+  .submit-arrow {
+    font-size: 1.5em;
+    line-height: 1;
+  }
+
+  /* Status message — success or error */
+  .form-status {
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    line-height: 1.4;
+    margin: 0;
+    padding: 0;
+    min-height: 1.4em;
+  }
+
+  .form-status[data-state='success'] {
+    color: #0a6d0a;
+    padding: 0.65rem 0.8rem;
+    background: #eaf7ea;
+    border: 3px solid #0a6d0a;
+  }
+
+  .form-status[data-state='error'] {
+    color: var(--color-brick-red);
+    padding: 0.65rem 0.8rem;
+    background: #fbeaea;
+    border: 3px solid var(--color-brick-red);
+  }
+</style>
+
+<script>
+  // =============================================================
+  // FORM BEHAVIOR — POST JSON to Zapier, show status, prevent mailto
+  // =============================================================
+  const form = document.querySelector<HTMLFormElement>('[data-connect-form]');
+  const statusEl = document.querySelector<HTMLParagraphElement>('[data-form-status]');
+  const submitBtn = document.querySelector<HTMLButtonElement>('[data-submit]');
+
+  if (form && statusEl && submitBtn) {
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      // Honeypot — silently bail if a bot filled the hidden field
+      const formData = new FormData(form);
+      if (formData.get('website')) {
+        statusEl.setAttribute('data-state', 'success');
+        statusEl.textContent = 'Thanks — your message was received.';
+        form.reset();
+        return;
+      }
+
+      // Minimal client-side validation for required fields
+      const name = (formData.get('name') ?? '').toString().trim();
+      const email = (formData.get('email') ?? '').toString().trim();
+      const message = (formData.get('message') ?? '').toString().trim();
+
+      if (!name || !email || !message) {
+        statusEl.setAttribute('data-state', 'error');
+        statusEl.textContent = 'Please fill in name, email, and message before sending.';
+        return;
+      }
+
+      const webhook = form.getAttribute('data-webhook');
+      if (!webhook) {
+        statusEl.setAttribute('data-state', 'error');
+        statusEl.textContent = 'Form misconfigured — webhook missing. Please email us directly.';
+        return;
+      }
+
+      // Build URL-encoded payload for Zapier.
+      // x-www-form-urlencoded is a "simple request" — no CORS preflight, so
+      // Zapier accepts it directly from the browser. Zapier parses the fields
+      // exactly the same way it would parse JSON.
+      const payload = new URLSearchParams();
+      payload.append('source', 'huntsville3pl.com/connect');
+      payload.append('submitted_at', new Date().toISOString());
+      formData.forEach((value, key) => {
+        if (key !== 'website') payload.append(key, value.toString());
+      });
+
+      submitBtn.setAttribute('data-pending', 'true');
+      statusEl.removeAttribute('data-state');
+      statusEl.textContent = 'Sending…';
+
+      try {
+        const res = await fetch(webhook, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: payload.toString(),
+        });
+
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+        statusEl.setAttribute('data-state', 'success');
+        statusEl.textContent = "Thanks — your message is on its way. We'll respond within one business day.";
+        form.reset();
+      } catch (err) {
+        statusEl.setAttribute('data-state', 'error');
+        statusEl.textContent = "We couldn't send that just now. Please try again, or email us at info@sams3plsolutions.com.";
+        console.error('[connect-form]', err);
+      } finally {
+        submitBtn.removeAttribute('data-pending');
+      }
+    });
+  }
+</script>
