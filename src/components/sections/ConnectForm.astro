@@ -200,8 +200,43 @@ const ZAPIER_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/25782870/ujycfzd/';
         <p class="form-status" data-form-status role="status" aria-live="polite"></p>
       </div>
     </form>
+
+    <!-- Form-fade overlay: covers the form (only) once the shatter
+         starts, leaving just the confirmation card on screen. -->
+    <div class="form-fade" data-form-fade aria-hidden="true"></div>
   </div>
+
+  <!-- Shatter stage: JS positions this over the button at click time
+       and fills it with a grid of tiles that animate outward. -->
+  <div class="shatter-stage" data-shatter-stage aria-hidden="true"></div>
 </section>
+
+<!-- Confirmation card — viewport-centered, hidden until the button
+     finishes shattering. The "X" close button navigates home. -->
+<div
+  class="confirm-card"
+  data-confirm-card
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="confirm-title"
+  hidden
+>
+  <button
+    type="button"
+    class="confirm-close"
+    data-confirm-close
+    aria-label="Close this page and return to homepage"
+  >
+    <span class="confirm-close-x" aria-hidden="true">×</span>
+    <span class="confirm-close-text">Close this page and return to homepage</span>
+  </button>
+
+  <p class="confirm-eyebrow">Message Sent</p>
+  <h2 class="confirm-title" id="confirm-title">Thank You</h2>
+  <p class="confirm-body">
+    Your message has been sent. We will reach out within the next 24 hours.
+  </p>
+</div>
 
 <style>
   /* =============================================================
@@ -472,57 +507,189 @@ const ZAPIER_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/25782870/ujycfzd/';
   }
 
   /* =============================================================
-     DAMIER DISSOLVE — CSS mask applied directly to the form region
+     SHATTER + CONFIRMATION
      -------------------------------------------------------------
-     The mask is a 28×4000 SVG that is solid white (= form visible)
-     EVERYWHERE except a 110px band at y=1890–2000 that contains a
-     checker pattern with a vertical opacity fade. Black pixels in
-     the band cut holes in the form. The fade goes from full-strength
-     dissolve at the TOP of the band → no dissolve at the BOTTOM
-     (the fold).
-
-     JS updates `--damier-y` on scroll so the band stays pinned to
-     the viewport fold. Result: as the form scrolls up under the
-     fold, its actual pixels (borders, fields, text) literally
-     dissolve into checker tiles before disappearing.
-
-     `--damier-active` toggles the mask on/off so when the form is
-     not in view, no mask is applied (form renders fully).
+     On successful submit:
+       1. The Send button is "hidden in place" (visibility:hidden so
+          its layout footprint stays — no jump).
+       2. JS positions .shatter-stage (position:fixed) over the button
+          and fills it with a grid of small black tiles. Each tile gets
+          random outward translate / rotate / delay variables.
+       3. CSS animation runs the tiles outward + rotates + fades.
+       4. Mid-shatter, .form-fade overlays the form-wrap with off-white
+          (covers the entire form). Confirmation card materializes,
+          centered on the viewport.
+       5. Reduced-motion: skip the tile animation, jump straight to the
+          confirmation card.
      ============================================================= */
-  .form-region {
-    --damier-y: 0px;
-    --damier-mask: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='4000' preserveAspectRatio='none'%3E%3Cdefs%3E%3Cpattern id='c' x='0' y='1890' width='28' height='28' patternUnits='userSpaceOnUse'%3E%3Crect x='14' y='0' width='14' height='14' fill='black'/%3E%3Crect x='0' y='14' width='14' height='14' fill='black'/%3E%3C/pattern%3E%3ClinearGradient id='f' x1='0' x2='0' y1='1890' y2='2000' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='white' stop-opacity='1'/%3E%3Cstop offset='1' stop-color='white' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cmask id='m' mask-type='alpha'%3E%3Crect x='0' y='1890' width='28' height='110' fill='url(%23f)'/%3E%3C/mask%3E%3C/defs%3E%3Crect width='28' height='4000' fill='white'/%3E%3Crect x='0' y='1890' width='28' height='110' fill='url(%23c)' mask='url(%23m)'/%3E%3C/svg%3E");
+
+  /* SHATTER STAGE — viewport-fixed container that holds the tiles.
+     JS sets top/left/width/height to match the button's bounding rect. */
+  .shatter-stage {
+    position: fixed;
+    pointer-events: none;
+    z-index: 90;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
   }
 
-  .form-region[data-damier-active='true'] {
-    -webkit-mask-image: var(--damier-mask);
-    mask-image: var(--damier-mask);
-    -webkit-mask-size: 28px 4000px;
-    mask-size: 28px 4000px;
-    /* repeat (not repeat-x) so the white "outside band" area tiles in
-       both axes — otherwise everything beyond the 4000px mask slot
-       becomes transparent (= hidden). The band itself only appears
-       once per 4000px tile, so a normal-height form shows it only once. */
-    -webkit-mask-repeat: repeat;
-    mask-repeat: repeat;
-    -webkit-mask-position-x: 0;
-    mask-position-x: 0;
-    -webkit-mask-position-y: var(--damier-y);
-    mask-position-y: var(--damier-y);
-
-    /* GPU layer + paint containment → mask updates don't repaint the
-       rest of the page, scroll stays at 60fps. */
-    will-change: mask-position-y;
-    contain: paint;
-    transform: translateZ(0);
+  .shatter-tile {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: var(--color-black);
+    transform-origin: center;
+    will-change: transform, opacity;
+    /* Custom properties set per-tile by JS */
+    --tx: 0px;
+    --ty: 0px;
+    --r: 0deg;
+    animation: shatter-fly 720ms cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
   }
 
-  /* Accessibility — no mask, no dissolve, for motion-sensitive users.
-     Form is fully readable and functional without the effect. */
+  @keyframes shatter-fly {
+    0% {
+      transform: translate(0, 0) rotate(0deg);
+      opacity: 1;
+    }
+    60% {
+      opacity: 1;
+    }
+    100% {
+      transform: translate(var(--tx), var(--ty)) rotate(var(--r));
+      opacity: 0;
+    }
+  }
+
+  /* FORM FADE — covers the form-wrap (so only the confirmation card
+     remains visible after the shatter completes). */
+  .form-wrap {
+    position: relative;
+  }
+
+  .form-fade {
+    position: absolute;
+    inset: -1rem;
+    background: var(--color-off-white);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 50;
+    transition: opacity 420ms ease-out;
+  }
+
+  .form-fade[data-active='true'] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* CONFIRMATION CARD — viewport-centered, brutalist styling.
+     Hidden by default via the [hidden] attribute; JS removes [hidden]
+     and adds data-active='true' to fade in. */
+  .confirm-card {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.96);
+    z-index: 200;
+    width: min(92vw, 560px);
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    background: var(--color-black);
+    color: var(--color-off-white);
+    border: 4px solid var(--color-black);
+    box-shadow: 10px 10px 0 var(--color-brick-red);
+    opacity: 0;
+    transition: opacity 320ms ease-out, transform 320ms ease-out;
+    text-align: center;
+  }
+
+  .confirm-card[data-active='true'] {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  .confirm-eyebrow {
+    font-family: var(--font-display);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--color-electric-yellow);
+    margin: 0 0 var(--space-3) 0;
+  }
+
+  .confirm-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 700;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: var(--color-off-white);
+    margin: 0 0 var(--space-4) 0;
+  }
+
+  .confirm-body {
+    font-family: var(--font-body);
+    font-size: var(--fs-base);
+    line-height: 1.5;
+    color: var(--color-off-white);
+    opacity: 0.9;
+    margin: 0;
+  }
+
+  /* Close button — styled as a small brutalist link/button at the
+     top-right of the card. Says exactly what it does. */
+  .confirm-close {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.6rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.6rem;
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-black);
+    background: var(--color-electric-yellow);
+    border: 2px solid var(--color-electric-yellow);
+    cursor: pointer;
+    transition: transform 120ms ease, box-shadow 120ms ease;
+  }
+
+  .confirm-close:hover,
+  .confirm-close:focus-visible {
+    transform: translate(-2px, -2px);
+    box-shadow: 3px 3px 0 var(--color-off-white);
+    outline: none;
+  }
+
+  .confirm-close-x {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    line-height: 1;
+  }
+
+  .confirm-close-text {
+    line-height: 1.1;
+    text-align: left;
+  }
+
+  /* Accessibility — skip the tile animation for motion-sensitive
+     users. The confirmation card still appears, just without the
+     shatter spectacle. */
   @media (prefers-reduced-motion: reduce) {
-    .form-region[data-damier-active='true'] {
-      -webkit-mask-image: none;
-      mask-image: none;
+    .shatter-tile {
+      animation: none;
+      opacity: 0;
+    }
+    .form-fade,
+    .confirm-card {
+      transition: none;
     }
   }
 </style>
@@ -590,9 +757,11 @@ const ZAPIER_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/25782870/ujycfzd/';
 
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
+        // Success → trigger the shatter animation and confirmation card.
+        // Status text is set as a fallback for screen readers / no-anim users.
         statusEl.setAttribute('data-state', 'success');
-        statusEl.textContent = "Thanks — your message is on its way. We'll respond within one business day.";
-        form.reset();
+        statusEl.textContent = 'Your message has been sent.';
+        triggerShatter();
       } catch (err) {
         statusEl.setAttribute('data-state', 'error');
         statusEl.textContent = "We couldn't send that just now. Please try again, or email us at info@sams3plsolutions.com.";
@@ -604,61 +773,110 @@ const ZAPIER_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/25782870/ujycfzd/';
   }
 
   // =============================================================
-  // DAMIER DISSOLVE — pin the SVG mask's checker band to the
-  // viewport fold by updating --damier-y on scroll.
+  // SHATTER + CONFIRMATION
   // -------------------------------------------------------------
-  // Math:
-  //   The SVG mask is 4000px tall with the dissolve band at y=1890.
-  //   We want the band to appear at form-relative y =
-  //     bandTopInForm = (window.innerHeight - 110) - formRect.top
-  //   mask-position-y shifts the mask, so:
-  //     --damier-y = bandTopInForm - 1890
+  // Called from the submit handler on a successful Zapier response.
+  // Builds a grid of black tiles over the Send button, animates them
+  // outward, fades the form, and reveals the centered confirm card.
   // =============================================================
-  const formRegion = document.querySelector<HTMLElement>('[data-form-region]');
+  const shatterStage = document.querySelector<HTMLDivElement>('[data-shatter-stage]');
+  const formFade = document.querySelector<HTMLDivElement>('[data-form-fade]');
+  const confirmCard = document.querySelector<HTMLDivElement>('[data-confirm-card]');
+  const confirmClose = document.querySelector<HTMLButtonElement>('[data-confirm-close]');
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  if (formRegion && !prefersReducedMotion) {
-    const BAND_HEIGHT = 110;
-    const BAND_OFFSET_IN_MASK = 1890;
-    let rafId: number | null = null;
-    let lastY = NaN;
-
-    const syncDamier = () => {
-      const rect = formRegion.getBoundingClientRect();
-      const bandTopInForm = window.innerHeight - BAND_HEIGHT - rect.top;
-      // Round to integer px — sub-pixel changes don't visibly matter
-      // and avoid pushing repaints for every fractional scroll delta.
-      const damierY = Math.round(bandTopInForm - BAND_OFFSET_IN_MASK);
-      if (damierY !== lastY) {
-        formRegion.style.setProperty('--damier-y', `${damierY}px`);
-        lastY = damierY;
-      }
-      rafId = null;
-    };
-
-    const onScrollOrResize = () => {
-      if (rafId !== null) return;
-      rafId = requestAnimationFrame(syncDamier);
-    };
-
-    // IntersectionObserver toggles the mask on/off so the form renders
-    // unmasked (no perf cost, no rendering quirks) when off-screen.
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          formRegion.setAttribute(
-            'data-damier-active',
-            entry.isIntersecting ? 'true' : 'false'
-          );
-        });
-      },
-      { rootMargin: '200px 0px 200px 0px', threshold: 0 }
-    );
-    io.observe(formRegion);
-
-    window.addEventListener('scroll', onScrollOrResize, { passive: true });
-    window.addEventListener('resize', onScrollOrResize, { passive: true });
-
-    syncDamier();
+  function showConfirmCard() {
+    if (!confirmCard) return;
+    confirmCard.hidden = false;
+    // Force layout so the transition runs, then activate.
+    requestAnimationFrame(() => {
+      confirmCard.setAttribute('data-active', 'true');
+      // Move focus to the close button for accessibility.
+      const close = confirmCard.querySelector<HTMLButtonElement>('[data-confirm-close]');
+      close?.focus();
+    });
   }
+
+  function triggerShatter() {
+    if (!submitBtn || !shatterStage) {
+      showConfirmCard();
+      return;
+    }
+
+    if (prefersReducedMotion) {
+      // Skip the spectacle for motion-sensitive users.
+      submitBtn.style.visibility = 'hidden';
+      formFade?.setAttribute('data-active', 'true');
+      showConfirmCard();
+      return;
+    }
+
+    const rect = submitBtn.getBoundingClientRect();
+    const TILE = 10;
+    const cols = Math.max(1, Math.ceil(rect.width / TILE));
+    const rows = Math.max(1, Math.ceil(rect.height / TILE));
+
+    // Position the stage exactly over the button (viewport-fixed).
+    shatterStage.style.top = `${rect.top}px`;
+    shatterStage.style.left = `${rect.left}px`;
+    shatterStage.style.width = `${rect.width}px`;
+    shatterStage.style.height = `${rect.height}px`;
+    shatterStage.innerHTML = '';
+
+    // Hide the button (visibility, not display — preserves layout).
+    submitBtn.style.visibility = 'hidden';
+
+    // Build tiles. DocumentFragment keeps the DOM write to a single
+    // reflow even with ~150–200 tiles.
+    const frag = document.createDocumentFragment();
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        const tile = document.createElement('div');
+        tile.className = 'shatter-tile';
+        tile.style.left = `${col * TILE}px`;
+        tile.style.top = `${row * TILE}px`;
+
+        // Random outward translate, with an upward bias so the
+        // shatter feels like it explodes up + out, not just outward.
+        const angle = Math.random() * Math.PI * 2;
+        const dist = 90 + Math.random() * 240;
+        const tx = Math.cos(angle) * dist;
+        const ty = Math.sin(angle) * dist - 60;
+        const rot = (Math.random() - 0.5) * 540;
+        const delay = Math.random() * 180;
+
+        tile.style.setProperty('--tx', `${tx}px`);
+        tile.style.setProperty('--ty', `${ty}px`);
+        tile.style.setProperty('--r', `${rot}deg`);
+        tile.style.animationDelay = `${delay}ms`;
+
+        frag.appendChild(tile);
+      }
+    }
+    shatterStage.appendChild(frag);
+
+    // Fade the form to off-white partway through the shatter.
+    setTimeout(() => formFade?.setAttribute('data-active', 'true'), 360);
+
+    // Reveal the confirmation card after the shatter completes.
+    setTimeout(showConfirmCard, 880);
+
+    // Cleanup the tile DOM once they're invisible.
+    setTimeout(() => {
+      if (shatterStage) shatterStage.innerHTML = '';
+    }, 1400);
+  }
+
+  // Close button → navigate to homepage.
+  confirmClose?.addEventListener('click', () => {
+    window.location.href = '/';
+  });
+
+  // Allow ESC to close as well (also returns to homepage, per the
+  // close button's stated behavior — there's no other dismiss path).
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && confirmCard && !confirmCard.hidden) {
+      window.location.href = '/';
+    }
+  });
 </script>
