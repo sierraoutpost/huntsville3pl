@@ -1,0 +1,16 @@
+---
+// /connect/ — Huntsville 3PL contact page
+// Chunk 1: Hero + page shell only. Form, side cards, and damier scroll effect
+// come in subsequent chunks.
+
+import ConnectLayout from '@layouts/ConnectLayout.astro';
+import ConnectHero from '@components/sections/ConnectHero.astro';
+
+const title = 'Connect with Huntsville 3PL | Logistics & Warehousing Quote Request';
+const description =
+  'Reach out to Huntsville 3PL for a custom warehouse, fulfillment, or distribution quote. Our logistics team responds within one business day — no pressure, no long-term contracts.';
+---
+
+<ConnectLayout title={title} description={description}>
+  <ConnectHero />
+</ConnectLayout>

@@ -1,0 +1,84 @@
+---
+// ConnectLayout.astro — Connect page layout
+// Order: BrandBanner (Row 1) → Header/Nav (Row 2) → Connect content → Footer
+// Injects ContactPage + LocalBusiness JSON-LD schema for SEO/AEO/LLMO.
+
+import BaseLayout from './BaseLayout.astro';
+import BrandBanner from '@components/sections/BrandBanner.astro';
+import Header from '@components/global/Header.astro';
+import Footer from '@components/global/Footer.astro';
+import { brand } from '@data/brand';
+import { city } from '@data/city';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+}
+
+const { title, description, ogImage } = Astro.props;
+const site = Astro.site?.toString().replace(/\/$/, '') ?? '';
+const connectUrl = `${site}/connect/`;
+
+// ContactPage schema — signals to search engines this is the "contact us" page
+const contactSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  name: `Connect with ${city.name} 3PL`,
+  description,
+  url: connectUrl,
+  mainEntity: {
+    '@type': 'LocalBusiness',
+    name: `${city.name} 3PL`,
+    parentOrganization: {
+      '@type': 'Organization',
+      name: brand.name,
+    },
+    telephone: brand.phone.display,
+    email: brand.email.display,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: city.facility.address.street,
+      addressLocality: city.facility.address.city,
+      addressRegion: city.facility.address.state,
+      addressCountry: 'US',
+    },
+    areaServed: city.name,
+    contactPoint: {
+      '@type': 'ContactPoint',
+      telephone: brand.phone.display,
+      email: brand.email.display,
+      contactType: 'customer service',
+      availableLanguage: 'English',
+      hoursAvailable: {
+        '@type': 'OpeningHoursSpecification',
+        description: brand.hours,
+      },
+    },
+  },
+};
+---
+
+<BaseLayout title={title} description={description} ogImage={ogImage}>
+  <div class="page-wrapper">
+    <BrandBanner />
+    <Header />
+
+    <main id="main-content">
+      <slot />
+    </main>
+
+    <Footer />
+  </div>
+
+  <!-- ContactPage schema for SEO / AEO / LLMO -->
+  <script type="application/ld+json" set:html={JSON.stringify(contactSchema)} />
+</BaseLayout>
+
+<style>
+  .page-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+  }
+</style>

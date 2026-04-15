@@ -1,0 +1,80 @@
+---
+// ConnectHero.astro — Above-the-fold hero for /connect/
+// Pure typography. No black panels, no accent bars, no "CONNECT" word.
+// The TAGLINE is the hero. Two lines, broken at the comma for brutalist emphasis.
+//
+// Sized compact — leaves ~220px of viewport beneath the hero so the top of the
+// form (heading + first row of fields) peeks above the fold. The fold is the
+// dissolve zone where the checkerboard will eat the form (Chunks 2–4).
+---
+
+<section class="connect-hero" aria-labelledby="connect-heading">
+  <p class="hero-eyebrow">Connect / 01</p>
+
+  <h1 class="hero-tagline" id="connect-heading">
+    <span class="tagline-line tagline-line--1">
+      We're not trying to fit your operation into our warehouse,
+    </span>
+    <span class="tagline-line tagline-line--2">
+      we build the warehouse solution around your operation.
+    </span>
+  </h1>
+</section>
+
+<style>
+  /* =============================================================
+     HERO — pure typography, off-white bg, black ink.
+     No container, no card, no panel. Just the words.
+     ============================================================= */
+  .connect-hero {
+    background: var(--color-off-white);
+    padding: var(--space-5) 1.25rem var(--space-6);
+    border-bottom: 3px solid var(--color-black);
+  }
+
+  @media (min-width: 900px) {
+    .connect-hero {
+      padding: var(--space-6) var(--space-6) var(--space-7);
+    }
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-brick-red);
+    margin: 0 0 var(--space-3) 0;
+  }
+
+  .hero-tagline {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    color: var(--color-black);
+    text-transform: none;
+    margin: 0;
+    /* Use block span children to force the comma line break. */
+  }
+
+  .tagline-line {
+    display: block;
+    /* Massive brutalist type — scales from readable-on-phone to enormous-on-desktop. */
+    font-size: clamp(1.75rem, 5.5vw, 4.5rem);
+  }
+
+  /* Brutalist tension: second line intentionally weighted slightly differently
+     so the break at the comma reads as a structural break, not a line-wrap. */
+  .tagline-line--2 {
+    color: var(--color-black);
+    /* Subtle indent to signal "this is the resolution, not just the continuation" */
+  }
+
+  @media (min-width: 900px) {
+    .tagline-line--2 {
+      padding-left: 4vw;
+    }
+  }
+</style>
