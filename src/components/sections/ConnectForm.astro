@@ -499,12 +499,22 @@ const ZAPIER_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/25782870/ujycfzd/';
     mask-image: var(--damier-mask);
     -webkit-mask-size: 28px 4000px;
     mask-size: 28px 4000px;
-    -webkit-mask-repeat: repeat-x;
-    mask-repeat: repeat-x;
+    /* repeat (not repeat-x) so the white "outside band" area tiles in
+       both axes — otherwise everything beyond the 4000px mask slot
+       becomes transparent (= hidden). The band itself only appears
+       once per 4000px tile, so a normal-height form shows it only once. */
+    -webkit-mask-repeat: repeat;
+    mask-repeat: repeat;
     -webkit-mask-position-x: 0;
     mask-position-x: 0;
     -webkit-mask-position-y: var(--damier-y);
     mask-position-y: var(--damier-y);
+
+    /* GPU layer + paint containment → mask updates don't repaint the
+       rest of the page, scroll stays at 60fps. */
+    will-change: mask-position-y;
+    contain: paint;
+    transform: translateZ(0);
   }
 
   /* Accessibility — no mask, no dissolve, for motion-sensitive users.
@@ -611,12 +621,18 @@ const ZAPIER_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/25782870/ujycfzd/';
     const BAND_HEIGHT = 110;
     const BAND_OFFSET_IN_MASK = 1890;
     let rafId: number | null = null;
+    let lastY = NaN;
 
     const syncDamier = () => {
       const rect = formRegion.getBoundingClientRect();
       const bandTopInForm = window.innerHeight - BAND_HEIGHT - rect.top;
-      const damierY = bandTopInForm - BAND_OFFSET_IN_MASK;
-      formRegion.style.setProperty('--damier-y', `${damierY}px`);
+      // Round to integer px — sub-pixel changes don't visibly matter
+      // and avoid pushing repaints for every fractional scroll delta.
+      const damierY = Math.round(bandTopInForm - BAND_OFFSET_IN_MASK);
+      if (damierY !== lastY) {
+        formRegion.style.setProperty('--damier-y', `${damierY}px`);
+        lastY = damierY;
+      }
       rafId = null;
     };
 
