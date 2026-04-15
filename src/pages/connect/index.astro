@@ -57,11 +57,26 @@ const description =
     margin: 0 auto;
   }
 
+  /* Desktop layout:
+     - Row 1: form spans both columns (full width)
+     - Row 2: left column empty, sidebar lives in the right column
+     This keeps the sidebar in its original horizontal position (right side)
+     while moving it below the form vertically. */
   @media (min-width: 1024px) {
     .body-grid {
       grid-template-columns: 1.55fr 1fr;
-      gap: var(--space-7);
+      gap: var(--space-7) var(--space-7);
       align-items: start;
+    }
+
+    .body-form {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .body-aside {
+      grid-column: 2;
+      grid-row: 2;
     }
   }
 
@@ -71,14 +86,5 @@ const description =
 
   .body-aside {
     min-width: 0;
-  }
-
-  /* On desktop, make the sidebar sticky so cards stay in view as user
-     scrolls through the form. Subtle polish — not mandatory to brutalism. */
-  @media (min-width: 1024px) {
-    .body-aside {
-      position: sticky;
-      top: var(--space-4);
-    }
   }
 </style>
