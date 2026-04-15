@@ -21,9 +21,13 @@
     background: white;
     padding: var(--space-3) 1.25rem var(--space-2);
     display: flex;
+    align-items: flex-end;
     justify-content: center;
     position: relative;
     overflow: hidden;
+    /* Guarantee enough vertical room for the rotated sub-text so it never
+       gets clipped by overflow:hidden. Scales with viewport. */
+    min-height: clamp(6.5rem, 11.5vw, 10rem);
   }
 
   /* On desktop, right-align wordmark so trailing "L" meets phone/CTA divider.
@@ -89,7 +93,9 @@
 
   .brand-sub {
     font-family: var(--font-body);
-    font-size: var(--fs-xs);
+    /* Fluid sub-text — shrinks with viewport so its rotated length always
+       fits within the banner's vertical space across all screen sizes. */
+    font-size: clamp(0.55rem, 0.85vw, 0.8rem);
     font-weight: 500;
     color: var(--color-black);
     text-transform: uppercase;
@@ -100,8 +106,10 @@
     transform-origin: center center;
   }
 
-  /* Hide vertical subtitle on small screens where it crowds the logo */
-  @media (max-width: 767px) {
+  /* Hide vertical subtitle on small screens where it crowds the logo.
+     Bumped to 900px so narrow tablets/laptops don't show a clipped
+     sub-group — it only appears once the banner is tall enough. */
+  @media (max-width: 899px) {
     .brand-sub-group {
       display: none;
     }
