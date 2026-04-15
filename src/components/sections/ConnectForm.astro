@@ -470,6 +470,51 @@ const ZAPIER_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/25782870/ujycfzd/';
     background: #fbeaea;
     border: 3px solid var(--color-brick-red);
   }
+
+  /* =============================================================
+     DAMIER DISSOLVE — CSS mask applied directly to the form region
+     -------------------------------------------------------------
+     The mask is a 28×4000 SVG that is solid white (= form visible)
+     EVERYWHERE except a 110px band at y=1890–2000 that contains a
+     checker pattern with a vertical opacity fade. Black pixels in
+     the band cut holes in the form. The fade goes from full-strength
+     dissolve at the TOP of the band → no dissolve at the BOTTOM
+     (the fold).
+
+     JS updates `--damier-y` on scroll so the band stays pinned to
+     the viewport fold. Result: as the form scrolls up under the
+     fold, its actual pixels (borders, fields, text) literally
+     dissolve into checker tiles before disappearing.
+
+     `--damier-active` toggles the mask on/off so when the form is
+     not in view, no mask is applied (form renders fully).
+     ============================================================= */
+  .form-region {
+    --damier-y: 0px;
+    --damier-mask: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='4000' preserveAspectRatio='none'%3E%3Cdefs%3E%3Cpattern id='c' x='0' y='1890' width='28' height='28' patternUnits='userSpaceOnUse'%3E%3Crect x='14' y='0' width='14' height='14' fill='black'/%3E%3Crect x='0' y='14' width='14' height='14' fill='black'/%3E%3C/pattern%3E%3ClinearGradient id='f' x1='0' x2='0' y1='1890' y2='2000' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='black' stop-opacity='1'/%3E%3Cstop offset='1' stop-color='black' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cmask id='m'%3E%3Crect x='0' y='1890' width='28' height='110' fill='url(%23f)'/%3E%3C/mask%3E%3C/defs%3E%3Crect width='28' height='4000' fill='white'/%3E%3Crect x='0' y='1890' width='28' height='110' fill='url(%23c)' mask='url(%23m)'/%3E%3C/svg%3E");
+  }
+
+  .form-region[data-damier-active='true'] {
+    -webkit-mask-image: var(--damier-mask);
+    mask-image: var(--damier-mask);
+    -webkit-mask-size: 28px 4000px;
+    mask-size: 28px 4000px;
+    -webkit-mask-repeat: repeat-x;
+    mask-repeat: repeat-x;
+    -webkit-mask-position-x: 0;
+    mask-position-x: 0;
+    -webkit-mask-position-y: var(--damier-y);
+    mask-position-y: var(--damier-y);
+  }
+
+  /* Accessibility — no mask, no dissolve, for motion-sensitive users.
+     Form is fully readable and functional without the effect. */
+  @media (prefers-reduced-motion: reduce) {
+    .form-region[data-damier-active='true'] {
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+  }
 </style>
 
 <script>
@@ -546,5 +591,58 @@ const ZAPIER_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/25782870/ujycfzd/';
         submitBtn.removeAttribute('data-pending');
       }
     });
+  }
+
+  // =============================================================
+  // DAMIER DISSOLVE — pin the SVG mask's checker band to the
+  // viewport fold by updating --damier-y on scroll.
+  // -------------------------------------------------------------
+  // Math:
+  //   The SVG mask is 4000px tall with the dissolve band at y=1890.
+  //   We want the band to appear at form-relative y =
+  //     bandTopInForm = (window.innerHeight - 110) - formRect.top
+  //   mask-position-y shifts the mask, so:
+  //     --damier-y = bandTopInForm - 1890
+  // =============================================================
+  const formRegion = document.querySelector<HTMLElement>('[data-form-region]');
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (formRegion && !prefersReducedMotion) {
+    const BAND_HEIGHT = 110;
+    const BAND_OFFSET_IN_MASK = 1890;
+    let rafId: number | null = null;
+
+    const syncDamier = () => {
+      const rect = formRegion.getBoundingClientRect();
+      const bandTopInForm = window.innerHeight - BAND_HEIGHT - rect.top;
+      const damierY = bandTopInForm - BAND_OFFSET_IN_MASK;
+      formRegion.style.setProperty('--damier-y', `${damierY}px`);
+      rafId = null;
+    };
+
+    const onScrollOrResize = () => {
+      if (rafId !== null) return;
+      rafId = requestAnimationFrame(syncDamier);
+    };
+
+    // IntersectionObserver toggles the mask on/off so the form renders
+    // unmasked (no perf cost, no rendering quirks) when off-screen.
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          formRegion.setAttribute(
+            'data-damier-active',
+            entry.isIntersecting ? 'true' : 'false'
+          );
+        });
+      },
+      { rootMargin: '200px 0px 200px 0px', threshold: 0 }
+    );
+    io.observe(formRegion);
+
+    window.addEventListener('scroll', onScrollOrResize, { passive: true });
+    window.addEventListener('resize', onScrollOrResize, { passive: true });
+
+    syncDamier();
   }
 </script>
