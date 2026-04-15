@@ -1,11 +1,15 @@
 ---
 // /connect/ — Huntsville 3PL contact page
-// Chunk 1: Hero + page shell only. Form, side cards, and damier scroll effect
-// come in subsequent chunks.
+// Chunk 1: Hero + page shell
+// Chunk 2: Form + Zapier webhook
+// Chunk 3: Brutalist side cards, grid layout
+// Chunk 4: Damier dissolve effect (targets [data-form-region])
+// Chunk 5: Mosaic tagline reveal
 
 import ConnectLayout from '@layouts/ConnectLayout.astro';
 import ConnectHero from '@components/sections/ConnectHero.astro';
 import ConnectForm from '@components/sections/ConnectForm.astro';
+import ConnectSidebar from '@components/sections/ConnectSidebar.astro';
 
 const title = 'Connect with Huntsville 3PL | Logistics & Warehousing Quote Request';
 const description =
@@ -14,5 +18,67 @@ const description =
 
 <ConnectLayout title={title} description={description}>
   <ConnectHero />
-  <ConnectForm />
+
+  <section class="connect-body">
+    <div class="body-grid">
+      <div class="body-form">
+        <ConnectForm />
+      </div>
+      <div class="body-aside">
+        <ConnectSidebar />
+      </div>
+    </div>
+  </section>
 </ConnectLayout>
+
+<style>
+  /* =============================================================
+     BODY REGION — form + sidebar grid
+     Mobile: single column (form, then sidebar below)
+     Desktop: form LEFT (1.55fr), sidebar RIGHT (1fr)
+     ============================================================= */
+  .connect-body {
+    background: var(--color-off-white);
+    border-bottom: 3px solid var(--color-black);
+    padding: var(--space-6) 1.25rem var(--space-7);
+  }
+
+  @media (min-width: 1024px) {
+    .connect-body {
+      padding: var(--space-7) var(--space-6) var(--space-8);
+    }
+  }
+
+  .body-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  @media (min-width: 1024px) {
+    .body-grid {
+      grid-template-columns: 1.55fr 1fr;
+      gap: var(--space-7);
+      align-items: start;
+    }
+  }
+
+  .body-form {
+    min-width: 0;
+  }
+
+  .body-aside {
+    min-width: 0;
+  }
+
+  /* On desktop, make the sidebar sticky so cards stay in view as user
+     scrolls through the form. Subtle polish — not mandatory to brutalism. */
+  @media (min-width: 1024px) {
+    .body-aside {
+      position: sticky;
+      top: var(--space-4);
+    }
+  }
+</style>

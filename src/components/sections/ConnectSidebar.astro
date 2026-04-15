@@ -1,0 +1,346 @@
+---
+// ConnectSidebar.astro — Three brutalist info cards
+// Shown to the right of the form on desktop, stacked below on mobile.
+//
+// 1) WHAT HAPPENS NEXT — 4-step process (black bg, yellow heading)
+// 2) PREFER TO TALK? — phone CTA (off-white bg, brick-red heading)
+// 3) OR EMAIL US — email (black bg, yellow heading)
+
+import { brand } from '@data/brand';
+
+const steps = [
+  {
+    num: '01',
+    title: 'You Reach Out',
+    body: 'Drop us a note — a quick hello, a question, or the start of a quote. It\'s all the same form.',
+  },
+  {
+    num: '02',
+    title: 'We Respond Fast',
+    body: 'Our logistics team reviews your message and replies within one business day.',
+  },
+  {
+    num: '03',
+    title: 'We Talk Details',
+    body: 'If it\'s a quote, we\'ll gather what we need and send a custom estimate. If it\'s a question, we answer it.',
+  },
+  {
+    num: '04',
+    title: 'You Decide',
+    body: 'No pressure. No long-term contracts. Work with us when it makes sense for your business.',
+  },
+];
+---
+
+<aside class="connect-sidebar" aria-label="What to expect when you contact us">
+  <!-- CARD 1: What Happens Next — bare typography, right-aligned -->
+  <div class="card card--bare">
+    <header class="card-header card-header--right">
+      <span class="card-eyebrow card-eyebrow--red">The Process</span>
+      <h2 class="card-title card-title--dark">What Happens Next</h2>
+    </header>
+
+    <ol class="step-list step-list--right">
+      {steps.map((step) => (
+        <li class="step step--right">
+          <div class="step-body step-body--right">
+            <h3 class="step-title step-title--dark">{step.title}</h3>
+            <p class="step-desc step-desc--dark">{step.body}</p>
+          </div>
+          <span class="step-num step-num--right" aria-hidden="true">{step.num}</span>
+        </li>
+      ))}
+    </ol>
+  </div>
+
+  <!-- CARD 2: Prefer To Talk? -->
+  <div class="card card--light">
+    <header class="card-header">
+      <span class="card-eyebrow card-eyebrow--red">Prefer to Talk?</span>
+      <h2 class="card-title card-title--dark">Call Our Logistics Team</h2>
+    </header>
+    <a class="phone-cta" href={brand.phone.href}>
+      <span class="phone-label">Call</span>
+      <span class="phone-number">{brand.phone.display}</span>
+    </a>
+    <p class="card-footnote">{brand.hours}</p>
+  </div>
+
+  <!-- CARD 3: Or Email Us -->
+  <div class="card card--dark">
+    <header class="card-header">
+      <span class="card-eyebrow">Or Email Us</span>
+      <h2 class="card-title">Direct Line</h2>
+    </header>
+    <a class="email-cta" href={brand.email.href}>{brand.email.display}</a>
+    <p class="card-footnote card-footnote--light">We respond within one business day.</p>
+  </div>
+</aside>
+
+<style>
+  /* =============================================================
+     SIDEBAR — stack of brutalist info cards
+     ============================================================= */
+  .connect-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  /* =============================================================
+     CARD BASE — thick black border, hard shadow offset, no radius
+     ============================================================= */
+  .card {
+    position: relative;
+    padding: var(--space-5);
+    border: 3px solid var(--color-black);
+    /* Hard offset shadow — brick red for dark cards, yellow for light */
+    box-shadow: 6px 6px 0 var(--color-brick-red);
+  }
+
+  @media (min-width: 640px) {
+    .card {
+      padding: var(--space-6);
+    }
+  }
+
+  .card--dark {
+    background: var(--color-black);
+    color: var(--color-off-white);
+  }
+
+  .card--light {
+    background: var(--color-off-white);
+    color: var(--color-black);
+    box-shadow: 6px 6px 0 var(--color-electric-yellow);
+  }
+
+  /* Bare card — no background, no border, no shadow. Pure typography. */
+  .card--bare {
+    background: transparent;
+    color: var(--color-black);
+    border: none;
+    padding: 0;
+    box-shadow: none;
+  }
+
+  /* =============================================================
+     CARD HEADER — eyebrow + title
+     ============================================================= */
+  .card-header {
+    margin-bottom: var(--space-4);
+  }
+
+  .card-header--right {
+    text-align: right;
+  }
+
+  .card-eyebrow {
+    display: block;
+    font-family: var(--font-display);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--color-electric-yellow);
+    margin-bottom: var(--space-2);
+  }
+
+  .card-eyebrow--red {
+    color: var(--color-brick-red);
+  }
+
+  .card-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.35rem, 2vw, 1.65rem);
+    font-weight: 700;
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    color: var(--color-off-white);
+    margin: 0;
+  }
+
+  .card-title--dark {
+    color: var(--color-black);
+  }
+
+  /* =============================================================
+     STEP LIST — What Happens Next
+     ============================================================= */
+  .step-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .step {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-3);
+    align-items: start;
+  }
+
+  /* Right-aligned variant — text LEFT of number (which sits on the right). */
+  .step--right {
+    grid-template-columns: 1fr auto;
+  }
+
+  .step-list--right {
+    gap: var(--space-5);
+  }
+
+  .step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.6rem;
+    height: 2.6rem;
+    padding: 0 0.4rem;
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-black);
+    background: var(--color-electric-yellow);
+    border: 3px solid var(--color-off-white);
+    /* Square, brutalist — no radius */
+  }
+
+  /* Right-aligned variant — number sits on the right with a black border
+     so it reads on the off-white page background (not an off-white card). */
+  .step-num--right {
+    border: 3px solid var(--color-black);
+  }
+
+  .step-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .step-body--right {
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  .step-title {
+    font-family: var(--font-display);
+    font-size: var(--fs-base);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-off-white);
+    margin: 0;
+  }
+
+  .step-title--dark {
+    color: var(--color-black);
+  }
+
+  .step-desc {
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    line-height: 1.45;
+    color: var(--color-off-white);
+    opacity: 0.85;
+    margin: 0;
+  }
+
+  .step-desc--dark {
+    color: var(--color-black);
+    opacity: 0.8;
+  }
+
+  /* =============================================================
+     PHONE CTA — full-width black button on light card
+     ============================================================= */
+  .phone-cta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 1rem 1.2rem;
+    background: var(--color-black);
+    color: var(--color-electric-yellow);
+    border: 3px solid var(--color-black);
+    text-decoration: none;
+    box-shadow: 4px 4px 0 var(--color-brick-red);
+    transition: transform 120ms ease, box-shadow 120ms ease;
+    margin-bottom: var(--space-3);
+  }
+
+  .phone-cta:hover,
+  .phone-cta:focus-visible {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--color-brick-red);
+    outline: none;
+  }
+
+  .phone-label {
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-off-white);
+    opacity: 0.75;
+  }
+
+  .phone-number {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 2.5vw, 1.9rem);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--color-electric-yellow);
+  }
+
+  /* =============================================================
+     EMAIL CTA — big inline link on dark card
+     ============================================================= */
+  .email-cta {
+    display: block;
+    font-family: var(--font-display);
+    font-size: clamp(1.15rem, 2vw, 1.5rem);
+    font-weight: 700;
+    letter-spacing: -0.005em;
+    color: var(--color-off-white);
+    text-decoration: none;
+    padding: 0.65rem 0.85rem;
+    background: transparent;
+    border: 3px solid var(--color-electric-yellow);
+    box-shadow: 4px 4px 0 var(--color-electric-yellow);
+    transition: transform 120ms ease, background 120ms ease, color 120ms ease;
+    margin-bottom: var(--space-3);
+    word-break: break-all;
+  }
+
+  .email-cta:hover,
+  .email-cta:focus-visible {
+    transform: translate(-2px, -2px);
+    background: var(--color-electric-yellow);
+    color: var(--color-black);
+    outline: none;
+  }
+
+  /* =============================================================
+     FOOTNOTES
+     ============================================================= */
+  .card-footnote {
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-black);
+    opacity: 0.75;
+    margin: 0;
+  }
+
+  .card-footnote--light {
+    color: var(--color-off-white);
+    opacity: 0.75;
+  }
+</style>
