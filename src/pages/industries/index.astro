@@ -1,0 +1,301 @@
+---
+// /industries/ — Industries overview page
+// Sections, top to bottom:
+//   1. Hero           — 4 juxtaposed photos (truck | train | airport | ship)
+//                       with "Industries" overlaid bottom-left on the truck
+//   2. IndustryGrid   — 10 industry cards linking to /industries/[slug]
+//   3. ConnectCTA     — closing call to action
+
+import AboutLayout from '@layouts/AboutLayout.astro';
+import ConnectCTA from '@components/sections/ConnectCTA.astro';
+import { industries } from '@data/industries';
+
+const title = 'Industries We Serve | Logistics Built for Your Sector';
+const description =
+  'Huntsville 3PL serves aerospace, defense, manufacturing, e-commerce, biotech, and more. Sector-specific logistics solutions built in the Rocket City.';
+
+// Hero images — order: truck (far left) → train → airport → ship
+const heroImages = [
+  { src: '/images/industry-hero-1.webp', alt: 'American flag semi truck — freight transportation and logistics' },
+  { src: '/images/industry-hero-2.webp', alt: 'Union Pacific locomotive — rail freight and intermodal logistics' },
+  { src: '/images/industry-hero-4.webp', alt: 'Plane taking off at sunset with port cranes — air freight logistics' },
+  { src: '/images/industry-hero-3.webp', alt: 'Aerial view of container ship — ocean freight and global supply chain' },
+];
+---
+
+<AboutLayout title={title} description={description}>
+  <!-- =========================================================
+       1) HERO — 4 juxtaposed photos, above the fold
+       ========================================================= -->
+  <section class="ind-hero" aria-label="Industries hero">
+    {heroImages.map((img, i) => (
+      <div class:list={['ind-hero-col', { 'ind-hero-col--truck': i === 0 }]}>
+        <img
+          src={img.src}
+          alt={img.alt}
+          class="ind-hero-img"
+          width="1200"
+          height="1800"
+          loading="eager"
+          decoding="async"
+          fetchpriority={i === 0 ? 'high' : undefined}
+        />
+        {i === 0 && (
+          <span class="ind-hero-label">Industries</span>
+        )}
+      </div>
+    ))}
+  </section>
+
+  <!-- =========================================================
+       2) INDUSTRY GRID — 10 sector cards
+       ========================================================= -->
+  <section class="ind-grid-section" aria-labelledby="ind-grid-heading">
+    <div class="ind-grid-inner">
+      <header class="ind-grid-header">
+        <p class="ind-grid-eyebrow">Sectors</p>
+        <h2 class="ind-grid-heading" id="ind-grid-heading">
+          Every industry moves differently.<br />
+          We build around yours.
+        </h2>
+        <p class="ind-grid-sub">
+          From rocket hardware to retail fulfillment, Huntsville 3PL designs logistics
+          programs around the actual demands of your sector — not a one-size template.
+        </p>
+      </header>
+
+      <ul class="ind-grid" role="list">
+        {industries.map((ind, i) => (
+          <li class="ind-card">
+            <a href={`/industries/${ind.slug}/`} class="ind-card-link">
+              <span class="ind-card-num" aria-hidden="true">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <h3 class="ind-card-name">{ind.name}</h3>
+              <p class="ind-card-tagline">{ind.tagline}</p>
+              <span class="ind-card-arrow" aria-hidden="true">&rarr;</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       3) CLOSING CTA
+       ========================================================= -->
+  <ConnectCTA />
+</AboutLayout>
+
+<style>
+  /* =============================================================
+     1) HERO — 4 photos side-by-side, filling above-fold space
+     -------------------------------------------------------------
+     Height = viewport minus BrandBanner + Header (~200px).
+     3px black borders between columns. Truck (col 0) carries the
+     "Industries" overlay label at bottom-left.
+     ============================================================= */
+  .ind-hero {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3px;
+    background: var(--color-black);
+    border-bottom: 3px solid var(--color-black);
+    /* Fill above-fold space; bounded so it doesn't collapse on short
+       screens or grow absurdly on 4K+ monitors. */
+    height: clamp(300px, calc(100svh - 200px), 900px);
+    overflow: hidden;
+  }
+
+  /* Mobile: 2×2 grid so photos stay visible and above the fold */
+  @media (max-width: 767px) {
+    .ind-hero {
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: 1fr 1fr;
+      height: clamp(260px, calc(100svh - 160px), 600px);
+    }
+  }
+
+  .ind-hero-col {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ind-hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+    display: block;
+  }
+
+  /* "Industries" label overlaid on the truck photo (column 0) */
+  .ind-hero-col--truck .ind-hero-label {
+    /* intentionally empty — just a selector parent */
+  }
+
+  .ind-hero-label {
+    position: absolute;
+    bottom: var(--space-4);
+    left: var(--space-4);
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.5vw, 4rem);
+    font-weight: 700;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    /* Subtle text shadow so it reads over any photo brightness */
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.55), 0 1px 3px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+  }
+
+  @media (max-width: 767px) {
+    .ind-hero-label {
+      bottom: var(--space-3);
+      left: var(--space-3);
+    }
+  }
+
+  /* =============================================================
+     2) INDUSTRY GRID — 10 sector cards
+     ============================================================= */
+  .ind-grid-section {
+    background: var(--color-black);
+    color: var(--color-off-white);
+    padding: var(--space-7) 1.25rem;
+  }
+
+  @media (min-width: 900px) {
+    .ind-grid-section {
+      padding: var(--space-8) var(--space-6);
+    }
+  }
+
+  .ind-grid-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .ind-grid-header {
+    margin-bottom: var(--space-6);
+    max-width: 880px;
+  }
+
+  .ind-grid-eyebrow {
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--color-electric-yellow);
+    margin: 0 0 var(--space-3) 0;
+  }
+
+  .ind-grid-heading {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+    color: var(--color-off-white);
+    text-transform: none;
+    margin: 0 0 var(--space-3) 0;
+  }
+
+  .ind-grid-sub {
+    font-family: var(--font-body);
+    font-size: var(--fs-base);
+    line-height: 1.5;
+    color: var(--color-off-white);
+    opacity: 0.85;
+    margin: 0;
+  }
+
+  .ind-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 720px) {
+    .ind-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .ind-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .ind-card {
+    position: relative;
+    background: var(--color-off-white);
+    color: var(--color-black);
+    border: 3px solid var(--color-off-white);
+    box-shadow: 6px 6px 0 var(--color-brick-red);
+    transition: transform 80ms ease, box-shadow 80ms ease;
+  }
+
+  .ind-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0 var(--color-brick-red);
+  }
+
+  .ind-card:active {
+    transform: translate(3px, 3px);
+    box-shadow: none;
+  }
+
+  .ind-card-link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    text-decoration: none;
+    color: inherit;
+    min-height: 180px;
+  }
+
+  .ind-card-num {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-brick-red);
+  }
+
+  .ind-card-name {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2vw, 1.65rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--color-black);
+    text-transform: none;
+    margin: 0;
+  }
+
+  .ind-card-tagline {
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    line-height: 1.45;
+    color: var(--color-black);
+    opacity: 0.8;
+    margin: 0;
+    flex: 1;
+  }
+
+  .ind-card-arrow {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-brick-red);
+    align-self: flex-end;
+  }
+</style>
