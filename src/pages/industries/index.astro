@@ -47,14 +47,22 @@ const heroImages = [
         {i === 0 && (
           <span class="ind-hero-label">
             Industries
-            <img
-              src="/images/arrow-nav.svg"
-              alt=""
-              aria-hidden="true"
-              class="ind-hero-arrow"
-              width="1200"
-              height="1200"
-            />
+            <span class="ind-hero-arrows" aria-hidden="true">
+              <img
+                src="/images/arrow-nav.svg"
+                alt=""
+                class="ind-hero-arrow"
+                width="1200"
+                height="1200"
+              />
+              <img
+                src="/images/arrow-nav.svg"
+                alt=""
+                class="ind-hero-arrow"
+                width="1200"
+                height="1200"
+              />
+            </span>
           </span>
         )}
       </div>
@@ -192,20 +200,27 @@ const heroImages = [
     pointer-events: none;
   }
 
-  /* Arrow next to "Industries" — rotated 90° to point straight down,
-     serving as a scroll cue. Height matches cap height of the "S"
-     (0.72em ≈ GT Alpina Bold uppercase cap-height ratio).
-     Filter inverts the black SVG to white to match the text. */
-  .ind-hero-arrow {
-    display: inline-block;
-    height: 0.72em;
-    width: auto;
+  /* Two arrows next to "Industries" — both rotated 90° to point
+     straight down, serving as a scroll cue. Wrapper keeps them
+     perfectly aligned in a tight inline column. Each arrow matches
+     the cap height of the "S" (0.72em). */
+  .ind-hero-arrows {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.05em;
     vertical-align: baseline;
     margin-left: 0.2em;
+    pointer-events: none;
+  }
+
+  .ind-hero-arrow {
+    display: block;
+    height: 0.72em;
+    width: auto;
     filter: invert(1);
     transform: rotate(90deg);
     transform-origin: center center;
-    pointer-events: none;
   }
 
   @media (max-width: 767px) {
