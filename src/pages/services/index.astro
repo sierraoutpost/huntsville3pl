@@ -145,8 +145,8 @@ const serviceNames = services.map((s) => s.title.toLowerCase()).join(', ');
      at roughly the 58% mark from the left (between Tyler's blue marks). */
   .svc-hero-label {
     position: absolute;
-    bottom: var(--space-4);
-    left: 58%;
+    bottom: calc(var(--space-4) - 5px);
+    left: calc(58% + 50px);
     transform: translateX(-50%);
     font-family: var(--font-display);
     font-size: clamp(2rem, 4.5vw, 4rem);
