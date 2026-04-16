@@ -198,10 +198,11 @@ const heroImages = [
     pointer-events: none;
   }
 
-  /* Arrows to the right of "Industries" — inline with the text,
-     rotated 90° to point straight down. Each matches the cap height
-     of the "S" (0.72em). white-space: nowrap on the parent label
-     prevents them from wrapping to a new line. */
+  /* Two arrows to the right of "Industries" — inline with the text,
+     rotated 90° to point straight down. Each sized to match the exact
+     cap height of the uppercase "S".
+     Cap height ≈ 0.72em. baseline sits ~0.16em below the cap top,
+     so we shift up with position:relative + bottom to align tops. */
   .ind-hero-label {
     white-space: nowrap;
   }
@@ -210,8 +211,10 @@ const heroImages = [
     display: inline-block;
     height: 0.72em;
     width: 0.72em;
-    vertical-align: middle;
-    margin-left: 0.12em;
+    vertical-align: baseline;
+    position: relative;
+    bottom: 0.04em;
+    margin-left: 0.1em;
     filter: invert(1);
     transform: rotate(90deg);
     pointer-events: none;
