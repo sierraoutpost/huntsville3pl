@@ -141,11 +141,13 @@ const serviceNames = services.map((s) => s.title.toLowerCase()).join(', ');
     display: block;
   }
 
-  /* "Services" + down-arrow — bottom-right of hero */
+  /* "Services" + down-arrow — bottom of hero, centered horizontally
+     at roughly the 58% mark from the left (between Tyler's blue marks). */
   .svc-hero-label {
     position: absolute;
     bottom: var(--space-4);
-    right: var(--space-4);
+    left: 58%;
+    transform: translateX(-50%);
     font-family: var(--font-display);
     font-size: clamp(2rem, 4.5vw, 4rem);
     font-weight: 700;
@@ -161,7 +163,6 @@ const serviceNames = services.map((s) => s.title.toLowerCase()).join(', ');
   @media (min-width: 900px) {
     .svc-hero-label {
       bottom: var(--space-5);
-      right: var(--space-6);
     }
   }
 
