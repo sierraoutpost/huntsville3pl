@@ -9,17 +9,21 @@
 import AboutLayout from '@layouts/AboutLayout.astro';
 import ConnectCTA from '@components/sections/ConnectCTA.astro';
 import { industries } from '@data/industries';
+import { brand } from '@data/brand';
+import { city } from '@data/city';
 
 const title = 'Industries We Serve | Logistics Built for Your Sector';
 const description =
   'Huntsville 3PL serves aerospace, defense, manufacturing, e-commerce, biotech, and more. Sector-specific logistics solutions built in the Rocket City.';
 
-// Hero images — order: truck (far left) → train → airport → ship
+// Hero images — order: truck (far left) → train → airport → ship.
+// The truck alt carries the full industry list for SEO — Google reads alt
+// text as page content, and this is the primary indexable signal in the hero.
 const heroImages = [
-  { src: '/images/industry-hero-1.webp', alt: 'American flag semi truck — freight transportation and logistics' },
-  { src: '/images/industry-hero-2.webp', alt: 'Union Pacific locomotive — rail freight and intermodal logistics' },
-  { src: '/images/industry-hero-4.webp', alt: 'Plane taking off at sunset with port cranes — air freight logistics' },
-  { src: '/images/industry-hero-3.webp', alt: 'Aerial view of container ship — ocean freight and global supply chain' },
+  { src: '/images/industry-hero-1.webp', alt: 'Huntsville 3PL freight transportation serving aerospace, defense, advanced manufacturing, e-commerce, biotech, healthcare, retail, food and beverage, pharmaceuticals, technology, and subscription box logistics' },
+  { src: '/images/industry-hero-2.webp', alt: 'Union Pacific locomotive — rail freight and intermodal logistics supporting Huntsville supply chains' },
+  { src: '/images/industry-hero-4.webp', alt: 'Plane departing at sunset with port cranes — Huntsville air freight and global logistics operations' },
+  { src: '/images/industry-hero-3.webp', alt: 'Aerial view of container ship — ocean freight and international supply chain services from Huntsville, Alabama' },
 ];
 ---
 
@@ -95,6 +99,34 @@ const heroImages = [
        3) CLOSING CTA
        ========================================================= -->
   <ConnectCTA />
+
+  <!-- Industries CollectionPage JSON-LD — tells Google this is an index
+       of industry-specific service pages, listing all 10 sectors. -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: title,
+    description,
+    url: `https://${city.domain}/industries/`,
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: industries.length,
+      itemListElement: industries.map((ind, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: `${ind.name} Logistics`,
+        url: `https://${city.domain}/industries/${ind.slug}/`,
+      })),
+    },
+    provider: {
+      '@type': 'LocalBusiness',
+      name: `${city.name} 3PL`,
+      parentOrganization: {
+        '@type': 'Organization',
+        name: brand.name,
+      },
+    },
+  })} />
 </AboutLayout>
 
 <style>
@@ -160,16 +192,19 @@ const heroImages = [
     pointer-events: none;
   }
 
-  /* Arrow inline with "Industries" — matches cap height of the S.
-     0.72em ≈ cap-height ratio for GT Alpina Bold uppercase.
+  /* Arrow next to "Industries" — rotated 90° to point straight down,
+     serving as a scroll cue. Height matches cap height of the "S"
+     (0.72em ≈ GT Alpina Bold uppercase cap-height ratio).
      Filter inverts the black SVG to white to match the text. */
   .ind-hero-arrow {
     display: inline-block;
     height: 0.72em;
     width: auto;
     vertical-align: baseline;
-    margin-left: 0.15em;
+    margin-left: 0.2em;
     filter: invert(1);
+    transform: rotate(90deg);
+    transform-origin: center center;
     pointer-events: none;
   }
 
