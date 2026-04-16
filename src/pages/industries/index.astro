@@ -41,7 +41,17 @@ const heroImages = [
           fetchpriority={i === 0 ? 'high' : undefined}
         />
         {i === 0 && (
-          <span class="ind-hero-label">Industries</span>
+          <span class="ind-hero-label">
+            Industries
+            <img
+              src="/images/arrow-nav.svg"
+              alt=""
+              aria-hidden="true"
+              class="ind-hero-arrow"
+              width="1200"
+              height="1200"
+            />
+          </span>
         )}
       </div>
     ))}
@@ -147,6 +157,19 @@ const heroImages = [
     line-height: 1;
     /* Subtle text shadow so it reads over any photo brightness */
     text-shadow: 0 2px 12px rgba(0, 0, 0, 0.55), 0 1px 3px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+  }
+
+  /* Arrow inline with "Industries" — matches cap height of the S.
+     0.72em ≈ cap-height ratio for GT Alpina Bold uppercase.
+     Filter inverts the black SVG to white to match the text. */
+  .ind-hero-arrow {
+    display: inline-block;
+    height: 0.72em;
+    width: auto;
+    vertical-align: baseline;
+    margin-left: 0.15em;
+    filter: invert(1);
     pointer-events: none;
   }
 
