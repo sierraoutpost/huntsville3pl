@@ -198,25 +198,17 @@ const heroImages = [
     pointer-events: none;
   }
 
-  /* Two arrows to the right of "Industries" — inline with the text,
-     rotated 90° to point straight down. Each sized to match the exact
-     cap height of the uppercase "S".
-     Cap height ≈ 0.72em. baseline sits ~0.16em below the cap top,
-     so we shift up with position:relative + bottom to align tops. */
-  .ind-hero-label {
-    white-space: nowrap;
-  }
-
+  /* Two down-arrows to the right of the "S" in "Industries".
+     Exact same CSS that worked on the original single arrow. */
   .ind-hero-arrow {
     display: inline-block;
     height: 0.72em;
-    width: 0.72em;
+    width: auto;
     vertical-align: baseline;
-    position: relative;
-    bottom: 0.04em;
-    margin-left: 0.1em;
+    margin-left: 0.15em;
     filter: invert(1);
     transform: rotate(90deg);
+    transform-origin: center center;
     pointer-events: none;
   }
 
