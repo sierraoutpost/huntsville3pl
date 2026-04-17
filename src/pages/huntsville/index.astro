@@ -34,16 +34,15 @@ const serviceNames = services.map((s) => s.title.toLowerCase()).join(', ');
     <div class="hsv-hero-overlay">
       <h1 class="hsv-hero-headline">The Huntsville Advantage</h1>
       <p class="hsv-hero-tagline">
-        Huntsville 3PL is the premier logistics solutions provider in Huntsville, we design, manage, and optimize your logistics operations
+        Huntsville 3PL is the premier logistics solutions provider in Huntsville, we design, manage, and optimize your logistics operations<img
+          src="/images/arrow-nav-down.svg"
+          alt=""
+          aria-hidden="true"
+          class="hsv-hero-arrow"
+          width="1200"
+          height="1200"
+        />
       </p>
-      <img
-        src="/images/arrow-nav-down.svg"
-        alt=""
-        aria-hidden="true"
-        class="hsv-hero-arrow"
-        width="1200"
-        height="1200"
-      />
     </div>
   </section>
 
@@ -339,7 +338,7 @@ const serviceNames = services.map((s) => s.title.toLowerCase()).join(', ');
 
   .hsv-hero-overlay {
     position: absolute;
-    bottom: var(--space-3);
+    bottom: var(--space-5);
     left: 1.25rem;
     max-width: 740px;
     display: flex;
@@ -349,7 +348,7 @@ const serviceNames = services.map((s) => s.title.toLowerCase()).join(', ');
 
   @media (min-width: 768px) {
     .hsv-hero-overlay {
-      bottom: var(--space-4);
+      bottom: var(--space-6);
       left: var(--space-6);
     }
   }
@@ -377,10 +376,11 @@ const serviceNames = services.map((s) => s.title.toLowerCase()).join(', ');
   }
 
   .hsv-hero-arrow {
-    display: block;
-    height: clamp(2rem, 4vw, 3.2rem);
+    display: inline-block;
+    height: 1.8em;
     width: auto;
-    margin: 0;
+    vertical-align: middle;
+    margin-left: 0.3em;
     padding: 0;
     filter: invert(1);
     pointer-events: none;
