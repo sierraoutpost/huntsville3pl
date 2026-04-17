@@ -1,0 +1,122 @@
+---
+// /terms/ — Terms of Service
+import LegalLayout from '@layouts/LegalLayout.astro';
+import { brand } from '@data/brand';
+import { city } from '@data/city';
+
+const title = 'Terms of Service';
+const description = `Terms of Service for ${city.name} 3PL, a ${brand.name} company. Read the terms governing your use of our website.`;
+---
+
+<LegalLayout title={title} description={description} lastUpdated="April 15, 2026">
+  <h2>Acceptance of Terms</h2>
+  <p>
+    By accessing and using the {city.name} 3PL website at {city.domain} (the "Site"), operated by
+    {brand.name} ("we," "us," or "our"), you accept and agree to be bound by these Terms of Service.
+    If you do not agree to these terms, please do not use the Site.
+  </p>
+
+  <h2>Use of the Site</h2>
+  <p>You agree to use this Site only for lawful purposes and in a way that does not:</p>
+  <ul>
+    <li>Infringe the rights of, or restrict or inhibit the use of this Site by, any other person</li>
+    <li>Violate any applicable local, state, national, or international law or regulation</li>
+    <li>Interfere with the proper functioning of the Site or its infrastructure</li>
+    <li>Attempt to gain unauthorized access to any portion of the Site, its servers, or any connected systems</li>
+    <li>Transmit any viruses, malware, or other harmful code</li>
+  </ul>
+
+  <h2>Intellectual Property</h2>
+  <p>
+    All content on this Site — including text, graphics, logos, images, page layout, and software — is
+    the property of {brand.name} or its content suppliers and is protected by United States and
+    international copyright, trademark, and other intellectual property laws.
+  </p>
+  <p>
+    You may not reproduce, distribute, modify, create derivative works of, publicly display, or
+    otherwise exploit any content from this Site without our prior written consent.
+  </p>
+
+  <h2>Services Information</h2>
+  <p>
+    The information provided on this Site regarding our warehousing, fulfillment, transportation, and
+    other logistics services is for general informational purposes only. It does not constitute a
+    binding offer or contract for services. Specific service terms, pricing, and scope will be
+    established through separate written agreements between you and {brand.name}.
+  </p>
+
+  <h2>Contact Form Submissions</h2>
+  <p>
+    When you submit information through our contact form, you represent that the information provided
+    is accurate and that you are authorized to share it. We will use the information you provide solely
+    in accordance with our <a href="/privacy/">Privacy Policy</a>.
+  </p>
+
+  <h2>Disclaimer of Warranties</h2>
+  <p>
+    This Site is provided on an "as is" and "as available" basis without warranties of any kind, either
+    express or implied. We do not warrant that the Site will be uninterrupted, error-free, secure, or
+    free of viruses or other harmful components.
+  </p>
+  <p>
+    To the fullest extent permitted by law, we disclaim all warranties, including but not limited to
+    implied warranties of merchantability, fitness for a particular purpose, and non-infringement.
+  </p>
+
+  <h2>Limitation of Liability</h2>
+  <p>
+    To the maximum extent permitted by applicable law, {brand.name} and its officers, directors,
+    employees, and agents shall not be liable for any indirect, incidental, special, consequential, or
+    punitive damages arising out of or related to your use of, or inability to use, this Site.
+  </p>
+  <p>
+    Our total liability for any claim arising from your use of the Site shall not exceed the amount you
+    paid to us, if any, for accessing the Site during the twelve months preceding the claim.
+  </p>
+
+  <h2>Indemnification</h2>
+  <p>
+    You agree to indemnify, defend, and hold harmless {brand.name}, its affiliates, officers,
+    directors, employees, and agents from and against any claims, liabilities, damages, losses, and
+    expenses (including reasonable attorneys' fees) arising out of or in any way connected with your
+    use of the Site or violation of these Terms.
+  </p>
+
+  <h2>Third-Party Links</h2>
+  <p>
+    This Site may contain links to third-party websites. These links are provided for convenience only.
+    We do not endorse or assume responsibility for the content, privacy policies, or practices of any
+    third-party sites.
+  </p>
+
+  <h2>Governing Law</h2>
+  <p>
+    These Terms of Service shall be governed by and construed in accordance with the laws of the State
+    of Alabama, without regard to its conflict of law provisions. Any disputes arising under these
+    Terms shall be subject to the exclusive jurisdiction of the courts located in Madison County, Alabama.
+  </p>
+
+  <h2>Changes to These Terms</h2>
+  <p>
+    We reserve the right to modify these Terms of Service at any time. Changes will be posted on this
+    page with an updated "Last updated" date. Your continued use of the Site after any changes
+    constitutes acceptance of the revised terms.
+  </p>
+
+  <h2>Severability</h2>
+  <p>
+    If any provision of these Terms is found to be unenforceable or invalid, that provision shall be
+    limited or eliminated to the minimum extent necessary so that the remaining provisions remain in
+    full force and effect.
+  </p>
+
+  <h2>Contact Us</h2>
+  <p>
+    If you have questions about these Terms of Service, please contact us:
+  </p>
+  <ul>
+    <li><strong>Email:</strong> <a href={brand.email.href}>{brand.email.display}</a></li>
+    <li><strong>Phone:</strong> <a href={brand.phone.href}>{brand.phone.display}</a></li>
+    <li><strong>Address:</strong> {city.facility.address.street}, {city.facility.address.city}, {city.facility.address.state}</li>
+  </ul>
+</LegalLayout>

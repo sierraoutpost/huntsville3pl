@@ -1,0 +1,104 @@
+---
+// /cookies/ — Cookie Policy
+import LegalLayout from '@layouts/LegalLayout.astro';
+import { brand } from '@data/brand';
+import { city } from '@data/city';
+
+const title = 'Cookie Policy';
+const description = `Cookie Policy for ${city.name} 3PL, a ${brand.name} company. Learn how we use cookies and similar technologies on our website.`;
+---
+
+<LegalLayout title={title} description={description} lastUpdated="April 15, 2026">
+  <h2>What Are Cookies</h2>
+  <p>
+    Cookies are small text files that are placed on your device when you visit a website. They are
+    widely used to make websites work more efficiently, provide a better browsing experience, and
+    supply information to site owners.
+  </p>
+
+  <h2>How We Use Cookies</h2>
+  <p>
+    The {city.name} 3PL website at {city.domain} may use cookies and similar technologies for the
+    following purposes:
+  </p>
+
+  <h3>Essential Cookies</h3>
+  <p>
+    These cookies are necessary for the website to function properly. They enable core features such as
+    page navigation, form submissions, and security. The website cannot function properly without these
+    cookies. Essential cookies do not require consent.
+  </p>
+
+  <h3>Analytics Cookies</h3>
+  <p>
+    We may use analytics services to help us understand how visitors interact with our website. These
+    cookies collect information such as the number of visitors, which pages are visited, and how users
+    navigate the site. This data is aggregated and anonymized, meaning it does not identify individual
+    visitors.
+  </p>
+  <p>
+    Analytics cookies help us improve our website content, layout, and performance. If we deploy
+    analytics services, we will update this section with specific details about which providers are used.
+  </p>
+
+  <h3>Functional Cookies</h3>
+  <p>
+    These cookies allow the website to remember choices you make (such as preferred language or region)
+    and provide enhanced, more personalized features.
+  </p>
+
+  <h2>Third-Party Cookies</h2>
+  <p>
+    Some cookies may be set by third-party services that appear on our pages. We do not control these
+    third-party cookies and recommend reviewing the privacy and cookie policies of any third-party
+    services you encounter on our site.
+  </p>
+
+  <h2>Managing Your Cookie Preferences</h2>
+  <p>
+    Most web browsers allow you to control cookies through their settings. You can typically:
+  </p>
+  <ul>
+    <li>View what cookies are stored on your device</li>
+    <li>Delete individual cookies or all cookies</li>
+    <li>Block cookies from specific or all websites</li>
+    <li>Set your browser to notify you when a cookie is being placed</li>
+  </ul>
+  <p>
+    Please note that disabling cookies may affect the functionality of our website and your ability to
+    use certain features, such as submitting forms.
+  </p>
+  <p>
+    For instructions on managing cookies in your specific browser, visit:
+  </p>
+  <ul>
+    <li><strong>Chrome:</strong> Settings &rarr; Privacy and security &rarr; Cookies</li>
+    <li><strong>Firefox:</strong> Settings &rarr; Privacy &amp; Security &rarr; Cookies</li>
+    <li><strong>Safari:</strong> Preferences &rarr; Privacy &rarr; Manage Website Data</li>
+    <li><strong>Edge:</strong> Settings &rarr; Cookies and site permissions</li>
+  </ul>
+
+  <h2>Do Not Track</h2>
+  <p>
+    Some browsers offer a "Do Not Track" setting that signals to websites that you do not wish to be
+    tracked. There is currently no universal standard for how websites should respond to these signals.
+    We will update this policy if a standard is adopted and we implement a response to such signals.
+  </p>
+
+  <h2>Changes to This Policy</h2>
+  <p>
+    We may update this Cookie Policy from time to time to reflect changes in the cookies we use or for
+    other operational, legal, or regulatory reasons. Changes will be posted on this page with an
+    updated "Last updated" date.
+  </p>
+
+  <h2>Contact Us</h2>
+  <p>
+    If you have questions about our use of cookies, please contact us:
+  </p>
+  <ul>
+    <li><strong>Email:</strong> <a href={brand.email.href}>{brand.email.display}</a></li>
+    <li><strong>Phone:</strong> <a href={brand.phone.href}>{brand.phone.display}</a></li>
+    <li><strong>Address:</strong> {city.facility.address.street}, {city.facility.address.city}, {city.facility.address.state}</li>
+  </ul>
+</LegalLayout>

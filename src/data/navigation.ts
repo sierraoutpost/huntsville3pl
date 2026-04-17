@@ -50,4 +50,6 @@ export const ctaNav = {
 export const footerLinks = [
   { label: 'Privacy Policy', href: '/privacy/' },
   { label: 'Terms of Service', href: '/terms/' },
+  { label: 'Cookie Policy', href: '/cookies/' },
+  { label: 'Accessibility', href: '/accessibility/' },
 ] as const;

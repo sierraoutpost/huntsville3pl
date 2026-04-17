@@ -1,0 +1,78 @@
+---
+// /accessibility/ — Accessibility Statement
+import LegalLayout from '@layouts/LegalLayout.astro';
+import { brand } from '@data/brand';
+import { city } from '@data/city';
+
+const title = 'Accessibility Statement';
+const description = `Accessibility commitment for ${city.name} 3PL, a ${brand.name} company. Our website is designed to meet WCAG 2.2 Level AA standards.`;
+---
+
+<LegalLayout title={title} description={description} lastUpdated="April 15, 2026">
+  <h2>Our Commitment</h2>
+  <p>
+    {city.name} 3PL, operated by {brand.name}, is committed to ensuring digital accessibility for
+    people of all abilities. We are continually improving the user experience for everyone and applying
+    the relevant accessibility standards to make our website usable by as many people as possible.
+  </p>
+
+  <h2>Standards We Follow</h2>
+  <p>
+    We aim to conform to the <strong>Web Content Accessibility Guidelines (WCAG) 2.2 Level AA</strong>
+    standards. These guidelines define how to make web content more accessible to people with
+    disabilities, including those with visual, auditory, physical, speech, cognitive, and neurological
+    disabilities.
+  </p>
+
+  <h2>Accessibility Features</h2>
+  <p>Our website incorporates the following accessibility features:</p>
+  <ul>
+    <li><strong>Semantic HTML:</strong> Proper use of headings, landmarks, lists, and ARIA labels to support screen readers and assistive technologies</li>
+    <li><strong>Keyboard navigation:</strong> All interactive elements (links, buttons, forms) are accessible via keyboard navigation</li>
+    <li><strong>Skip navigation:</strong> A "Skip to main content" link allows keyboard users to bypass repetitive navigation</li>
+    <li><strong>Color contrast:</strong> Text and interactive elements maintain sufficient color contrast ratios as defined by WCAG 2.2 AA</li>
+    <li><strong>Alt text:</strong> All meaningful images include descriptive alternative text</li>
+    <li><strong>Responsive design:</strong> The website is designed to work across a range of devices, screen sizes, and orientations</li>
+    <li><strong>Reduced motion:</strong> Animations respect the <code>prefers-reduced-motion</code> user preference where applicable</li>
+    <li><strong>Form accessibility:</strong> Form fields include associated labels and clear error messaging</li>
+  </ul>
+
+  <h2>Known Limitations</h2>
+  <p>
+    While we strive for full accessibility, some content may not yet fully meet all WCAG 2.2 AA
+    criteria. We are actively working to identify and resolve any barriers. Known areas under review
+    include:
+  </p>
+  <ul>
+    <li>Some older images may have limited alternative text descriptions</li>
+    <li>Third-party embedded content may not fully conform to our accessibility standards</li>
+  </ul>
+
+  <h2>Feedback and Assistance</h2>
+  <p>
+    We welcome your feedback on the accessibility of our website. If you encounter any barriers or have
+    suggestions for improvement, please contact us:
+  </p>
+  <ul>
+    <li><strong>Email:</strong> <a href={brand.email.href}>{brand.email.display}</a></li>
+    <li><strong>Phone:</strong> <a href={brand.phone.href}>{brand.phone.display}</a></li>
+    <li><strong>Address:</strong> {city.facility.address.street}, {city.facility.address.city}, {city.facility.address.state}</li>
+  </ul>
+  <p>
+    We try to respond to accessibility feedback within 5 business days and will work to resolve any
+    issues as quickly as possible.
+  </p>
+
+  <h2>Enforcement and Compliance</h2>
+  <p>
+    If you are not satisfied with our response to your accessibility concern, you may file a complaint
+    with the relevant regulatory authority in your jurisdiction.
+  </p>
+
+  <h2>Continuous Improvement</h2>
+  <p>
+    Accessibility is an ongoing effort. We regularly review our website for accessibility and update
+    this statement as improvements are made. Our goal is to provide an inclusive experience for all
+    users.
+  </p>
+</LegalLayout>
