@@ -6,7 +6,7 @@ export const brand = {
   name: 'Sams 3PL Solutions',
   tagline: 'A Sams 3PL Solutions Company',
   phone: { display: '+1 (419) 745-9492', href: 'tel:+14197459492' },
-  email: { display: 'info@sams3plsolutions.com', href: 'mailto:info@sams3plsolutions.com' },
+  email: { display: 'operations@sams3pl.com', href: 'mailto:operations@sams3pl.com' },
   hours: '24/7 Operations Support',
 
   colors: {
