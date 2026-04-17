@@ -35,7 +35,7 @@ const industryChildren: readonly NavChild[] = industries.map((i) => ({
 export const navigation: readonly NavItem[] = [
   { label: 'Industries', href: '/industries/', children: industryChildren },
   { label: 'Services', href: '/services/', children: serviceChildren },
-  { label: 'Huntsville', href: '/about/#why-huntsville' },
+  { label: 'Huntsville', href: '/huntsville/' },
   { label: 'About', href: '/about/' },
   { label: 'Blog', href: '/blog/' },
 ];
