@@ -1,0 +1,63 @@
+---
+// BlogLayout.astro — Layout for the blog index and blog post pages
+// Order: BrandBanner (Row 1) → Header/Nav (Row 2) → Blog content → Footer
+// Injects CollectionPage JSON-LD for the blog index.
+
+import BaseLayout from './BaseLayout.astro';
+import BrandBanner from '@components/sections/BrandBanner.astro';
+import Header from '@components/global/Header.astro';
+import Footer from '@components/global/Footer.astro';
+import { brand } from '@data/brand';
+import { city } from '@data/city';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+}
+
+const { title, description, ogImage } = Astro.props;
+const site = Astro.site?.toString().replace(/\/$/, '') ?? '';
+const blogUrl = `${site}/blog/`;
+
+// CollectionPage schema — tells search engines this is a curated blog index
+const blogSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: `${city.name} 3PL — Logistics News & Articles`,
+  description,
+  url: blogUrl,
+  publisher: {
+    '@type': 'Organization',
+    name: brand.name,
+    url: `https://${city.domain}/`,
+  },
+  about: {
+    '@type': 'Thing',
+    name: 'Third-party logistics, warehousing, and supply chain management',
+  },
+};
+---
+
+<BaseLayout title={title} description={description} ogImage={ogImage}>
+  <div class="page-wrapper">
+    <BrandBanner />
+    <Header />
+
+    <main id="main-content">
+      <slot />
+    </main>
+
+    <Footer />
+  </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify(blogSchema)} />
+</BaseLayout>
+
+<style>
+  .page-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+  }
+</style>

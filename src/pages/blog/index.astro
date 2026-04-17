@@ -1,0 +1,358 @@
+---
+// /blog/ — Blog index page
+// Sections, top to bottom:
+//   1. Hero  — full-viewport newspaper photo, headline + tagline upper-right
+//   2. Posts — 3-column card grid (when posts exist)
+//   3. Empty — launch message while no posts are published yet
+//
+// Content sourced from Astro Content Collections (src/content/blog/).
+
+import BlogLayout from '@layouts/BlogLayout.astro';
+import ConnectCTA from '@components/sections/ConnectCTA.astro';
+import { getCollection } from 'astro:content';
+
+const title = 'Logistics News & Articles | Huntsville 3PL Blog';
+const description =
+  'Logistics insights, supply chain strategy, and Huntsville warehouse operations — field notes from the team at Huntsville 3PL.';
+
+// Get all non-draft posts, sorted newest first
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<BlogLayout title={title} description={description}>
+  <!-- =========================================================
+       1) HERO — full-viewport newspaper photo + headline overlay
+       ========================================================= -->
+  <section class="blog-hero" aria-label="Blog hero">
+    <img
+      src="/images/blog-hero.webp"
+      alt="Stack of newspapers — Huntsville 3PL logistics news, supply chain articles, warehousing insights, and freight industry updates from North Alabama"
+      class="blog-hero-img"
+      width="2400"
+      height="1798"
+      loading="eager"
+      decoding="async"
+      fetchpriority="high"
+    />
+
+    <div class="blog-hero-overlay">
+      <h1 class="blog-hero-headline">Logistics News<br />&amp; Articles</h1>
+      <p class="blog-hero-tagline">Less Noise. More Signal.</p>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       2) POSTS — card grid or launch message
+       ========================================================= -->
+  {posts.length > 0 ? (
+    <section class="blog-posts" aria-labelledby="posts-heading">
+      <div class="posts-inner">
+        <header class="posts-header">
+          <p class="posts-eyebrow">Field Notes</p>
+          <h2 class="posts-heading" id="posts-heading">
+            Latest from the warehouse floor.
+          </h2>
+        </header>
+
+        <ul class="posts-grid" role="list">
+          {posts.map((post) => (
+            <li class="post-card">
+              <a href={`/blog/${post.slug}/`} class="post-card-link">
+                <img
+                  src={post.data.heroImage}
+                  alt={post.data.heroAlt}
+                  class="post-card-img"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div class="post-card-body">
+                  <span class="post-card-category">{post.data.category}</span>
+                  <h3 class="post-card-title">{post.data.title}</h3>
+                  <p class="post-card-meta">
+                    {post.data.author} &middot;{' '}
+                    {post.data.pubDate.toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric',
+                    })}
+                  </p>
+                  <p class="post-card-excerpt">{post.data.description}</p>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  ) : (
+    <section class="blog-launch" aria-label="Coming soon">
+      <div class="launch-inner">
+        <p class="launch-eyebrow">Stand by</p>
+        <h2 class="launch-heading">
+          Articles are loading onto the dock.
+        </h2>
+        <p class="launch-body">
+          We're building out field notes on warehousing, fulfillment, supply chain
+          strategy, and what makes Huntsville one of the most interesting logistics
+          markets in the Southeast. First posts drop soon.
+        </p>
+      </div>
+    </section>
+  )}
+
+  <!-- =========================================================
+       3) CONNECT CTA
+       ========================================================= -->
+  <ConnectCTA />
+</BlogLayout>
+
+<style>
+  /* =============================================================
+     HERO — full-viewport newspaper photo + headline overlay
+     Covers everything above the fold, below BrandBanner + Header.
+     ============================================================= */
+  .blog-hero {
+    position: relative;
+    height: clamp(380px, calc(100svh - 200px), 900px);
+    overflow: hidden;
+    background: var(--color-black);
+    border-bottom: 3px solid var(--color-black);
+  }
+
+  .blog-hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    display: block;
+  }
+
+  /* Overlay — upper-right on desktop, adjusts for mobile */
+  .blog-hero-overlay {
+    position: absolute;
+    top: var(--space-5);
+    right: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--space-2);
+    max-width: 520px;
+  }
+
+  .blog-hero-headline {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    font-weight: 700;
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    color: var(--color-off-white);
+    text-transform: uppercase;
+    text-align: right;
+    margin: 0;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);
+  }
+
+  .blog-hero-tagline {
+    font-family: var(--font-body);
+    font-size: clamp(0.85rem, 1.8vw, 1.15rem);
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-electric-yellow);
+    text-align: right;
+    margin: 0;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Mobile adjustments — move overlay down slightly on small screens */
+  @media (max-width: 639px) {
+    .blog-hero-overlay {
+      top: auto;
+      bottom: var(--space-5);
+      right: 1rem;
+      left: 1rem;
+      align-items: flex-end;
+    }
+  }
+
+  /* =============================================================
+     POSTS — card grid (3 columns desktop, 1 mobile)
+     ============================================================= */
+  .blog-posts {
+    background: var(--color-off-white);
+    border-bottom: 3px solid var(--color-black);
+  }
+
+  .posts-inner {
+    padding: var(--space-7) 1.25rem var(--space-8);
+  }
+
+  @media (min-width: 1024px) {
+    .posts-inner {
+      padding: var(--space-8) 1.25rem var(--space-9);
+    }
+  }
+
+  .posts-header {
+    margin-bottom: var(--space-7);
+  }
+
+  .posts-eyebrow {
+    font-family: var(--font-display);
+    font-size: var(--fs-base);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-brick-red);
+    margin-bottom: var(--space-3);
+  }
+
+  .posts-heading {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--color-black);
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .posts-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  @media (min-width: 768px) {
+    .posts-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .posts-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .post-card {
+    background: white;
+    border: 3px solid var(--color-black);
+    transition: transform 100ms ease;
+  }
+
+  .post-card:hover {
+    transform: translateY(-3px);
+  }
+
+  .post-card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .post-card-img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+    border-bottom: 3px solid var(--color-black);
+  }
+
+  .post-card-body {
+    padding: var(--space-4) var(--space-4) var(--space-5);
+  }
+
+  .post-card-category {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-brick-red);
+    margin-bottom: var(--space-2);
+  }
+
+  .post-card-title {
+    font-family: var(--font-display);
+    font-size: var(--fs-lg);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--color-black);
+    text-transform: uppercase;
+    margin: 0 0 var(--space-2) 0;
+  }
+
+  .post-card-meta {
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    color: var(--color-black);
+    opacity: 0.6;
+    margin: 0 0 var(--space-3) 0;
+  }
+
+  .post-card-excerpt {
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    line-height: 1.5;
+    color: var(--color-black);
+    opacity: 0.85;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* =============================================================
+     LAUNCH MESSAGE — shown when no posts exist yet
+     ============================================================= */
+  .blog-launch {
+    background: var(--color-off-white);
+    border-bottom: 3px solid var(--color-black);
+  }
+
+  .launch-inner {
+    padding: var(--space-9) 1.25rem;
+    max-width: 680px;
+  }
+
+  .launch-eyebrow {
+    font-family: var(--font-display);
+    font-size: var(--fs-base);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-brick-red);
+    margin-bottom: var(--space-3);
+  }
+
+  .launch-heading {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--color-black);
+    text-transform: uppercase;
+    margin: 0 0 var(--space-5) 0;
+  }
+
+  .launch-body {
+    font-family: var(--font-body);
+    font-size: var(--fs-base);
+    line-height: 1.55;
+    color: var(--color-black);
+    opacity: 0.85;
+    margin: 0;
+    max-width: 55ch;
+  }
+</style>
