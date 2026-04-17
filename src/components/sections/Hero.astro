@@ -137,11 +137,12 @@ import { ctaNav } from '@data/navigation';
   /* ---- Mobile optimizations ---- */
   @media (max-width: 639px) {
     .hero {
-      height: clamp(320px, calc(100svh - 200px), 600px);
+      height: clamp(280px, calc(100svh - 200px), 550px);
     }
 
     .hero-img {
-      object-position: center 30%;
+      object-fit: contain;
+      object-position: center center;
     }
 
     .hero-overlay {
