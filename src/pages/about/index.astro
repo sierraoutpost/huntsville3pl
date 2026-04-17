@@ -1,7 +1,7 @@
 ---
 // /about/ — Huntsville 3PL about page
 // Sections, top to bottom:
-//   1. AboutHero        — pure-typography tagline + B&W photo
+//   1. AboutHero        — pure-typography tagline + photo
 //   2. AboutWhyHuntsville — six brutalist fact cards from city.whyHuntsville
 //   3. AboutLeadership  — single quiet sentence (Tyler's spec)
 //   4. AboutNetwork     — "1 of 12 cities" — Sams 3PL Solutions footprint
@@ -26,7 +26,7 @@ const sisters = brand.network.filter((c) => c.domain !== city.domain);
 
 <AboutLayout title={title} description={description} ogImage={ogImage}>
   <!-- =========================================================
-       1) HERO — pure-typography tagline + B&W photo (split)
+       1) HERO — pure-typography tagline + photo (split)
        ========================================================= -->
   <section class="about-hero" aria-labelledby="about-heading">
     <div class="hero-content">
@@ -46,7 +46,7 @@ const sisters = brand.network.filter((c) => c.domain !== city.domain);
       <div class="photo-frame">
         <img
           src="/images/about-hero.webp"
-          alt="Huntsville 3PL warehouse operations — black and white view of the logistics floor"
+          alt="Huntsville 3PL warehouse operations — logistics floor and fulfillment infrastructure"
           class="hero-img"
           width="590"
           height="443"
@@ -138,7 +138,7 @@ const sisters = brand.network.filter((c) => c.domain !== city.domain);
 
 <style>
   /* =============================================================
-     1) HERO — split: tagline LEFT, framed B&W photo RIGHT
+     1) HERO — split: tagline LEFT, framed photo RIGHT
      -------------------------------------------------------------
      Section height is sized so the bottom 3px border sits just above
      the viewport fold — placing the next (black) section below the
@@ -246,8 +246,7 @@ const sisters = brand.network.filter((c) => c.domain !== city.domain);
     object-fit: cover;
     object-position: center center;
     display: block;
-    /* B&W is baked into the file (about-hero.webp converted with -colorspace Gray),
-       so no CSS filter needed and no color flash on slow connections. */
+    /* Full-color photo — converted from about-hero.jpg */
   }
 
   /* =============================================================
