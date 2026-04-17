@@ -1,9 +1,10 @@
 ---
 // /blog/ — Blog index page
 // Sections, top to bottom:
-//   1. Hero  — full-viewport newspaper photo, headline + tagline upper-right
-//   2. Posts — 3-column card grid (when posts exist)
-//   3. Empty — launch message while no posts are published yet
+//   1. Hero    — full-viewport newspaper photo, headline + tagline upper-right
+//   2. Posts   — 3-column card grid (when posts exist)
+//   3. Empty   — launch message while no posts are published yet
+//   4. Author  — asymmetric James Whitfield bio block (neobrutalist, nothing symmetrical)
 //
 // Content sourced from Astro Content Collections (src/content/blog/).
 
@@ -103,7 +104,46 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
   )}
 
   <!-- =========================================================
-       3) CONNECT CTA
+       3) AUTHOR — asymmetric James Whitfield bio block
+       ========================================================= -->
+  <section class="author-section" aria-labelledby="author-heading">
+    <div class="author-grid">
+      <!-- Left column: oversized initials + role tag -->
+      <div class="author-left">
+        <span class="author-initials">JW</span>
+        <span class="author-role-tag">Aerospace &amp; Defense Logistics</span>
+      </div>
+
+      <!-- Right column: name, title, bio, focus areas -->
+      <div class="author-right">
+        <p class="author-eyebrow">Contributing Analyst</p>
+        <h2 class="author-name" id="author-heading">James Whitfield</h2>
+        <p class="author-title">Aerospace &amp; Defense Logistics Analyst, Sam's 3PL Solutions</p>
+
+        <div class="author-bio">
+          <p>James Whitfield has 12 years of experience supporting logistics operations tied to aerospace and defense contractors in the Tennessee Valley region. He tracks government procurement logistics, defense supply chain regulations, and the emerging tech hub freight demand reshaping North Alabama.</p>
+        </div>
+
+        <div class="author-focus">
+          <span class="focus-label">Content Focus</span>
+          <div class="focus-tags">
+            <span class="focus-tag">Aerospace &amp; Defense Logistics</span>
+            <span class="focus-tag">Government Procurement</span>
+            <span class="focus-tag">Tech Hub Growth</span>
+            <span class="focus-tag">Tennessee Valley Freight</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pull-quote bar — offset, full-bleed -->
+    <div class="author-quote-bar">
+      <p class="author-quote">"Huntsville doesn't move like other markets. The freight here is classified, time-critical, or both."</p>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       4) CONNECT CTA
        ========================================================= -->
   <ConnectCTA />
 </BlogLayout>
@@ -354,5 +394,208 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
     opacity: 0.85;
     margin: 0;
     max-width: 55ch;
+  }
+
+  /* =============================================================
+     AUTHOR — asymmetric James Whitfield bio block
+     Nothing symmetrical. Intentionally off-balance grid,
+     oversized initials, offset quote bar.
+     ============================================================= */
+  .author-section {
+    background: var(--color-black);
+    color: var(--color-off-white);
+    border-bottom: 3px solid var(--color-black);
+    overflow: hidden;
+  }
+
+  .author-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  @media (min-width: 768px) {
+    .author-grid {
+      grid-template-columns: 280px 1fr;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .author-grid {
+      grid-template-columns: 340px 1fr;
+    }
+  }
+
+  /* Left column — oversized initials + vertical role tag */
+  .author-left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: var(--space-7) 1.25rem var(--space-4);
+    border-bottom: 2px solid var(--color-electric-yellow);
+  }
+
+  @media (min-width: 768px) {
+    .author-left {
+      border-bottom: none;
+      border-right: 2px solid var(--color-electric-yellow);
+      padding: var(--space-8) var(--space-5) var(--space-8) 1.25rem;
+      justify-content: flex-end;
+      min-height: 380px;
+    }
+  }
+
+  .author-initials {
+    font-family: var(--font-display);
+    font-size: clamp(6rem, 14vw, 12rem);
+    font-weight: 700;
+    line-height: 0.8;
+    letter-spacing: -0.04em;
+    color: var(--color-electric-yellow);
+    opacity: 0.18;
+    display: block;
+    margin-bottom: var(--space-4);
+  }
+
+  @media (min-width: 768px) {
+    .author-initials {
+      font-size: clamp(8rem, 18vw, 14rem);
+      margin-bottom: auto;
+    }
+  }
+
+  .author-role-tag {
+    font-family: var(--font-display);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-electric-yellow);
+    border: 2px solid var(--color-electric-yellow);
+    padding: 0.35em 0.75em;
+    display: inline-block;
+  }
+
+  /* Right column — name, title, bio, focus areas */
+  .author-right {
+    padding: var(--space-6) 1.25rem var(--space-7);
+  }
+
+  @media (min-width: 768px) {
+    .author-right {
+      padding: var(--space-8) var(--space-6) var(--space-8) var(--space-6);
+      max-width: 640px;
+    }
+  }
+
+  .author-eyebrow {
+    font-family: var(--font-display);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-brick-red);
+    margin-bottom: var(--space-3);
+  }
+
+  .author-name {
+    font-family: var(--font-display);
+    font-size: clamp(2.75rem, 5.5vw, 4.5rem);
+    font-weight: 700;
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    color: var(--color-off-white);
+    text-transform: uppercase;
+    margin: 0 0 var(--space-2) 0;
+  }
+
+  .author-title {
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    color: var(--color-off-white);
+    opacity: 0.65;
+    margin: 0 0 var(--space-5) 0;
+    max-width: 44ch;
+  }
+
+  .author-bio {
+    border-left: 3px solid var(--color-electric-yellow);
+    padding-left: var(--space-4);
+    margin-bottom: var(--space-6);
+  }
+
+  .author-bio p {
+    font-family: var(--font-body);
+    font-size: var(--fs-base);
+    line-height: 1.55;
+    color: var(--color-off-white);
+    opacity: 0.85;
+    margin: 0;
+    max-width: 52ch;
+  }
+
+  .focus-label {
+    display: block;
+    font-family: var(--font-display);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-off-white);
+    opacity: 0.5;
+    margin-bottom: var(--space-3);
+  }
+
+  .focus-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .focus-tag {
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    color: var(--color-black);
+    background: var(--color-off-white);
+    padding: 0.3em 0.7em;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .focus-tag:first-child {
+    background: var(--color-electric-yellow);
+    font-weight: 700;
+  }
+
+  /* Pull-quote bar — offset, breaks the grid intentionally */
+  .author-quote-bar {
+    background: var(--color-brick-red);
+    padding: var(--space-5) 1.25rem;
+  }
+
+  @media (min-width: 768px) {
+    .author-quote-bar {
+      margin-left: 280px;
+      padding: var(--space-5) var(--space-6);
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .author-quote-bar {
+      margin-left: 340px;
+    }
+  }
+
+  .author-quote {
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--color-off-white);
+    margin: 0;
+    max-width: 52ch;
+    font-style: italic;
   }
 </style>
