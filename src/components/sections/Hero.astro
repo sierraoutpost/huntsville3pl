@@ -41,14 +41,12 @@ import { ctaNav } from '@data/navigation';
     border-bottom: 3px solid var(--color-black);
   }
 
-  /* Photo fits entirely within the section — no cropping.
-     object-fit: contain keeps the full image visible; the black
-     background fills any letterbox space on ultra-wide viewports. */
+  /* Photo covers the entire section — no distortion, no gaps */
   .hero-img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    object-position: center bottom;
+    object-fit: cover;
+    object-position: center center;
     display: block;
   }
 
