@@ -1,0 +1,78 @@
+---
+// ITAR Warehousing service page — Huntsville 3PL
+// Uses shared ServicePageTemplate for consistent structure.
+//
+// ITAR = International Traffic in Arms Regulations (22 CFR §§120-130)
+// Administered by the U.S. Department of State, Directorate of Defense Trade Controls (DDTC).
+// Governs the export and temporary import of defense articles and defense services
+// on the United States Munitions List (USML).
+
+import ServiceLayout from '@layouts/ServiceLayout.astro';
+import ServicePageTemplate from '@components/templates/ServicePageTemplate.astro';
+
+const pageTitle = 'ITAR Warehousing in Huntsville, AL';
+const pageDescription =
+  'ITAR-compliant warehousing and logistics in Huntsville, Alabama — access-controlled storage, chain-of-custody tracking, and U.S.-person-only handling for defense articles, technical data, and controlled commodities regulated under the International Traffic in Arms Regulations.';
+
+const capabilities = [
+  {
+    num: '01',
+    title: 'Access-Controlled Storage',
+    desc: 'Physically segregated storage areas restricted to authorized U.S. persons only. Controlled entry points, visitor logs, and access credentials managed in compliance with ITAR physical security requirements for defense articles on the U.S. Munitions List.',
+  },
+  {
+    num: '02',
+    title: 'Chain-of-Custody Tracking',
+    desc: 'End-to-end documentation of every receipt, movement, transfer, and shipment of ITAR-controlled inventory. Full audit trails with timestamps, handler identification, and location records to satisfy DDTC recordkeeping requirements under 22 CFR §122.5.',
+  },
+  {
+    num: '03',
+    title: 'U.S.-Person-Only Handling',
+    desc: 'All personnel with access to ITAR-controlled materials are verified U.S. persons as defined under 22 CFR §120.62 — U.S. citizens, lawful permanent residents, or protected individuals. No exceptions, no workarounds.',
+  },
+  {
+    num: '04',
+    title: 'Surveillance & Physical Security',
+    desc: 'Continuous video monitoring, intrusion detection, and alarmed perimeter controls across all ITAR-designated areas. Security infrastructure designed to prevent unauthorized access, theft, or diversion of defense articles.',
+  },
+  {
+    num: '05',
+    title: 'Serialization & Lot Traceability',
+    desc: 'Component-level serial number tracking, lot coding, and inventory reconciliation for defense hardware, sub-assemblies, and technical data packages. Supports prime-contractor quality systems and government audit requirements.',
+  },
+  {
+    num: '06',
+    title: 'Export & Transfer Documentation',
+    desc: 'Logistics coordination aligned with ITAR export licensing requirements. Proper documentation, end-use tracking, and shipping compliance for defense articles moving between authorized facilities, prime contractors, and government end-users.',
+  },
+];
+
+const stats = [
+  { value: 'ITAR', label: 'Compliant storage and handling for USML defense articles' },
+  { value: '70K+', label: 'Defense & aerospace workers in the Huntsville metro' },
+  { value: '22 CFR', label: 'International Traffic in Arms Regulations compliance' },
+  { value: '24/7', label: 'Secured operations with continuous monitoring' },
+];
+---
+
+<ServiceLayout
+  title={pageTitle}
+  description={pageDescription}
+  serviceName="ITAR Warehousing"
+  serviceSlug="itar-warehousing"
+>
+  <ServicePageTemplate
+    serviceIndex="08"
+    serviceName="ITAR Warehousing"
+    tagline="Defense-grade logistics. ITAR-compliant from intake to outbound."
+    heroImage="/images/itar-hero.webp"
+    heroAlt="Military armored vehicle on flatbed transport — ITAR-compliant warehousing and defense logistics services in Huntsville, Alabama for defense articles, controlled commodities, and U.S. Munitions List inventory"
+    leadCopy="ITAR-regulated defense articles require more than a locked warehouse — they require documented chain of custody, U.S.-person-only access, physical segregation, and auditable recordkeeping at every stage. Huntsville 3PL provides ITAR-compliant warehousing purpose-built for the contractors, manufacturers, and government agencies operating in the Rocket City's defense corridor."
+    whyLabel="Why Huntsville for ITAR warehousing —"
+    whyCopy="Huntsville is the nerve center of U.S. missile defense and space operations. Redstone Arsenal houses the Army Materiel Command, Missile Defense Agency, and U.S. Space Command. With $6B+ in annual defense economic impact and the $9.8B PAC-3 Patriot Missile contract generating new demand, the region's defense contractors need local, compliant logistics partners — not distant facilities requiring additional export paperwork and transport risk."
+    capHeadingLine1="What ITAR compliance"
+    capHeadingLine2="actually looks like."
+    capabilities={capabilities}
+    stats={stats}
+  />
+</ServiceLayout>

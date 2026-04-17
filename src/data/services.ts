@@ -74,4 +74,13 @@ export const services: Service[] = [
       'Efficient returns processing from our Huntsville facility, with sorting, inspection, and restocking workflows designed to recover value and get products back into circulation fast.',
     icon: 'rotate-ccw',
   },
+  {
+    slug: 'itar-warehousing',
+    title: 'ITAR Warehousing',
+    shortDescription:
+      'ITAR-compliant warehousing and logistics for defense articles, technical data, and controlled commodities regulated under the International Traffic in Arms Regulations.',
+    cityContext:
+      'Huntsville\'s defense ecosystem — Redstone Arsenal, Missile Defense Agency, and 70,000+ aerospace workers — generates constant demand for ITAR-compliant storage, handling, and chain-of-custody logistics.',
+    icon: 'shield',
+  },
 ];

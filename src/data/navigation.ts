@@ -24,6 +24,7 @@ const serviceChildren: readonly NavChild[] = [
   { label: 'Transportation & Freight', href: '/services/transportation/' },
   { label: 'Kitting & Assembly', href: '/services/kitting/' },
   { label: 'Returns Processing', href: '/services/returns/' },
+  { label: 'ITAR Warehousing', href: '/services/itar-warehousing/' },
 ];
 
 // Industry children — auto-derived from industries.ts (single source of truth)
