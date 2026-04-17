@@ -1,0 +1,756 @@
+---
+// /huntsville/ — The Huntsville Advantage
+// Dedicated page covering cargo types, Port of Huntsville, adjacent ports,
+// market advantages, growth story, and why Huntsville is the right logistics hub.
+
+import AboutLayout from '@layouts/AboutLayout.astro';
+import ConnectCTA from '@components/sections/ConnectCTA.astro';
+import { brand } from '@data/brand';
+import { city } from '@data/city';
+import { services } from '@data/services';
+
+const title = 'The Huntsville Advantage | Why Huntsville for Logistics';
+const description =
+  'Huntsville 3PL leverages the Rocket City\'s aerospace infrastructure, Port of Huntsville intermodal hub, and strategic Southeast position to power your supply chain.';
+
+const serviceNames = services.map((s) => s.title.toLowerCase()).join(', ');
+---
+
+<AboutLayout title={title} description={description}>
+  <!-- =========================================================
+       1) HERO — full-viewport SpaceX photo + overlay text
+       ========================================================= -->
+  <section class="hsv-hero" aria-label="Huntsville advantage hero">
+    <img
+      src="/images/spacex-hero.webp"
+      alt={`SpaceX rocket in Huntsville hangar — Huntsville 3PL provides ${serviceNames} logistics services supporting aerospace, defense, and advanced manufacturing in the Rocket City`}
+      class="hsv-hero-img"
+      width="2560"
+      height="1707"
+      loading="eager"
+      decoding="async"
+      fetchpriority="high"
+    />
+    <div class="hsv-hero-overlay">
+      <h1 class="hsv-hero-headline">The Huntsville Advantage</h1>
+      <p class="hsv-hero-tagline">
+        Huntsville 3PL is the premier logistics solutions provider in Huntsville, we design, manage, and optimize your logistics operations<img
+          src="/images/arrow-nav-down.svg"
+          alt=""
+          aria-hidden="true"
+          class="hsv-hero-arrow"
+          width="1200"
+          height="1200"
+        />
+      </p>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       2) CARGO TYPES — what moves through Huntsville
+       ========================================================= -->
+  <section class="cargo-section" aria-labelledby="cargo-heading">
+    <div class="cargo-inner">
+      <p class="section-eyebrow">Cargo Profile</p>
+      <h2 class="section-heading-left" id="cargo-heading">
+        What Moves Through<br />the Rocket City
+      </h2>
+      <div class="cargo-grid">
+        <div class="cargo-block cargo-block--wide">
+          <h3 class="cargo-label">Defense &amp; Aerospace Hardware</h3>
+          <p class="cargo-desc">
+            Missile components, satellite subsystems, flight hardware, and classified
+            materials. Huntsville's defense corridor — anchored by Redstone Arsenal — generates
+            constant demand for bonded, access-controlled logistics with chain-of-custody discipline.
+          </p>
+        </div>
+        <div class="cargo-block">
+          <h3 class="cargo-label">Advanced Manufacturing</h3>
+          <p class="cargo-desc">
+            Precision-machined parts, automation systems, and industrial equipment flowing
+            between Huntsville's 400+ manufacturers and their suppliers across the Southeast.
+          </p>
+        </div>
+        <div class="cargo-block">
+          <h3 class="cargo-label">Automotive &amp; EV Components</h3>
+          <p class="cargo-desc">
+            Alabama's auto corridor runs from Huntsville to Mobile. Components, battery modules,
+            and finished assemblies move through the region on tight just-in-time schedules.
+          </p>
+        </div>
+        <div class="cargo-block cargo-block--wide">
+          <h3 class="cargo-label">E-Commerce &amp; Consumer Goods</h3>
+          <p class="cargo-desc">
+            Direct-to-consumer fulfillment, subscription box kitting, and retail distribution.
+            Huntsville's central Southeast position delivers one-day ground reach to Nashville,
+            Atlanta, Birmingham, Memphis, and Chattanooga.
+          </p>
+        </div>
+        <div class="cargo-block">
+          <h3 class="cargo-label">Biotech &amp; Pharma</h3>
+          <p class="cargo-desc">
+            Temperature-sensitive biologics, medical devices, and pharmaceutical inventory
+            requiring climate-controlled storage and documented cold chain compliance.
+          </p>
+        </div>
+        <div class="cargo-block">
+          <h3 class="cargo-label">International Air Cargo</h3>
+          <p class="cargo-desc">
+            Huntsville International Airport ranks 21st in the U.S. for international air cargo —
+            a direct gateway for global freight entering the Southeast market.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       3) PORT OF HUNTSVILLE — the infrastructure backbone
+       ========================================================= -->
+  <section class="port-section" aria-labelledby="port-heading">
+    <div class="port-inner">
+      <p class="section-eyebrow section-eyebrow--yellow">Infrastructure</p>
+      <h2 class="section-heading-left section-heading--white" id="port-heading">
+        Port of Huntsville
+      </h2>
+      <p class="port-lead">
+        Not a traditional seaport — a fully integrated inland logistics hub combining international
+        air cargo, rail intermodal, and highway freight. Over $300 million in infrastructure
+        investment. Three distinct operations under one authority.
+      </p>
+
+      <div class="port-grid">
+        <div class="port-card">
+          <span class="port-card-tag">Air</span>
+          <h3 class="port-card-title">International Intermodal Center</h3>
+          <p class="port-card-text">
+            Huntsville International Airport (HSV) — ranked 21st nationally for international air
+            cargo volume. Dual runways capable of handling the world's largest cargo aircraft.
+            Direct service from carriers including Atlas Air, Cargolux, and Cathay Cargo.
+          </p>
+        </div>
+        <div class="port-card port-card--offset">
+          <span class="port-card-tag">Space</span>
+          <h3 class="port-card-title">Huntsville Spaceport</h3>
+          <p class="port-card-text">
+            The only commercially licensed spaceport within an FAA-designated airport. Horizontal
+            launch capability supporting commercial space operations, satellite deployment,
+            and next-generation aerospace manufacturing.
+          </p>
+        </div>
+        <div class="port-card">
+          <span class="port-card-tag">Industrial</span>
+          <h3 class="port-card-title">Jetplex Industrial Park</h3>
+          <p class="port-card-text">
+            2,000+ acres of industrial-zoned property adjacent to the airport and intermodal
+            facilities. Home to distribution centers, manufacturing operations, and logistics
+            providers with direct runway and rail access.
+          </p>
+        </div>
+        <div class="port-card port-card--offset">
+          <span class="port-card-tag">Rail</span>
+          <h3 class="port-card-title">Rail Intermodal Terminal</h3>
+          <p class="port-card-text">
+            Norfolk Southern main line access. 33,745 rail lifts in 2024 — up 22.3% year-over-year.
+            Container-on-flatcar and trailer-on-flatcar service connecting Huntsville to the
+            national rail grid.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       4) STRATEGIC ADJACENT PORTS
+       ========================================================= -->
+  <section class="adjacent-section" aria-labelledby="adjacent-heading">
+    <div class="adjacent-inner">
+      <p class="section-eyebrow">Regional Network</p>
+      <h2 class="section-heading-left" id="adjacent-heading">
+        Strategic Adjacent Ports
+      </h2>
+
+      <div class="adjacent-stack">
+        <div class="adjacent-item">
+          <h3 class="adjacent-name">Tennessee River Marine Terminals — Decatur, AL</h3>
+          <p class="adjacent-text">
+            Barge access to the Tennessee-Tombigbee Waterway and the Gulf of Mexico via the
+            Port of Mobile. Heavy and oversized cargo — turbines, structural steel, industrial
+            equipment — moves by barge at a fraction of overland cost. 30 miles from Huntsville.
+          </p>
+          <span class="adjacent-distance">30 mi from Huntsville</span>
+        </div>
+        <div class="adjacent-item">
+          <h3 class="adjacent-name">Port of Mobile — Mobile, AL</h3>
+          <p class="adjacent-text">
+            Alabama's only deepwater seaport. Container, breakbulk, and bulk cargo with direct
+            Gulf access. Connected to Huntsville via I-65 — a 4.5 hour drive through Alabama's
+            automotive and manufacturing corridor.
+          </p>
+          <span class="adjacent-distance">330 mi / ~4.5 hrs via I-65</span>
+        </div>
+        <div class="adjacent-item">
+          <h3 class="adjacent-name">Port of Savannah — Savannah, GA</h3>
+          <p class="adjacent-text">
+            The fastest-growing container port in the U.S. and the third-largest by TEU volume.
+            Drayage from Savannah to Huntsville runs through Atlanta on I-20/I-59 — a major
+            inbound lane for imported goods serving the Southeast interior.
+          </p>
+          <span class="adjacent-distance">550 mi / ~8 hrs via I-20</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       5) BY THE NUMBERS — Huntsville advantage stats
+       ========================================================= -->
+  <section class="stats-section" aria-labelledby="stats-heading">
+    <div class="stats-inner">
+      <p class="section-eyebrow section-eyebrow--yellow">By the Numbers</p>
+      <h2 class="section-heading-left section-heading--white" id="stats-heading">
+        The Huntsville Advantage
+      </h2>
+
+      <div class="stats-grid">
+        <div class="stat-block stat-block--large">
+          <span class="stat-value">$6B+</span>
+          <span class="stat-label">Annual Defense &amp; Aerospace Economic Impact</span>
+        </div>
+        <div class="stat-block">
+          <span class="stat-value">70,000+</span>
+          <span class="stat-label">Defense &amp; Aerospace Workers in Huntsville</span>
+        </div>
+        <div class="stat-block">
+          <span class="stat-value">1,400</span>
+          <span class="stat-label">Space Command Jobs Relocating to Redstone</span>
+        </div>
+        <div class="stat-block stat-block--large">
+          <span class="stat-value">$9.8B</span>
+          <span class="stat-label">PAC-3 Patriot Missile Contract</span>
+        </div>
+        <div class="stat-block">
+          <span class="stat-value">300+</span>
+          <span class="stat-label">Companies at Cummings Research Park</span>
+        </div>
+        <div class="stat-block">
+          <span class="stat-value">$2B+</span>
+          <span class="stat-label">Invested in Port of Huntsville</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       6) THE GROWTH STORY
+       ========================================================= -->
+  <section class="growth-section" aria-labelledby="growth-heading">
+    <div class="growth-inner">
+      <p class="section-eyebrow">The Opportunity</p>
+      <h2 class="section-heading-left" id="growth-heading">
+        The Growth Story
+      </h2>
+
+      <div class="growth-body">
+        <p>
+          <strong>U.S. Space Command</strong> confirmed its relocation to Redstone Arsenal in
+          September 2025, bringing approximately 1,400 positions over five years. This joins the
+          Army Materiel Command, Missile Defense Agency, Army Space and Missile Defense Command,
+          and NASA Marshall Space Flight Center — all already headquartered or substantially
+          present at Redstone.
+        </p>
+        <p>
+          The <strong>Golden Dome initiative</strong> — the proposed layered missile defense
+          system — is expected to channel billions in new federal investment through Huntsville,
+          with Redstone Arsenal playing a central development role.
+        </p>
+        <p>
+          In September 2025, the <strong>$9.8 billion PAC-3 Patriot Missile contract</strong> was
+          announced — the largest missile manufacturing contract ever associated with Redstone
+          Arsenal. This single contract is generating a surge in advanced manufacturing, component
+          supply, and logistics demand across the region.
+        </p>
+        <p>
+          <strong>NASA Marshall Space Flight Center</strong>, celebrating 65 years in 2025,
+          continues to lead development of the Space Launch System for the Artemis program. The
+          center generates 35,494 jobs and over $265 million in Alabama state tax revenue.
+        </p>
+        <p>
+          <strong>Cummings Research Park</strong> — the second-largest research park in the United
+          States — houses 300+ companies and 26,000+ employees. The <strong>Port of Huntsville</strong>
+          has received $2 billion+ in investment, with dual runways capable of handling the world's
+          largest cargo aircraft.
+        </p>
+        <p class="growth-closer">
+          Every one of these growth drivers creates logistics demand. Every defense contractor,
+          aerospace supplier, and government agency needs warehousing, storage, and distribution
+          that meets the compliance standards this market requires. That's the opportunity. That's
+          why we're here.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       7) CLOSING CTA
+       ========================================================= -->
+  <ConnectCTA />
+
+  <!-- JSON-LD for SEO -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: title,
+    description,
+    url: `https://${city.domain}/huntsville/`,
+    about: {
+      '@type': 'City',
+      name: 'Huntsville',
+      containedInPlace: { '@type': 'State', name: 'Alabama' },
+    },
+    provider: {
+      '@type': 'LocalBusiness',
+      name: `${city.name} 3PL`,
+      parentOrganization: { '@type': 'Organization', name: brand.name },
+    },
+  })} />
+</AboutLayout>
+
+<style>
+  /* =============================================================
+     HERO — full-viewport SpaceX photo
+     ============================================================= */
+  .hsv-hero {
+    position: relative;
+    height: clamp(380px, calc(100svh - 200px), 900px);
+    overflow: hidden;
+    background: var(--color-black);
+    border-bottom: 3px solid var(--color-black);
+  }
+
+  .hsv-hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    display: block;
+  }
+
+  .hsv-hero-overlay {
+    position: absolute;
+    bottom: var(--space-5);
+    left: 1.25rem;
+    max-width: 740px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  @media (min-width: 768px) {
+    .hsv-hero-overlay {
+      bottom: var(--space-6);
+      left: var(--space-6);
+    }
+  }
+
+  .hsv-hero-headline {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 5vw, 4rem);
+    font-weight: 700;
+    line-height: 1.04;
+    color: white;
+    text-transform: none;
+    letter-spacing: -0.02em;
+    margin: 0;
+    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.55), 0 1px 4px rgba(0, 0, 0, 0.35);
+  }
+
+  .hsv-hero-tagline {
+    font-family: var(--font-body);
+    font-size: clamp(0.85rem, 1.6vw, 1.1rem);
+    font-weight: 500;
+    color: white;
+    line-height: 1.45;
+    margin: 0;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.45);
+  }
+
+  .hsv-hero-arrow {
+    display: inline-block;
+    height: 0.72em;
+    width: auto;
+    vertical-align: baseline;
+    margin-left: 0.15em;
+    filter: invert(1);
+    pointer-events: none;
+  }
+
+  /* =============================================================
+     SHARED SECTION HELPERS
+     ============================================================= */
+  .section-eyebrow {
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--color-brick-red);
+    margin: 0 0 var(--space-3) 0;
+  }
+
+  .section-eyebrow--yellow {
+    color: var(--color-electric-yellow);
+  }
+
+  .section-heading-left {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+    color: var(--color-black);
+    text-transform: none;
+    margin: 0 0 var(--space-5) 0;
+  }
+
+  .section-heading--white {
+    color: var(--color-off-white);
+  }
+
+  /* =============================================================
+     2) CARGO TYPES — asymmetric grid
+     ============================================================= */
+  .cargo-section {
+    background: var(--color-off-white);
+    padding: var(--space-7) 1.25rem;
+    border-bottom: 3px solid var(--color-black);
+  }
+
+  @media (min-width: 900px) {
+    .cargo-section {
+      padding: var(--space-8) var(--space-6);
+    }
+  }
+
+  .cargo-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .cargo-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3px;
+    background: var(--color-black);
+    border: 3px solid var(--color-black);
+  }
+
+  @media (min-width: 720px) {
+    .cargo-grid {
+      grid-template-columns: 1.4fr 1fr;
+    }
+  }
+
+  .cargo-block {
+    background: var(--color-off-white);
+    padding: var(--space-5);
+  }
+
+  @media (min-width: 720px) {
+    .cargo-block--wide {
+      grid-column: span 2;
+    }
+  }
+
+  .cargo-label {
+    font-family: var(--font-display);
+    font-size: clamp(1.15rem, 2vw, 1.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--color-black);
+    text-transform: none;
+    margin: 0 0 var(--space-2) 0;
+  }
+
+  .cargo-desc {
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    line-height: 1.55;
+    color: var(--color-black);
+    opacity: 0.85;
+    margin: 0;
+  }
+
+  /* =============================================================
+     3) PORT OF HUNTSVILLE — dark section, offset cards
+     ============================================================= */
+  .port-section {
+    background: var(--color-black);
+    color: var(--color-off-white);
+    padding: var(--space-7) 1.25rem;
+    border-bottom: 3px solid var(--color-black);
+  }
+
+  @media (min-width: 900px) {
+    .port-section {
+      padding: var(--space-8) var(--space-6);
+    }
+  }
+
+  .port-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .port-lead {
+    font-family: var(--font-body);
+    font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+    line-height: 1.6;
+    color: var(--color-off-white);
+    opacity: 0.85;
+    max-width: 780px;
+    margin: 0 0 var(--space-6) 0;
+  }
+
+  .port-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 720px) {
+    .port-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .port-card {
+    background: var(--color-off-white);
+    color: var(--color-black);
+    padding: var(--space-5);
+    border: 3px solid var(--color-off-white);
+    box-shadow: 6px 6px 0 var(--color-electric-yellow);
+  }
+
+  /* Offset alternating cards to break symmetry */
+  @media (min-width: 720px) {
+    .port-card--offset {
+      margin-top: var(--space-6);
+    }
+  }
+
+  .port-card-tag {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-off-white);
+    background: var(--color-brick-red);
+    padding: 0.2em 0.6em;
+    margin-bottom: var(--space-3);
+  }
+
+  .port-card-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.15rem, 2vw, 1.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--color-black);
+    text-transform: none;
+    margin: 0 0 var(--space-2) 0;
+  }
+
+  .port-card-text {
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    line-height: 1.55;
+    color: var(--color-black);
+    opacity: 0.85;
+    margin: 0;
+  }
+
+  /* =============================================================
+     4) STRATEGIC ADJACENT PORTS — stacked items, not grid cards
+     ============================================================= */
+  .adjacent-section {
+    background: var(--color-off-white);
+    padding: var(--space-7) 1.25rem;
+    border-bottom: 3px solid var(--color-black);
+  }
+
+  @media (min-width: 900px) {
+    .adjacent-section {
+      padding: var(--space-8) var(--space-6);
+    }
+  }
+
+  .adjacent-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .adjacent-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .adjacent-item {
+    padding: var(--space-5) 0;
+    border-bottom: 3px solid var(--color-black);
+  }
+
+  .adjacent-item:last-child {
+    border-bottom: none;
+  }
+
+  .adjacent-name {
+    font-family: var(--font-display);
+    font-size: clamp(1.15rem, 2.2vw, 1.65rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--color-black);
+    text-transform: none;
+    margin: 0 0 var(--space-2) 0;
+  }
+
+  .adjacent-text {
+    font-family: var(--font-body);
+    font-size: var(--fs-base);
+    line-height: 1.6;
+    color: var(--color-black);
+    opacity: 0.85;
+    max-width: 880px;
+    margin: 0 0 var(--space-2) 0;
+  }
+
+  .adjacent-distance {
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-brick-red);
+  }
+
+  /* =============================================================
+     5) BY THE NUMBERS — asymmetric stat blocks
+     ============================================================= */
+  .stats-section {
+    background: var(--color-black);
+    color: var(--color-off-white);
+    padding: var(--space-7) 1.25rem;
+    border-bottom: 3px solid var(--color-black);
+  }
+
+  @media (min-width: 900px) {
+    .stats-section {
+      padding: var(--space-8) var(--space-6);
+    }
+  }
+
+  .stats-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3px;
+    background: var(--color-off-white);
+    border: 3px solid var(--color-off-white);
+  }
+
+  @media (min-width: 720px) {
+    .stats-grid {
+      grid-template-columns: 1.6fr 1fr 1fr;
+    }
+  }
+
+  .stat-block {
+    background: var(--color-black);
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  @media (min-width: 720px) {
+    .stat-block--large {
+      grid-column: 1 / 2;
+      grid-row: span 1;
+    }
+  }
+
+  .stat-value {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--color-brick-red);
+  }
+
+  .stat-label {
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    line-height: 1.4;
+    color: var(--color-off-white);
+    opacity: 0.8;
+  }
+
+  /* =============================================================
+     6) GROWTH STORY — left-aligned prose, not cards
+     ============================================================= */
+  .growth-section {
+    background: var(--color-off-white);
+    padding: var(--space-7) 1.25rem;
+    border-bottom: 3px solid var(--color-black);
+  }
+
+  @media (min-width: 900px) {
+    .growth-section {
+      padding: var(--space-8) var(--space-6);
+    }
+  }
+
+  .growth-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .growth-body {
+    max-width: 880px;
+    font-family: var(--font-body);
+    font-size: var(--fs-base);
+    line-height: 1.7;
+    color: var(--color-black);
+  }
+
+  .growth-body p {
+    margin: 0 0 var(--space-4) 0;
+  }
+
+  .growth-body strong {
+    font-weight: 700;
+    color: var(--color-black);
+  }
+
+  .growth-closer {
+    font-family: var(--font-display);
+    font-size: clamp(1.05rem, 1.8vw, 1.35rem);
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    color: var(--color-black);
+    border-left: 4px solid var(--color-brick-red);
+    padding-left: var(--space-4);
+    margin-top: var(--space-5);
+  }
+</style>
