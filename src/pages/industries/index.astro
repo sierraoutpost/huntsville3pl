@@ -353,4 +353,28 @@ const heroImages = [
     color: var(--color-brick-red);
     align-self: flex-end;
   }
+
+  /* ---- Mobile optimizations ---- */
+  @media (max-width: 639px) {
+    .ind-hero-label {
+      font-size: clamp(1.5rem, 6vw, 2rem);
+    }
+
+    .ind-grid-section {
+      padding: var(--space-5) 1rem;
+    }
+
+    .ind-card {
+      box-shadow: 4px 4px 0 var(--color-brick-red);
+    }
+
+    .ind-card-link {
+      padding: var(--space-4);
+      min-height: 140px;
+    }
+
+    .ind-grid-heading {
+      font-size: clamp(1.65rem, 5.5vw, 2.25rem);
+    }
+  }
 </style>

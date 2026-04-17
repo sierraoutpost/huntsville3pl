@@ -497,4 +497,68 @@ const sisters = brand.network.filter((c) => c.domain !== city.domain);
     color: var(--color-electric-yellow);
     margin-top: 0.4rem;
   }
+
+  /* ---- Mobile optimizations ---- */
+  @media (max-width: 767px) {
+    .hero-photo {
+      min-height: 220px;
+      max-height: 300px;
+      flex: 0 0 auto;
+      padding: var(--space-3) 1rem;
+    }
+
+    .photo-frame {
+      box-shadow: 6px 6px 0 var(--color-electric-yellow);
+    }
+
+    .hero-img {
+      object-position: center 30%;
+    }
+
+    .hero-content {
+      padding: var(--space-4) 1rem var(--space-5);
+    }
+
+    .tagline-line {
+      font-size: clamp(1.25rem, 5vw, 1.75rem);
+    }
+
+    .why {
+      padding: var(--space-5) 1rem;
+    }
+
+    .why-heading {
+      font-size: clamp(1.65rem, 5.5vw, 2.25rem);
+    }
+
+    .why-card {
+      padding: var(--space-4);
+      min-height: 140px;
+      box-shadow: 4px 4px 0 var(--color-brick-red);
+    }
+
+    .leadership {
+      padding: var(--space-5) 1rem;
+    }
+
+    .network {
+      padding: var(--space-5) 1rem;
+    }
+
+    .network-heading {
+      font-size: clamp(1.65rem, 5.5vw, 2.25rem);
+    }
+
+    .network-tile {
+      padding: var(--space-3);
+    }
+
+    .network-tile--current {
+      box-shadow: 4px 4px 0 var(--color-electric-yellow);
+    }
+
+    .tile-name {
+      font-size: clamp(0.95rem, 3vw, 1.15rem);
+    }
+  }
 </style>

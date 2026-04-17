@@ -598,4 +598,68 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
     max-width: 52ch;
     font-style: italic;
   }
+
+  /* ---- Mobile optimizations ---- */
+  @media (max-width: 639px) {
+    .blog-hero {
+      height: clamp(300px, calc(100svh - 200px), 500px);
+    }
+
+    .blog-hero-img {
+      object-position: center 30%;
+    }
+
+    .blog-hero-headline {
+      font-size: clamp(2rem, 9vw, 3rem);
+    }
+
+    .blog-hero-tagline {
+      font-size: clamp(0.7rem, 2.5vw, 0.9rem);
+    }
+
+    .launch-inner {
+      padding: var(--space-6) 1rem;
+    }
+
+    .launch-heading {
+      font-size: clamp(2rem, 7vw, 3rem);
+    }
+
+    .author-left {
+      padding: var(--space-5) 1rem var(--space-3);
+    }
+
+    .author-initials {
+      font-size: clamp(4rem, 18vw, 7rem);
+    }
+
+    .author-right {
+      padding: var(--space-4) 1rem var(--space-5);
+    }
+
+    .author-name {
+      font-size: clamp(2rem, 8vw, 3rem);
+    }
+
+    .author-bio p {
+      font-size: var(--fs-sm);
+    }
+
+    .author-quote-bar {
+      padding: var(--space-4) 1rem;
+    }
+
+    .author-quote {
+      font-size: clamp(0.95rem, 3.5vw, 1.15rem);
+    }
+
+    .focus-tags {
+      gap: var(--space-1);
+    }
+
+    .focus-tag {
+      font-size: 0.75rem;
+      padding: 0.2em 0.5em;
+    }
+  }
 </style>

@@ -145,4 +145,34 @@ import { ctaNav } from '@data/navigation';
     transform: translate(3px, 3px);
     box-shadow: none;
   }
+
+  /* ---- Mobile optimizations ---- */
+  @media (max-width: 599px) {
+    .cta-section {
+      padding-block: var(--space-7);
+    }
+
+    .cta-heading {
+      font-size: clamp(2rem, 7vw, 3rem);
+    }
+
+    .cta-body {
+      font-size: var(--fs-sm);
+      margin-bottom: var(--space-5);
+    }
+
+    .cta-actions {
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .cta-btn-primary,
+    .cta-btn-phone {
+      width: 100%;
+      max-width: 300px;
+      padding: var(--space-3) var(--space-5);
+      text-align: center;
+    }
+  }
 </style>

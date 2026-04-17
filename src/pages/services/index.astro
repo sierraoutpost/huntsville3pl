@@ -320,4 +320,36 @@ const serviceNames = services.map((s) => s.title.toLowerCase()).join(', ');
     color: var(--color-brick-red);
     align-self: flex-end;
   }
+
+  /* ---- Mobile optimizations ---- */
+  @media (max-width: 639px) {
+    .svc-hero {
+      height: clamp(260px, calc(100svh - 200px), 450px);
+    }
+
+    .svc-hero-label {
+      left: auto;
+      right: var(--space-3);
+      bottom: var(--space-3);
+      transform: none;
+      font-size: clamp(1.5rem, 6vw, 2rem);
+    }
+
+    .svc-grid-section {
+      padding: var(--space-5) 1rem;
+    }
+
+    .svc-card {
+      box-shadow: 4px 4px 0 var(--color-brick-red);
+    }
+
+    .svc-card-link {
+      padding: var(--space-4);
+      min-height: 140px;
+    }
+
+    .svc-grid-heading {
+      font-size: clamp(1.65rem, 5.5vw, 2.25rem);
+    }
+  }
 </style>
