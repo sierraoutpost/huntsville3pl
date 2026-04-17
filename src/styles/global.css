@@ -70,6 +70,31 @@ ol {
   list-style: none;
 }
 
+/* ---- Custom Scrollbar — Black + Electric Yellow ---- */
+/* Webkit (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 14px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-black, #0A0A0A);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-electric-yellow, #FFD600);
+  border: 2px solid var(--color-black, #0A0A0A);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #e6c100;
+}
+
+/* Firefox */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-electric-yellow, #FFD600) var(--color-black, #0A0A0A);
+}
+
 /* ---- @font-face declarations ---- */
 /* GT Alpina = Display/Headlines
    GT Standard Mono Condensed = Body (site-wide except blog)
